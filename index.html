@@ -545,13 +545,58 @@ body.theme-dark .act-list tr.edit-row>td{border-color:var(--line)}
 /* ===== 95_tablet.css — uso con el dedo en tablet (Huawei MatePad 12 X y similares) ===== */
 html{touch-action:manipulation;-webkit-text-size-adjust:100%}
 body{-webkit-tap-highlight-color:transparent}
-/* Menú de arriba siempre en un renglón; en vertical se oculta el nombre junto al logotipo */
-.side{flex-wrap:nowrap}
-.side .nav{white-space:nowrap}
-@media(max-width:1180px){.side .brand-txt{display:none}.side .brand{padding-right:4px}.side .nav{padding:12px 13px}}
-@media(max-width:860px){.side{padding-left:12px;padding-right:12px}.side .nav{padding:12px 10px}}
-/* Con el teclado abierto en horizontal, el menú deja de estar fijo para dejar ver más filas */
-@media(max-height:560px){.side{position:static}}
+/* Arriba solo queda el logotipo y los botones A+ y ?; ya no se queda fijo al bajar */
+.side{position:relative;flex-wrap:nowrap;min-height:64px}
+.main{padding-bottom:calc(120px + env(safe-area-inset-bottom))!important}
+#toasts{bottom:calc(112px + env(safe-area-inset-bottom))}
+/* ===== Barra flotante de abajo, efecto vidrio ===== */
+.dock{position:fixed;left:0;right:0;margin:0 auto;width:max-content;max-width:calc(100vw - 24px);
+  bottom:calc(16px + env(safe-area-inset-bottom));z-index:90;display:flex;align-items:center;gap:2px;padding:7px;
+  border-radius:32px;isolation:isolate;
+  transition:transform .4s cubic-bezier(.2,.9,.3,1.15),opacity .25s ease}
+.dock::before{content:"";position:absolute;inset:0;z-index:-2;border-radius:inherit;
+  background:linear-gradient(180deg,rgba(255,255,255,.66),rgba(255,255,255,.40));
+  -webkit-backdrop-filter:blur(26px) saturate(190%);backdrop-filter:blur(26px) saturate(190%);
+  border:1px solid rgba(255,255,255,.78);
+  box-shadow:0 20px 44px -14px rgba(16,36,72,.38),0 2px 8px rgba(16,36,72,.08),
+    inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 2px rgba(255,255,255,.35),inset 0 0 0 .5px rgba(30,63,120,.08)}
+.dock::after{content:"";position:absolute;left:14px;right:14px;top:1px;height:46%;z-index:-1;border-radius:30px 30px 18px 18px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0))}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.dock::before{background:rgba(250,252,255,.94)}}
+.dock .nav{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  min-width:86px;height:64px;padding:6px 12px;border:0;border-radius:25px;background:transparent!important;
+  color:#3E5373;font-size:13px;font-weight:700;letter-spacing:.01em;white-space:nowrap;
+  transition:color .25s ease,transform .15s ease}
+.dock .nav .svgi{width:25px;height:25px;color:#2F5FA7;transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+.dock .nav.on{color:#1E3F78}
+.dock .nav.on .svgi{color:#1E3F78;transform:translateY(-1px) scale(1.08)}
+.dock .nav:active{transform:scale(.93)}
+.dock-pill{position:absolute;top:0;left:0;z-index:-1;border-radius:25px;pointer-events:none;opacity:0;
+  background:linear-gradient(180deg,rgba(47,95,167,.22),rgba(47,95,167,.10));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.85),inset 0 0 0 1px rgba(47,95,167,.16),0 6px 14px -6px rgba(30,63,120,.45);
+  transition:transform .5s cubic-bezier(.3,1.3,.5,1),width .5s cubic-bezier(.3,1.3,.5,1),opacity .2s}
+.dock .more-wrap{position:relative}
+.dock .more-menu{top:auto;bottom:calc(100% + 16px);right:-7px;left:auto;min-width:250px;padding:8px;border-radius:24px;
+  background:rgba(255,255,255,.80);-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);
+  border:1px solid rgba(255,255,255,.85);box-shadow:0 20px 44px -14px rgba(16,36,72,.38),inset 0 1px 0 #fff}
+.dock .more-menu button{border-radius:16px}
+.big-text .dock{zoom:1.1}
+/* Mientras escribes, la barra se esconde para no tapar el teclado */
+body.typing .dock{transform:translateY(160%);opacity:0;pointer-events:none}
+@media print{.dock{display:none!important}}
+@media(prefers-reduced-motion:reduce){.dock,.dock-pill,.dock .nav,.dock .nav .svgi{transition:none}}
+/* Temas: Alegre y Personalizado usan su color; Oscuro, vidrio oscuro */
+body.themed .dock .nav.on,body.themed .dock .nav.on .svgi{color:var(--accent-dark,#1E3F78)}
+body.themed .dock .nav .svgi{color:var(--accent,#2F5FA7)}
+body.themed .dock-pill{background:color-mix(in srgb,var(--accent,#2F5FA7) 18%,transparent)}
+body.theme-dark .dock::before{background:linear-gradient(180deg,rgba(44,58,82,.66),rgba(18,26,40,.52));border-color:rgba(255,255,255,.14);
+  box-shadow:0 20px 44px -14px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.18),inset 0 -1px 2px rgba(255,255,255,.05)}
+body.theme-dark .dock::after{background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,0))}
+body.theme-dark .dock .nav{color:#B9C8DD}
+body.theme-dark .dock .nav .svgi{color:#8FB0E6}
+body.theme-dark .dock .nav.on,body.theme-dark .dock .nav.on .svgi{color:#fff}
+body.theme-dark .dock-pill{background:linear-gradient(180deg,rgba(130,170,240,.30),rgba(130,170,240,.14));box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 6px 14px -6px #000}
+body.theme-dark .dock .more-menu{background:rgba(26,36,52,.85);border-color:rgba(255,255,255,.14);box-shadow:0 20px 44px -14px rgba(0,0,0,.6)}
 /* Botones y casillas cómodos para el dedo (mínimo 44 px) */
 .tool-btn{min-width:46px;min-height:46px}
 .toast-x{min-width:44px;min-height:44px}
@@ -574,7 +619,7 @@ label:has(>input[type=checkbox]),label:has(>input[type=radio]){min-height:40px}
 .gradegrid .colbtn{min-height:52px}
 .gradegrid .gh-name{-webkit-hyphens:auto;hyphens:auto;word-break:normal;overflow-wrap:normal}
 .sheet-wrap{-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
-</style></head><body class="secondary-edition"><div class="layout"><aside class="side"><div class="brand"><span class="brand-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="40" height="40"><rect width="200" height="200" rx="48" fill="#1E3F78"/><rect x="58" y="24" width="26" height="20" rx="7" fill="#F2643F"/><rect x="58" y="42" width="26" height="10" fill="#B9C9D2"/><rect x="58" y="52" width="26" height="90" fill="#FFC145"/><path d="M58 142 L84 142 L71 172 Z" fill="#F6D9AE"/><path d="M66.5 162 L75.5 162 L71 172 Z" fill="#1E3A4C"/><circle cx="117" cy="122" r="33" stroke="#FFF8EC" stroke-width="18" fill="none"/></svg></span><span class="brand-txt"><span class="brand-name"><span class="brand-mi">Mi</span> Bitácora</span><small>SECUNDARIA</small></span></div><button class="nav on" data-view="inicio"><span class="ic" data-ico="home"></span> &nbsp;Inicio</button><button class="nav" data-view="alumnos"><span class="ic" data-ico="users"></span> &nbsp;Mi grupo</button><button class="nav" data-view="asistencia"><span class="ic" data-ico="attendance"></span> &nbsp;Asistencia</button><button class="nav" data-view="cuadricula"><span class="ic" data-ico="grades"></span> &nbsp;Calificaciones</button><div class="more-wrap"><button class="nav" id="moreBtn" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()"><span class="ic" data-ico="more"></span> &nbsp;Más</button><div class="more-menu" id="moreMenu" hidden><button data-view="ruleta"><span class="ic" data-ico="ruleta"></span> &nbsp;Ruleta y Equipos</button><button data-view="horario"><span class="ic" data-ico="calendar"></span> &nbsp;Mi horario</button><button data-view="datos"><span class="ic" data-ico="save"></span> &nbsp;Copias de seguridad</button><button data-view="perfil"><span class="ic" data-ico="settings"></span> &nbsp;Mis datos y colores</button></div></div><span class="spacer"></span><button class="tool-btn" id="textBtn" aria-pressed="false" title="Letra grande" onclick="toggleBigText()">A+</button><button class="tool-btn" id="helpBtn" title="Ayuda" aria-label="Ayuda" onclick="showHelp()">?</button><div class="bottom">Mi Bitácora Secundaria · v0.13.0 · Tablet<br>Datos guardados en esta tablet<br>No usar con datos reales de menores.</div></aside><main class="main"><header class="top"><div><div class="eyebrow" id="eyebrow">MI ESPACIO DE TRABAJO</div><h1 class="title" id="page-title">Buenos días, docente</h1><p class="sub" id="page-sub">Todo lo importante, sin complicaciones.</p></div><span class="tag">● Funciona sin internet</span></header><div id="topbar" class="topbar" role="status"></div><div id="content"></div></main></div><script>
+</style></head><body class="secondary-edition"><div class="layout"><aside class="side"><div class="brand"><span class="brand-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="40" height="40"><rect width="200" height="200" rx="48" fill="#1E3F78"/><rect x="58" y="24" width="26" height="20" rx="7" fill="#F2643F"/><rect x="58" y="42" width="26" height="10" fill="#B9C9D2"/><rect x="58" y="52" width="26" height="90" fill="#FFC145"/><path d="M58 142 L84 142 L71 172 Z" fill="#F6D9AE"/><path d="M66.5 162 L75.5 162 L71 172 Z" fill="#1E3A4C"/><circle cx="117" cy="122" r="33" stroke="#FFF8EC" stroke-width="18" fill="none"/></svg></span><span class="brand-txt"><span class="brand-name"><span class="brand-mi">Mi</span> Bitácora</span><small>SECUNDARIA</small></span></div><span class="spacer"></span><button class="tool-btn" id="textBtn" aria-pressed="false" title="Letra grande" onclick="toggleBigText()">A+</button><button class="tool-btn" id="helpBtn" title="Ayuda" aria-label="Ayuda" onclick="showHelp()">?</button><div class="bottom">Mi Bitácora Secundaria · v0.13.0 · Tablet 1.1<br>Datos guardados en esta tablet<br>No usar con datos reales de menores.</div></aside><main class="main"><header class="top"><div><div class="eyebrow" id="eyebrow">MI ESPACIO DE TRABAJO</div><h1 class="title" id="page-title">Buenos días, docente</h1><p class="sub" id="page-sub">Todo lo importante, sin complicaciones.</p></div><span class="tag">● Funciona sin internet</span></header><div id="topbar" class="topbar" role="status"></div><div id="content"></div></main></div><nav class="dock" id="dock" aria-label="Menú principal"><span class="dock-pill" aria-hidden="true"></span><button class="nav on" data-view="inicio"><span class="ic" data-ico="home"></span><span class="lbl">Inicio</span></button><button class="nav" data-view="alumnos"><span class="ic" data-ico="users"></span><span class="lbl">Mi grupo</span></button><button class="nav" data-view="asistencia"><span class="ic" data-ico="attendance"></span><span class="lbl">Asistencia</span></button><button class="nav" data-view="cuadricula"><span class="ic" data-ico="grades"></span><span class="lbl">Calificaciones</span></button><button class="nav" data-view="equipos"><span class="ic" data-ico="ruleta"></span><span class="lbl">Equipos</span></button><div class="more-wrap"><button class="nav" id="moreBtn" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()"><span class="ic" data-ico="more"></span><span class="lbl">Más</span></button><div class="more-menu" id="moreMenu" hidden><button data-view="horario"><span class="ic" data-ico="calendar"></span> &nbsp;Mi horario</button><button data-view="datos"><span class="ic" data-ico="save"></span> &nbsp;Copias de seguridad</button><button data-view="perfil"><span class="ic" data-ico="settings"></span> &nbsp;Mis datos y colores</button></div></div></nav><script>
 'use strict';
 /* ===== configuración de la edición (generada por build.py) ===== */
 const APP_NAME='Mi Bitácora';const EDITION="Secundaria";const KEY="aulagestion_v09_secundaria";const APP_VERSION="0.13.0";
@@ -1306,7 +1351,7 @@ function themePanelHTML(){
 
 /* ===== 50_views_a.js — navegación, Inicio, Grupos, Alumnos, Disciplinas, Asistencia, Historial ===== */
 /* Menú principal de 5 opciones. Todo lo demás vive en «Más» o en pestañas dentro de cada sección. */
-const NAV_TOP={inicio:'inicio',grupos:'alumnos',alumnos:'alumnos',disciplinas:'alumnos',ficha:'alumnos',rubricas:'cuadricula',pda:'cuadricula',evaluar:'cuadricula',asistencia:'asistencia',historial:'asistencia',cuadricula:'cuadricula',actividades:'cuadricula',libreta:'cuadricula',detallelibreta:'cuadricula',opciones:'cuadricula',rubros:'cuadricula',niveles:'cuadricula'};
+const NAV_TOP={inicio:'inicio',ruleta:'equipos',equipos:'equipos',grupos:'alumnos',alumnos:'alumnos',disciplinas:'alumnos',ficha:'alumnos',rubricas:'cuadricula',pda:'cuadricula',evaluar:'cuadricula',asistencia:'asistencia',historial:'asistencia',cuadricula:'cuadricula',actividades:'cuadricula',libreta:'cuadricula',detallelibreta:'cuadricula',opciones:'cuadricula',rubros:'cuadricula',niveles:'cuadricula'};
 const HUBS=[
   {tabs:[['alumnos','👥 Mis alumnos'],['grupos','📚 Mis grupos'],['disciplinas','🎓 Disciplinas','Secundaria'],['ficha','🪪 Fichas']]},
   {tabs:[['asistencia','✅ Pasar lista'],['historial','📊 Historial']]},
@@ -1323,7 +1368,7 @@ function subtabsHTML(hub){
 }
 function highlightNav(){
   const top=NAV_TOP[active]||'more';
-  document.querySelectorAll('.side > .nav[data-view]').forEach(x=>x.classList.toggle('on',x.dataset.view===top));
+  document.querySelectorAll('.dock > .nav[data-view]').forEach(x=>x.classList.toggle('on',x.dataset.view===top));
   const mb=document.getElementById('moreBtn');if(mb)mb.classList.toggle('on',top==='more');
   document.querySelectorAll('#moreMenu [data-view]').forEach(x=>x.classList.toggle('on',x.dataset.view===active||(x.dataset.view==='ruleta'&&active==='equipos')));
 }
@@ -3333,6 +3378,21 @@ async function shareBackup(){
     warn('No se pudo enviar la copia ('+(e&&e.message||e)+'). Usa «Guardar una copia».');
   }
 }
+/* Barra flotante: la «gota» de vidrio se desliza hasta la sección activa */
+function dockPill(){
+  const d=document.getElementById('dock'),p=d&&d.querySelector('.dock-pill'),on=d&&d.querySelector('.nav.on');if(!p)return;
+  if(!on||!on.offsetWidth){p.style.opacity=0;return}
+  let x=0,y=0,el=on;while(el&&el!==d){x+=el.offsetLeft;y+=el.offsetTop;el=el.offsetParent}
+  p.style.width=on.offsetWidth+'px';p.style.height=on.offsetHeight+'px';p.style.transform=`translate(${x}px,${y}px)`;p.style.opacity=1;
+}
+{const _hn=highlightNav;highlightNav=function(){_hn();dockPill()}}
+window.addEventListener('resize',dockPill);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(dockPill);
+requestAnimationFrame(()=>{highlightNav()});
+/* Mientras escribes, la barra se esconde para no tapar el teclado ni las casillas */
+const TYPING_SEL='input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=date]):not([type=color]):not([type=range]),textarea';
+document.addEventListener('focusin',e=>{if(e.target.matches&&e.target.matches(TYPING_SEL)){document.body.classList.add('typing');setMenu(false)}});
+document.addEventListener('focusout',()=>setTimeout(()=>{const a=document.activeElement;if(!(a&&a.matches&&a.matches(TYPING_SEL)))document.body.classList.remove('typing')},60));
 /* Funciona sin internet una vez instalada, y pide al navegador que no borre los datos por falta de espacio */
 (function(){
   if(!/^https?:$/.test(location.protocol))return;
