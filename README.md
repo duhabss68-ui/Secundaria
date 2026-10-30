@@ -22,6 +22,7 @@ Versión de **Mi Bitácora Secundaria v0.13.0** adaptada para usarse con el dedo
 - Instalable y sin internet.
 - Menú en una **barra flotante abajo** con efecto vidrio: Inicio, Mi grupo, Asistencia, Calificaciones, **Equipos** y Más. Se esconde mientras escribes.
 - Botones, casillas y filas de la cuadrícula de al menos 44 px para el dedo.
+- **PDA ocultos por ahora**: no aparece «Avance por PDA» ni las casillas de PDA. Los PDA ya capturados no se borran; para mostrarlos de nuevo, pon `PDA_VISIBLES = True` en `herramientas/hacer_tablet.py`.
 - Al calificar, el teclado muestra «Siguiente» y baja al siguiente alumno.
 - Copias de seguridad pensadas para la tablet: Descargas y «Enviar copia».
 - Los datos y el formato de los respaldos son los mismos: una copia de la laptop se recupera en la tablet sin cambios.

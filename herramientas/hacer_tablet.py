@@ -22,6 +22,23 @@ def cambia(viejo, nuevo, veces=1):
     html = html.replace(viejo, nuevo)
 
 
+# ---------------------------------------------------------------- PDA ocultos por ahora (los datos NO se borran)
+# Se ocultan la pestaña «Avance por PDA», las casillas de PDA al crear actividades, la columna PDA de las
+# rúbricas y la sección de la ficha. Para volver a mostrarlos basta con poner PDA_VISIBLES = True.
+PDA_VISIBLES = False
+if not PDA_VISIBLES:
+    cambia("function pdaEnabled(){return EDITION!=='Primaria'}", "function pdaEnabled(){return false}")
+    cambia("['pda','🎯 Avance por PDA'],['opciones','⚙️ Opciones del cuaderno']",
+           "['opciones','⚙️ Opciones del cuaderno']")
+    cambia("if(EDITION==='Primaria')VIEWS.pda=function", "if(!pdaEnabled())VIEWS.pda=function")
+    # Al corregir una actividad o su rúbrica se conservan los PDA que ya tenía ligados
+    cambia("Object.assign(a,{name:d.name,date:d.date,max:d.max,mode:d.mode,counts:d.counts,pdas:d.pdas,notes})",
+           "Object.assign(a,{name:d.name,date:d.date,max:d.max,mode:d.mode,counts:d.counts,"
+           "pdas:pdaEnabled()?d.pdas:(a.pdas||[]),notes})")
+    cambia("const valid=new Set(pdaList(group(),a.scopeId).map(x=>x.id));r.criteria.forEach(c=>{if(!valid.has(c.pda))c.pda=''});",
+           "if(pdaEnabled()){const valid=new Set(pdaList(group(),a.scopeId).map(x=>x.id));r.criteria.forEach(c=>{if(!valid.has(c.pda))c.pda=''})}"
+           "else{const old=new Map(((a.rubric&&a.rubric.criteria)||[]).map(c=>[c.id,c.pda||'']));r.criteria.forEach(c=>{c.pda=old.get(c.id)||''})}")
+
 # ---------------------------------------------------------------- cabecera (instalable)
 cambia('<meta name="viewport" content="width=device-width,initial-scale=1">',
        '<meta name="viewport" content="width=device-width,initial-scale=1,interactive-widget=resizes-content">'
@@ -145,7 +162,7 @@ cambia('</style></head>', CSS_TABLET + '</style></head>')
 
 # ---------------------------------------------------------------- textos: tablet en lugar de computadora
 cambia('Mi Bitácora Secundaria · v0.13.0<br>Datos guardados en este navegador',
-       'Mi Bitácora Secundaria · v0.13.0 · Tablet 1.1<br>Datos guardados en esta tablet')
+       'Mi Bitácora Secundaria · v0.13.0 · Tablet 1.2<br>Datos guardados en esta tablet')
 cambia("'Escribe las notas como en una hoja de Excel: Tab pasa a la derecha y Enter baja.'",
        "'Toca una casilla y escribe la nota. La tecla «Siguiente» del teclado baja al siguiente alumno.'")
 cambia("'Escribe cada nota en su casilla. Tab pasa a la derecha y Enter baja.'",
