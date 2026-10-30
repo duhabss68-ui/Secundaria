@@ -1,7 +1,7 @@
 /* Mi Bitácora Secundaria (tablet) — guarda la app en la tablet para que abra sin internet.
    Solo guarda los archivos del programa; los datos del docente nunca pasan por aquí.
    Al publicar una versión nueva, cambia VERSION para que la tablet la descargue. */
-const VERSION = 'mb-sec-tablet-v0.13.0-4';
+const VERSION = 'mb-sec-tablet-v0.13.0-5';
 const ARCHIVOS = ['./', './index.html', './manifest.webmanifest', './icono-192.png', './icono-512.png', './icono-maskable-512.png'];
 
 self.addEventListener('install', e => {

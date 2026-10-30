@@ -620,7 +620,13 @@ label:has(>input[type=checkbox]),label:has(>input[type=radio]){min-height:40px}
 .gradegrid .colbtn{min-height:52px}
 .gradegrid .gh-name{-webkit-hyphens:auto;hyphens:auto;word-break:normal;overflow-wrap:normal}
 .sheet-wrap{-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
-</style></head><body class="secondary-edition"><div class="layout"><aside class="side"><div class="brand"><span class="brand-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="40" height="40"><rect width="200" height="200" rx="48" fill="#1E3F78"/><rect x="58" y="24" width="26" height="20" rx="7" fill="#F2643F"/><rect x="58" y="42" width="26" height="10" fill="#B9C9D2"/><rect x="58" y="52" width="26" height="90" fill="#FFC145"/><path d="M58 142 L84 142 L71 172 Z" fill="#F6D9AE"/><path d="M66.5 162 L75.5 162 L71 172 Z" fill="#1E3A4C"/><circle cx="117" cy="122" r="33" stroke="#FFF8EC" stroke-width="18" fill="none"/></svg></span><span class="brand-txt"><span class="brand-name"><span class="brand-mi">Mi</span> Bitácora</span><small>SECUNDARIA</small></span></div><span class="spacer"></span><button class="tool-btn" id="textBtn" aria-pressed="false" title="Letra grande" onclick="toggleBigText()">A+</button><button class="tool-btn" id="helpBtn" title="Ayuda" aria-label="Ayuda" onclick="showHelp()">?</button><div class="bottom">Mi Bitácora Secundaria · v0.13.0 · Tablet 1.3<br>Datos guardados en esta tablet<br>No usar con datos reales de menores.</div></aside><main class="main"><header class="top"><div><div class="eyebrow" id="eyebrow">MI ESPACIO DE TRABAJO</div><h1 class="title" id="page-title">Buenos días, docente</h1><p class="sub" id="page-sub">Todo lo importante, sin complicaciones.</p></div><span class="tag">● Funciona sin internet</span></header><div id="topbar" class="topbar" role="status"></div><div id="content"></div></main></div><nav class="dock" id="dock" aria-label="Menú principal"><span class="dock-pill" aria-hidden="true"></span><button class="nav on" data-view="inicio"><span class="ic" data-ico="home"></span><span class="lbl">Inicio</span></button><button class="nav" data-view="alumnos"><span class="ic" data-ico="users"></span><span class="lbl">Mi grupo</span></button><button class="nav" data-view="asistencia"><span class="ic" data-ico="attendance"></span><span class="lbl">Asistencia</span></button><button class="nav" data-view="cuadricula"><span class="ic" data-ico="grades"></span><span class="lbl">Calificaciones</span></button><button class="nav" data-view="actividades"><span class="ic" data-ico="activities"></span><span class="lbl">Actividades</span></button><button class="nav" data-view="equipos"><span class="ic" data-ico="ruleta"></span><span class="lbl">Equipos</span></button><div class="more-wrap"><button class="nav" id="moreBtn" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()"><span class="ic" data-ico="more"></span><span class="lbl">Más</span></button><div class="more-menu" id="moreMenu" hidden><button data-view="horario"><span class="ic" data-ico="calendar"></span> &nbsp;Mi horario</button><button data-view="datos"><span class="ic" data-ico="save"></span> &nbsp;Copias de seguridad</button><button data-view="perfil"><span class="ic" data-ico="settings"></span> &nbsp;Mis datos y colores</button></div></div></nav><script>
+/* Copias automáticas: lista de puntos de regreso */
+.snap-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.snap-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 12px;background:rgba(255,255,255,.65);border-radius:12px}
+.snap-row small{display:block;color:#56708F;font-weight:500;margin-top:2px}
+body.theme-dark .snap-row{background:rgba(255,255,255,.05)}
+body.theme-dark .snap-row small{color:#9FB2CB}
+</style></head><body class="secondary-edition"><div class="layout"><aside class="side"><div class="brand"><span class="brand-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="40" height="40"><rect width="200" height="200" rx="48" fill="#1E3F78"/><rect x="58" y="24" width="26" height="20" rx="7" fill="#F2643F"/><rect x="58" y="42" width="26" height="10" fill="#B9C9D2"/><rect x="58" y="52" width="26" height="90" fill="#FFC145"/><path d="M58 142 L84 142 L71 172 Z" fill="#F6D9AE"/><path d="M66.5 162 L75.5 162 L71 172 Z" fill="#1E3A4C"/><circle cx="117" cy="122" r="33" stroke="#FFF8EC" stroke-width="18" fill="none"/></svg></span><span class="brand-txt"><span class="brand-name"><span class="brand-mi">Mi</span> Bitácora</span><small>SECUNDARIA</small></span></div><span class="spacer"></span><button class="tool-btn" id="textBtn" aria-pressed="false" title="Letra grande" onclick="toggleBigText()">A+</button><button class="tool-btn" id="helpBtn" title="Ayuda" aria-label="Ayuda" onclick="showHelp()">?</button><div class="bottom">Mi Bitácora Secundaria · v0.13.0 · Tablet 1.4<br>Datos guardados en esta tablet<br>No usar con datos reales de menores.</div></aside><main class="main"><header class="top"><div><div class="eyebrow" id="eyebrow">MI ESPACIO DE TRABAJO</div><h1 class="title" id="page-title">Buenos días, docente</h1><p class="sub" id="page-sub">Todo lo importante, sin complicaciones.</p></div><span class="tag">● Funciona sin internet</span></header><div id="topbar" class="topbar" role="status"></div><div id="content"></div></main></div><nav class="dock" id="dock" aria-label="Menú principal"><span class="dock-pill" aria-hidden="true"></span><button class="nav on" data-view="inicio"><span class="ic" data-ico="home"></span><span class="lbl">Inicio</span></button><button class="nav" data-view="alumnos"><span class="ic" data-ico="users"></span><span class="lbl">Mi grupo</span></button><button class="nav" data-view="asistencia"><span class="ic" data-ico="attendance"></span><span class="lbl">Asistencia</span></button><button class="nav" data-view="cuadricula"><span class="ic" data-ico="grades"></span><span class="lbl">Calificaciones</span></button><button class="nav" data-view="actividades"><span class="ic" data-ico="activities"></span><span class="lbl">Actividades</span></button><button class="nav" data-view="equipos"><span class="ic" data-ico="ruleta"></span><span class="lbl">Equipos</span></button><div class="more-wrap"><button class="nav" id="moreBtn" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()"><span class="ic" data-ico="more"></span><span class="lbl">Más</span></button><div class="more-menu" id="moreMenu" hidden><button data-view="horario"><span class="ic" data-ico="calendar"></span> &nbsp;Mi horario</button><button data-view="datos"><span class="ic" data-ico="save"></span> &nbsp;Copias de seguridad</button><button data-view="perfil"><span class="ic" data-ico="settings"></span> &nbsp;Mis datos y colores</button></div></div></nav><script>
 'use strict';
 /* ===== configuración de la edición (generada por build.py) ===== */
 const APP_NAME='Mi Bitácora';const EDITION="Secundaria";const KEY="aulagestion_v09_secundaria";const APP_VERSION="0.13.0";
@@ -3394,6 +3400,73 @@ requestAnimationFrame(()=>{highlightNav()});
 const TYPING_SEL='input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=date]):not([type=color]):not([type=range]),textarea';
 document.addEventListener('focusin',e=>{if(e.target.matches&&e.target.matches(TYPING_SEL)){document.body.classList.add('typing');setMenu(false)}});
 document.addEventListener('focusout',()=>setTimeout(()=>{const a=document.activeElement;if(!(a&&a.matches&&a.matches(TYPING_SEL)))document.body.classList.remove('typing')},60));
+/* ===== 96_autocopia.js — copia automática diaria en Descargas + puntos de regreso dentro de la tablet =====
+   · Copia en Descargas: una vez al día, al primer toque después de cambiar algo, se baja sola
+     MiBitacora_Secundaria_auto_AAAA-MM-DD.json (mismo formato que «Guardar una copia»).
+     Se hace dentro de un toque porque Android solo permite descargas que vienen de un toque.
+   · Puntos de regreso: al abrir la app se guarda dentro de la tablet cómo estaba la información
+     (últimos 7 días), para deshacer un error grande sin buscar archivos. */
+const AUTO={key:KEY+'_autocopia',pending:false,keep:7};
+function autoToday(){return new Date().toLocaleDateString('en-CA')}
+function autoCfg(){let c={};try{c=JSON.parse(localStorage.getItem(AUTO.key)||'{}')||{}}catch(e){}return {on:c.on!==false,day:c.day||'',last:c.last||'',name:c.name||''}}
+function autoSave(c){try{localStorage.setItem(AUTO.key,JSON.stringify(c))}catch(e){}}
+function autoHasData(){return countsOf(state).students>0&&!!state.profile.onboarded}
+function autoMark(){const c=autoCfg();if(c.on&&c.day!==autoToday()&&autoHasData())AUTO.pending=true}
+{const _abs=abSchedule;abSchedule=function(){_abs();autoMark()}}
+function autoRun(){
+  AUTO.pending=false;const c=autoCfg();if(!c.on||c.day===autoToday()||!autoHasData())return;
+  try{
+    const pack=makeBackupPack(),name='MiBitacora_'+EDITION+'_auto_'+autoToday()+'.json';
+    download(name,new Blob([JSON.stringify(pack,null,2)],{type:'application/json'}));
+    autoSave({...c,day:autoToday(),last:pack.exportedAt,name});
+    state.lastBackup=pack.exportedAt;save();renderTopbar();
+    notify('Copia automática del día guardada en Descargas: '+name,'success',{ms:7000});
+    if(active==='datos')setTimeout(()=>{if(active==='datos'&&!document.querySelector('#content input:focus,#content textarea:focus'))render()},400);
+  }catch(e){warn('No se pudo hacer la copia automática del día ('+(e&&e.message||e)+'). Usa «Guardar una copia».')}
+}
+/* Se dispara al inicio del toque; NO redibuja la pantalla para no borrar lo que estés escribiendo */
+document.addEventListener('click',()=>{if(AUTO.pending)autoRun()},true);
+function autoToggle(){
+  const c=autoCfg();c.on=!c.on;autoSave(c);
+  notify(c.on?'Copia automática activada: se guardará una copia al día en Descargas.':'Copia automática apagada. Recuerda guardar tu copia a mano cada semana.',c.on?'success':'info',{ms:6000});
+  if(c.on)autoMark();render();
+}
+/* ---- puntos de regreso (IndexedDB) ---- */
+function snapDb(){return new Promise((res,rej)=>{const r=indexedDB.open('mibitacora_puntos_'+EDITION,1);r.onupgradeneeded=()=>r.result.createObjectStore('dias');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function snapReq(db,mode,fn){return new Promise((res,rej)=>{const tx=db.transaction('dias',mode),q=fn(tx.objectStore('dias'));tx.oncomplete=()=>res(q&&q.result);tx.onerror=()=>rej(tx.error)})}
+async function snapTake(){
+  try{
+    if(!autoHasData())return;const db=await snapDb(),day=autoToday();
+    if(await snapReq(db,'readonly',s=>s.get(day)))return;
+    const pack=makeBackupPack();
+    await snapReq(db,'readwrite',s=>s.put({day,at:pack.exportedAt,counts:pack.counts,json:JSON.stringify(pack)},day));
+    const keys=(await snapReq(db,'readonly',s=>s.getAllKeys())).sort().reverse();
+    if(keys.length>AUTO.keep)await snapReq(db,'readwrite',s=>{keys.slice(AUTO.keep).forEach(k=>s.delete(k))});
+  }catch(e){}
+}
+async function snapList(){try{const db=await snapDb();return ((await snapReq(db,'readonly',s=>s.getAll()))||[]).sort((a,b)=>b.day.localeCompare(a.day))}catch(e){return null}}
+async function snapRestore(day){
+  try{const db=await snapDb(),v=await snapReq(db,'readonly',s=>s.get(day));
+    if(!v)return warn('Ese punto de regreso ya no existe.');
+    await restore({files:[new File([v.json],'punto_'+day+'.json',{type:'application/json'})],value:''});
+  }catch(e){warn('No se pudo volver a ese día ('+(e&&e.message||e)+').')}
+}
+function snapDayName(day){const [y,m,d]=day.split('-').map(Number);const t=new Date(y,m-1,d).toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long'});return t.charAt(0).toUpperCase()+t.slice(1)}
+async function snapFill(){
+  const box=document.getElementById('snapBox');if(!box)return;const list=await snapList();
+  if(list===null){box.innerHTML='<b>Puntos de regreso:</b> este navegador no permite guardarlos.';return}
+  box.innerHTML=`<b>Puntos de regreso</b> (dentro de la tablet, últimos ${AUTO.keep} días). Cada día, al abrir ${APP_NAME}, se guarda cómo estaba tu información antes de empezar a trabajar. Úsalos si borraste algo por error. No sustituyen la copia en Descargas: si se borran los datos del navegador, también se borran estos.
+  ${list.length?`<div class="snap-list">${list.map(v=>`<div class="snap-row"><span><b>${esc(snapDayName(v.day))}</b>, al abrir la app (${esc(new Date(v.at).toLocaleTimeString('es-MX',{hour:'numeric',minute:'2-digit'}))})<small>${v.counts?[[v.counts.groups,'grupo','grupos'],[v.counts.students,'alumno','alumnos'],[v.counts.activities,'actividad','actividades']].map(([n,a,b])=>n+' '+(n===1?a:b)).join(' · '):''}</small></span><button class="secondary" onclick="snapRestore('${esc(v.day)}')">↶ Volver a como estaba</button></div>`).join('')}</div>`:'<p class="helper">Todavía no hay puntos de regreso. El primero se guarda la próxima vez que abras la app.</p>'}`;
+}
+abPanelHTML=function(){
+  const c=autoCfg();setTimeout(snapFill,0);
+  return `<div class="hint ${c.on?'ok-hint':'warn'}"><b>Copia automática ${c.on?'activada':'apagada'}.</b> ${c.on
+    ?`Una vez al día, al primer toque después de cambiar algo, se guarda sola una copia en la carpeta <b>Descargas</b> (<i>MiBitacora_${EDITION}_auto_fecha.json</i>). ${c.last?'Última: <b>'+esc(new Date(c.last).toLocaleString('es-MX'))+'</b>':'Todavía no se ha hecho ninguna.'}`
+    :'Actívala para no depender de acordarte de guardar tu copia.'}
+    <div class="actions"><button class="${c.on?'secondary':'primary'}" onclick="autoToggle()">${c.on?'Apagar copia automática':'Activar copia automática'}</button></div></div>
+    <div class="hint" id="snapBox"><b>Puntos de regreso:</b> cargando…</div>`;
+};
+setTimeout(snapTake,1500);
 /* Funciona sin internet una vez instalada, y pide al navegador que no borre los datos por falta de espacio */
 (function(){
   if(!/^https?:$/.test(location.protocol))return;
