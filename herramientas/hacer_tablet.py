@@ -77,8 +77,12 @@ def boton(vista, icono, texto, on=False):
 
 DOCK = ('<nav class="dock" id="dock" aria-label="Menú principal"><span class="dock-pill" aria-hidden="true"></span>'
         + boton('inicio', 'home', 'Inicio', True) + boton('alumnos', 'users', 'Mi grupo')
-        + boton('asistencia', 'attendance', 'Asistencia') + boton('cuadricula', 'grades', 'Calificaciones')
-        + boton('actividades', 'activities', 'Actividades')
+        + boton('asistencia', 'attendance', 'Asistencia')
+        + '<button class="nav dock-fab" data-view="actividades" aria-label="Actividades: crear o corregir">'
+          '<span class="fab-c" aria-hidden="true"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" '
+          'stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>'
+          '<span class="lbl">Actividades</span></button>'
+        + boton('cuadricula', 'grades', 'Calificaciones')
         + boton('equipos', 'ruleta', 'Equipos')
         + '<div class="more-wrap"><button class="nav" id="moreBtn" aria-haspopup="true" aria-expanded="false" '
           'onclick="toggleMenu()"><span class="ic" data-ico="more"></span><span class="lbl">Más</span></button>'
@@ -89,6 +93,14 @@ DOCK = ('<nav class="dock" id="dock" aria-label="Menú principal"><span class="d
           '</div></div></nav>')
 cambia('<div id="content"></div></main></div><script>', '<div id="content"></div></main></div>' + DOCK + '<script>')
 cambia("document.querySelectorAll('.side > .nav[data-view]')", "document.querySelectorAll('.dock > .nav[data-view]')")
+cambia('<span class="spacer"></span><button class="tool-btn" id="textBtn"',
+       '<div class="hdr-quote" id="hdrQuote" role="button" tabindex="0" title="Toca para ver otra frase" '
+       'aria-label="Frase del día. Toca para ver otra" onclick="nextQuote()" '
+       'onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();nextQuote()}"></div>'
+       '<div class="hdr-tools"><button class="tool-btn" id="textBtn"')
+cambia('<button class="tool-btn" id="helpBtn" title="Ayuda" aria-label="Ayuda" onclick="showHelp()">?</button>',
+       '<button class="tool-btn" id="helpBtn" title="Ayuda" aria-label="Ayuda" onclick="showHelp()">?</button></div>')
+cambia('${quoteHTML()}', '')
 cambia("NAV_TOP={inicio:'inicio',", "NAV_TOP={inicio:'inicio',ruleta:'equipos',equipos:'equipos',")
 cambia("actividades:'cuadricula',libreta:'cuadricula'", "actividades:'actividades',libreta:'cuadricula'")
 
@@ -100,7 +112,24 @@ body{-webkit-tap-highlight-color:transparent}
 /* Arriba solo queda el logotipo y los botones A+ y ?; ya no se queda fijo al bajar */
 .side{position:relative;flex-wrap:nowrap;min-height:64px}
 .main{padding-bottom:calc(120px + env(safe-area-inset-bottom))!important}
-#toasts{bottom:calc(112px + env(safe-area-inset-bottom))}
+#toasts{bottom:calc(142px + env(safe-area-inset-bottom))}
+/* Frase del día al centro de la parte de arriba */
+.side{display:grid!important;grid-template-columns:minmax(max-content,1fr) minmax(0,2.2fr) minmax(max-content,1fr);align-items:center;gap:14px}
+.side .bottom{display:none!important}
+.hdr-tools{display:flex;justify-content:flex-end;gap:6px}
+.hdr-quote{min-width:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 10px;text-align:center;cursor:pointer;border-radius:14px;-webkit-user-select:none;user-select:none}
+.hdr-quote:active{background:rgba(47,95,167,.07)}
+.hq-t{max-width:760px;font-size:15px;line-height:1.32;font-style:italic;font-weight:500;color:#24395C;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.hq-a{max-width:100%;font-size:12.5px;color:#56708F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hq-a b{color:#1E3F78;font-weight:700}
+.hq-a cite{font-style:normal}
+.hdr-quote.swap .hq-t,.hdr-quote.swap .hq-a{animation:hqIn .45s ease}
+@keyframes hqIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media(max-width:900px){.hq-t{-webkit-line-clamp:3;font-size:14px}.hq-a cite{display:none}}
+body.theme-dark .hq-t{color:var(--ink,#E6EDF6)}
+body.theme-dark .hq-a{color:#9FB2CB}
+body.theme-dark .hq-a b{color:#C9D8F0}
 /* ===== Barra flotante de abajo, efecto vidrio ===== */
 .dock{position:fixed;left:0;right:0;margin:0 auto;width:max-content;max-width:calc(100vw - 24px);
   bottom:calc(16px + env(safe-area-inset-bottom));z-index:90;display:flex;align-items:center;gap:2px;padding:7px;
@@ -134,6 +163,27 @@ body{-webkit-tap-highlight-color:transparent}
 .dock .more-menu button{border-radius:16px}
 .big-text .dock{zoom:1.1}
 @media(max-width:760px){.dock .nav{min-width:72px;padding:6px 8px;font-size:12px}}
+/* Botón central «+ Actividades»: más grande y sobresale de la barra */
+.dock{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));width:min(780px,calc(100vw - 16px))}
+.dock>.nav,.dock>.more-wrap{min-width:0}
+.dock .more-wrap>.nav{width:100%;min-width:0}
+@media(max-width:760px){.dock .nav{padding:6px 2px}}
+.dock .dock-fab{justify-content:flex-end;padding-bottom:9px}
+.dock-fab .fab-c{position:absolute;left:50%;top:-30px;transform:translateX(-50%);width:66px;height:66px;border-radius:50%;
+  display:grid;place-items:center;color:#fff;overflow:hidden;
+  background:linear-gradient(160deg,#5A8CDA 0%,#2F5FA7 48%,#1E3F78 100%);
+  box-shadow:0 14px 26px -10px rgba(30,63,120,.75),0 0 0 5px rgba(255,255,255,.8),inset 0 1px 0 rgba(255,255,255,.5),inset 0 -8px 14px rgba(0,0,0,.18);
+  transition:transform .3s cubic-bezier(.3,1.4,.5,1),box-shadow .3s ease}
+.dock-fab .fab-c::after{content:"";position:absolute;left:9px;right:9px;top:3px;height:44%;border-radius:40px 40px 22px 22px;
+  background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0));pointer-events:none}
+.dock-fab .fab-c svg{position:relative;z-index:1;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
+.dock .dock-fab:active{transform:none}
+.dock-fab:active .fab-c{transform:translateX(-50%) scale(.9)}
+.dock-fab.on .fab-c{box-shadow:0 14px 26px -10px rgba(30,63,120,.75),0 0 0 5px #D8A45A,inset 0 1px 0 rgba(255,255,255,.5),inset 0 -8px 14px rgba(0,0,0,.18)}
+.dock-fab.on .fab-c svg{transform:rotate(90deg);transition:transform .45s cubic-bezier(.3,1.4,.5,1)}
+body.themed .dock-fab .fab-c{background:linear-gradient(160deg,color-mix(in srgb,var(--accent,#2F5FA7) 70%,#fff),var(--accent,#2F5FA7) 48%,var(--accent-dark,#1E3F78))}
+body.theme-dark .dock-fab .fab-c{box-shadow:0 14px 26px -10px #000,0 0 0 5px rgba(30,40,58,.95),inset 0 1px 0 rgba(255,255,255,.35),inset 0 -8px 14px rgba(0,0,0,.25)}
+body.theme-dark .dock-fab.on .fab-c{box-shadow:0 14px 26px -10px #000,0 0 0 5px #D8A45A,inset 0 1px 0 rgba(255,255,255,.35)}
 /* Mientras escribes, la barra se esconde para no tapar el teclado */
 body.typing .dock{transform:translateY(160%);opacity:0;pointer-events:none}
 @media print{.dock{display:none!important}}
@@ -183,7 +233,7 @@ cambia('</style></head>', CSS_TABLET + '</style></head>')
 
 # ---------------------------------------------------------------- textos: tablet en lugar de computadora
 cambia('Mi Bitácora Secundaria · v0.13.0<br>Datos guardados en este navegador',
-       'Mi Bitácora Secundaria · v0.13.0 · Tablet 1.5<br>Datos guardados en esta tablet')
+       'Mi Bitácora Secundaria · v0.13.0 · Tablet 1.6<br>Datos guardados en esta tablet')
 cambia("'Escribe las notas como en una hoja de Excel: Tab pasa a la derecha y Enter baja.'",
        "'Toca una casilla y escribe la nota. La tecla «Siguiente» del teclado baja al siguiente alumno.'")
 cambia("'Escribe cada nota en su casilla. Tab pasa a la derecha y Enter baja.'",
@@ -266,10 +316,19 @@ async function shareBackup(){
     warn('No se pudo enviar la copia ('+(e&&e.message||e)+'). Usa «Guardar una copia».');
   }
 }
+/* Frase del día en la parte de arriba (cambia sola cada día; al tocarla muestra otra) */
+function hdrQuoteRender(anim){
+  const el=document.getElementById('hdrQuote');if(!el)return;const q=QUOTES[quoteIndex()];
+  el.innerHTML=`<span class="hq-t">“${esc(q.t)}”</span><span class="hq-a">— <b>${esc(q.a)}</b><cite>, ${esc(q.w)}</cite></span>`;
+  el.title='“'+q.t+'” — '+q.a+', '+q.w+'. Toca para ver otra frase';
+  if(anim){el.classList.remove('swap');void el.offsetWidth;el.classList.add('swap')}
+}
+nextQuote=function(){quoteShift++;hdrQuoteRender(true)};
+hdrQuoteRender(false);
 /* Barra flotante: la «gota» de vidrio se desliza hasta la sección activa */
 function dockPill(){
   const d=document.getElementById('dock'),p=d&&d.querySelector('.dock-pill'),on=d&&d.querySelector('.nav.on');if(!p)return;
-  if(!on||!on.offsetWidth){p.style.opacity=0;return}
+  if(!on||!on.offsetWidth||on.classList.contains('dock-fab')){p.style.opacity=0;return}
   let x=0,y=0,el=on;while(el&&el!==d){x+=el.offsetLeft;y+=el.offsetTop;el=el.offsetParent}
   p.style.width=on.offsetWidth+'px';p.style.height=on.offsetHeight+'px';p.style.transform=`translate(${x}px,${y}px)`;p.style.opacity=1;
 }
