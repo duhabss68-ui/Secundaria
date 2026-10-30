@@ -66,6 +66,7 @@ def boton(vista, icono, texto, on=False):
 DOCK = ('<nav class="dock" id="dock" aria-label="Menú principal"><span class="dock-pill" aria-hidden="true"></span>'
         + boton('inicio', 'home', 'Inicio', True) + boton('alumnos', 'users', 'Mi grupo')
         + boton('asistencia', 'attendance', 'Asistencia') + boton('cuadricula', 'grades', 'Calificaciones')
+        + boton('actividades', 'activities', 'Actividades')
         + boton('equipos', 'ruleta', 'Equipos')
         + '<div class="more-wrap"><button class="nav" id="moreBtn" aria-haspopup="true" aria-expanded="false" '
           'onclick="toggleMenu()"><span class="ic" data-ico="more"></span><span class="lbl">Más</span></button>'
@@ -77,6 +78,7 @@ DOCK = ('<nav class="dock" id="dock" aria-label="Menú principal"><span class="d
 cambia('<div id="content"></div></main></div><script>', '<div id="content"></div></main></div>' + DOCK + '<script>')
 cambia("document.querySelectorAll('.side > .nav[data-view]')", "document.querySelectorAll('.dock > .nav[data-view]')")
 cambia("NAV_TOP={inicio:'inicio',", "NAV_TOP={inicio:'inicio',ruleta:'equipos',equipos:'equipos',")
+cambia("actividades:'cuadricula',libreta:'cuadricula'", "actividades:'actividades',libreta:'cuadricula'")
 
 # ---------------------------------------------------------------- estilos para pantalla táctil
 CSS_TABLET = r"""
@@ -119,6 +121,7 @@ body{-webkit-tap-highlight-color:transparent}
   border:1px solid rgba(255,255,255,.85);box-shadow:0 20px 44px -14px rgba(16,36,72,.38),inset 0 1px 0 #fff}
 .dock .more-menu button{border-radius:16px}
 .big-text .dock{zoom:1.1}
+@media(max-width:760px){.dock .nav{min-width:72px;padding:6px 8px;font-size:12px}}
 /* Mientras escribes, la barra se esconde para no tapar el teclado */
 body.typing .dock{transform:translateY(160%);opacity:0;pointer-events:none}
 @media print{.dock{display:none!important}}
@@ -162,7 +165,7 @@ cambia('</style></head>', CSS_TABLET + '</style></head>')
 
 # ---------------------------------------------------------------- textos: tablet en lugar de computadora
 cambia('Mi Bitácora Secundaria · v0.13.0<br>Datos guardados en este navegador',
-       'Mi Bitácora Secundaria · v0.13.0 · Tablet 1.2<br>Datos guardados en esta tablet')
+       'Mi Bitácora Secundaria · v0.13.0 · Tablet 1.3<br>Datos guardados en esta tablet')
 cambia("'Escribe las notas como en una hoja de Excel: Tab pasa a la derecha y Enter baja.'",
        "'Toca una casilla y escribe la nota. La tecla «Siguiente» del teclado baja al siguiente alumno.'")
 cambia("'Escribe cada nota en su casilla. Tab pasa a la derecha y Enter baja.'",
