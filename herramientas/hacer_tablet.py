@@ -11,6 +11,9 @@ No toca la forma en que se guardan los datos ni el formato de los respaldos.
 import sys
 
 ORIGEN, DESTINO = sys.argv[1], sys.argv[2]
+# Versión de la edición para tablet: súbela en cada entrega. Con ella se genera también sw.js,
+# así la tablet sabe que hay versión nueva.
+TABLET_VERSION = '1.7'
 html = open(ORIGEN, encoding='utf-8').read()
 
 
@@ -90,6 +93,8 @@ DOCK = ('<nav class="dock" id="dock" aria-label="Menú principal"><span class="d
           '<button data-view="horario"><span class="ic" data-ico="calendar"></span> &nbsp;Mi horario</button>'
           '<button data-view="datos"><span class="ic" data-ico="save"></span> &nbsp;Copias de seguridad</button>'
           '<button data-view="perfil"><span class="ic" data-ico="settings"></span> &nbsp;Mis datos y colores</button>'
+          '<div class="menu-ver"><span>Mi Bitácora · Tablet ' + TABLET_VERSION + '</span>'
+          '<button class="linkbtn" onclick="setMenu(false);buscarActualizacion()">↻ Buscar actualización</button></div>'
           '</div></div></nav>')
 cambia('<div id="content"></div></main></div><script>', '<div id="content"></div></main></div>' + DOCK + '<script>')
 cambia("document.querySelectorAll('.side > .nav[data-view]')", "document.querySelectorAll('.dock > .nav[data-view]')")
@@ -161,6 +166,15 @@ body.theme-dark .hq-a b{color:#C9D8F0}
   background:rgba(255,255,255,.80);-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);
   border:1px solid rgba(255,255,255,.85);box-shadow:0 20px 44px -14px rgba(16,36,72,.38),inset 0 1px 0 #fff}
 .dock .more-menu button{border-radius:16px}
+.menu-ver{display:flex;flex-direction:column;align-items:flex-start;gap:2px;margin-top:6px;padding:8px 10px 2px;border-top:1px solid rgba(30,63,120,.12);font-size:12.5px;color:#56708F}
+.menu-ver .linkbtn{font-size:14px;min-height:40px;padding:6px 0;text-align:left}
+body.theme-dark .menu-ver{color:#9FB2CB;border-top-color:rgba(255,255,255,.1)}
+/* Aviso de versión nueva */
+#updBar{position:fixed;left:0;right:0;margin:0 auto;width:max-content;max-width:calc(100vw - 24px);bottom:calc(150px + env(safe-area-inset-bottom));z-index:210;
+  display:flex;align-items:center;gap:14px;padding:10px 12px 10px 18px;border-radius:18px;color:#fff;font-weight:650;
+  background:linear-gradient(160deg,#2F5FA7,#1E3F78);box-shadow:0 16px 34px -12px rgba(16,36,72,.6)}
+#updBar button{border:0;border-radius:12px;padding:10px 16px;min-height:44px;font-weight:800;background:#fff;color:#1E3F78}
+#updBar .upd-x{background:transparent;color:#fff;padding:10px 12px}
 .big-text .dock{zoom:1.1}
 @media(max-width:760px){.dock .nav{min-width:72px;padding:6px 8px;font-size:12px}}
 /* Botón central «+ Actividades»: más grande y sobresale de la barra */
@@ -233,7 +247,7 @@ cambia('</style></head>', CSS_TABLET + '</style></head>')
 
 # ---------------------------------------------------------------- textos: tablet en lugar de computadora
 cambia('Mi Bitácora Secundaria · v0.13.0<br>Datos guardados en este navegador',
-       'Mi Bitácora Secundaria · v0.13.0 · Tablet 1.6<br>Datos guardados en esta tablet')
+       'Mi Bitácora Secundaria · v0.13.0 · Tablet ' + TABLET_VERSION + '<br>Datos guardados en esta tablet')
 cambia("'Escribe las notas como en una hoja de Excel: Tab pasa a la derecha y Enter baja.'",
        "'Toca una casilla y escribe la nota. La tecla «Siguiente» del teclado baja al siguiente alumno.'")
 cambia("'Escribe cada nota en su casilla. Tab pasa a la derecha y Enter baja.'",
@@ -407,10 +421,33 @@ abPanelHTML=function(){
     <div class="hint" id="snapBox"><b>Puntos de regreso:</b> cargando…</div>`;
 };
 setTimeout(snapTake,1500);
+/* Botón «Buscar actualización» (Más): pide la versión más nueva y recarga. Tus datos no se tocan. */
+async function buscarActualizacion(){
+  if(!/^https?:$/.test(location.protocol))return notify('Esta copia se abrió como archivo: para actualizarla, abre la dirección de internet de '+APP_NAME+'.','info',{ms:8000});
+  if(navigator.onLine===false)return warn('Sin internet no se puede buscar la versión nueva. Conéctate y vuelve a intentarlo.');
+  notify('Buscando la versión más nueva…','info',{ms:3000});
+  try{const reg=window.__swReg||(navigator.serviceWorker&&await navigator.serviceWorker.getRegistration());if(reg)await reg.update()}catch(e){}
+  setTimeout(()=>location.reload(),900);
+}
 /* Funciona sin internet una vez instalada, y pide al navegador que no borre los datos por falta de espacio */
 (function(){
   if(!/^https?:$/.test(location.protocol))return;
-  if('serviceWorker' in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
+  if(!('serviceWorker' in navigator))return;
+  const hadController=!!navigator.serviceWorker.controller;let shown=false;
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(reg=>{
+      window.__swReg=reg;const check=()=>{if(navigator.onLine!==false)reg.update().catch(()=>{})};
+      document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')check()});
+      setInterval(check,20*60*1000);
+    }).catch(()=>{});
+  });
+  /* Llegó una versión nueva mientras la app estaba abierta: se ofrece actualizar (no se recarga sola para no perder lo que escribes) */
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{
+    if(!hadController||shown)return;shown=true;
+    const bar=document.createElement('div');bar.id='updBar';bar.setAttribute('role','status');
+    bar.innerHTML='<span>Hay una versión nueva de '+APP_NAME+'.</span><button onclick="location.reload()">Actualizar ahora</button><button class="upd-x" aria-label="Más tarde" onclick="this.parentNode.remove()">Más tarde</button>';
+    document.body.appendChild(bar);
+  });
   try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persisted().then(p=>p||navigator.storage.persist()).catch(()=>{})}catch(e){}
 })();
 """
@@ -420,4 +457,48 @@ if html.count('</script>') != 1:
 html = html[:i] + JS_TABLET + html[i:]
 
 open(DESTINO, 'w', encoding='utf-8').write(html)
+
+# ---------------------------------------------------------------- sw.js (trabajador sin internet)
+import os
+SW = r'''/* Mi Bitácora Secundaria (tablet) — guarda el programa en la tablet para que abra sin internet.
+   Solo guarda los archivos del programa; los datos del docente nunca pasan por aquí.
+   Este archivo lo genera herramientas/hacer_tablet.py: no lo edites a mano. */
+const VERSION = 'mb-sec-tablet-__V__';
+const ARCHIVOS = ['./', './index.html', './manifest.webmanifest', './icono-192.png', './icono-512.png', './icono-maskable-512.png'];
+const fresco = u => fetch(new Request(u, {cache: 'reload'}));
+
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(VERSION).then(c => Promise.all(ARCHIVOS.map(u =>
+    fresco(u).then(r => { if (!r.ok) throw new Error(u); return c.put(u, r); })))).then(() => self.skipWaiting()));
+});
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys()
+    .then(ks => Promise.all(ks.filter(k => k.startsWith('mb-sec-tablet-') && k !== VERSION).map(k => caches.delete(k))))
+    .then(() => self.clients.claim()));
+});
+self.addEventListener('fetch', e => {
+  const req = e.request, url = new URL(req.url);
+  if (req.method !== 'GET' || url.origin !== location.origin) return;
+  const pagina = req.mode === 'navigate' || /\/(index\.html)?$/.test(url.pathname);
+  if (pagina) {
+    /* Con internet: siempre la versión más nueva (sin caché). Sin internet o si tarda: la guardada. */
+    e.respondWith(caches.open(VERSION).then(async c => {
+      const guardada = () => c.match('./index.html');
+      try {
+        const r = await Promise.race([
+          fetch(url.href, {cache: 'no-store', credentials: 'same-origin'}),
+          new Promise((_, no) => setTimeout(() => no(new Error('lento')), 6000))]);
+        if (r && r.ok) { c.put('./index.html', r.clone()); return r; }
+        return (await guardada()) || r;
+      } catch (err) {
+        return (await guardada()) || new Response('Sin conexión', {status: 503, headers: {'Content-Type': 'text/plain; charset=utf-8'}});
+      }
+    }));
+    return;
+  }
+  e.respondWith(caches.open(VERSION).then(async c =>
+    (await c.match(req, {ignoreSearch: true})) || fetch(req).then(r => { if (r.ok && r.type === 'basic') c.put(req, r.clone()); return r; })));
+});
+'''.replace('__V__', TABLET_VERSION)
+open(os.path.join(os.path.dirname(os.path.abspath(DESTINO)), 'sw.js'), 'w', encoding='utf-8').write(SW)
 print('Listo:', DESTINO, len(html.encode('utf-8')), 'bytes')

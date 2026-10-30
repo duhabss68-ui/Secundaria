@@ -10,6 +10,12 @@ Versión de **Mi Bitácora Secundaria v0.13.0** adaptada para usarse con el dedo
 2. Toca el menú del navegador (⋮ o ☰) → **Instalar app** / **Añadir a la pantalla de inicio**.
 3. Desde entonces ábrela con el ícono de **Mi Bitácora**. Ya no necesita internet.
 
+## Actualizaciones
+
+- Con internet, la app siempre abre la versión más nueva. Si llega una mientras la usas, sale **«Hay una versión nueva · Actualizar ahora»**.
+- En **Más** se ve la versión instalada (por ejemplo «Tablet 1.7») y el botón **«Buscar actualización»**. Tus datos no se tocan.
+- Nunca borres los datos del navegador para actualizar: ahí viven tus datos.
+
 ## Para no perder tu trabajo
 
 - Ábrela siempre desde el mismo ícono y el mismo navegador.
@@ -37,4 +43,4 @@ Versión de **Mi Bitácora Secundaria v0.13.0** adaptada para usarse con el dedo
 python3 herramientas/hacer_tablet.py fuente/<html de laptop> index.html
 ```
 
-Si algún texto del original cambió, el script se detiene y dice cuál. Después sube `VERSION` en `sw.js` para que la tablet descargue la versión nueva.
+Si algún texto del original cambió, el script se detiene y dice cuál. Sube `TABLET_VERSION` en ese mismo script; también genera `sw.js`.
