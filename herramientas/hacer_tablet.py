@@ -22,6 +22,18 @@ def cambia(viejo, nuevo, veces=1):
     html = html.replace(viejo, nuevo)
 
 
+# ---------------------------------------------------------------- disciplina «Integración Curricular»
+# No pertenece a un solo campo formativo: se agrega con su propia sección («Integración de los campos
+# formativos») y su color, para elegirla en cualquier grupo como cualquier otra disciplina.
+cambia("{id:'dhc',name:'De lo Humano y lo Comunitario',sheet:'Humano y Comunitario'}];",
+       "{id:'dhc',name:'De lo Humano y lo Comunitario',sheet:'Humano y Comunitario'},\n"
+       "  {id:'icu_campos',name:'Integración de los campos formativos',sheet:'Integración curricular'}];")
+cambia("{id:'tut',name:'Educación Socioemocional / Tutoría',campo:'dhc',sheet:'Tutoría y Socioemocional'}];",
+       "{id:'tut',name:'Educación Socioemocional / Tutoría',campo:'dhc',sheet:'Tutoría y Socioemocional'},\n"
+       "  {id:'icu',name:'Integración Curricular',campo:'icu_campos'}];")
+cambia("Secundaria:['#1E3F78','#2F5FA7','#6F95CE','#D8A45A']}",
+       "Secundaria:['#1E3F78','#2F5FA7','#6F95CE','#D8A45A','#5B6B85']}")
+
 # ---------------------------------------------------------------- PDA ocultos por ahora (los datos NO se borran)
 # Se ocultan la pestaña «Avance por PDA», las casillas de PDA al crear actividades, la columna PDA de las
 # rúbricas y la sección de la ficha. Para volver a mostrarlos basta con poner PDA_VISIBLES = True.
@@ -171,7 +183,7 @@ cambia('</style></head>', CSS_TABLET + '</style></head>')
 
 # ---------------------------------------------------------------- textos: tablet en lugar de computadora
 cambia('Mi Bitácora Secundaria · v0.13.0<br>Datos guardados en este navegador',
-       'Mi Bitácora Secundaria · v0.13.0 · Tablet 1.4<br>Datos guardados en esta tablet')
+       'Mi Bitácora Secundaria · v0.13.0 · Tablet 1.5<br>Datos guardados en esta tablet')
 cambia("'Escribe las notas como en una hoja de Excel: Tab pasa a la derecha y Enter baja.'",
        "'Toca una casilla y escribe la nota. La tecla «Siguiente» del teclado baja al siguiente alumno.'")
 cambia("'Escribe cada nota en su casilla. Tab pasa a la derecha y Enter baja.'",
