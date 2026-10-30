@@ -13,7 +13,7 @@ import sys
 ORIGEN, DESTINO = sys.argv[1], sys.argv[2]
 # Versión de la edición para tablet: súbela en cada entrega. Con ella se genera también sw.js,
 # así la tablet sabe que hay versión nueva.
-TABLET_VERSION = '1.7'
+TABLET_VERSION = '1.8'
 html = open(ORIGEN, encoding='utf-8').read()
 
 
@@ -36,6 +36,24 @@ cambia("{id:'tut',name:'Educación Socioemocional / Tutoría',campo:'dhc',sheet:
        "  {id:'icu',name:'Integración Curricular',campo:'icu_campos'}];")
 cambia("Secundaria:['#1E3F78','#2F5FA7','#6F95CE','#D8A45A']}",
        "Secundaria:['#1E3F78','#2F5FA7','#6F95CE','#D8A45A','#5B6B85']}")
+
+# ---------------------------------------------------------------- calificar por equipo, a la vista
+# Ya existía (encabezado de columna y pantalla Actividades); se agrega un botón en Calificar y en cada
+# organización guardada de Equipos: eliges la actividad y calificas a cada equipo de una vez.
+cambia('<div class="seg" role="group" aria-label="Tamaño de la hoja">',
+       '<button class="secondary tg-open" onclick="pickTeamActivity()">👥 Calificar por equipo</button>'
+       '<div class="seg" role="group" aria-label="Tamaño de la hoja">')
+cambia("<button class=\"mini\" onclick=\"toggleSet('${s.id}')\">",
+       "<button class=\"mini tg-open\" onclick=\"tgSetByGroup[group().id]='${s.id}';pickTeamActivity()\">👥 Calificar con estos equipos</button>"
+       "<button class=\"mini\" onclick=\"toggleSet('${s.id}')\">")
+cambia('Primero forma y guarda tus equipos en <b>Más › Ruleta y Equipos › Equipos</b>',
+       'Primero forma y guarda tus equipos en <b>Equipos</b> (barra de abajo)')
+cambia('class="field tg-num" type="number"', 'class="field tg-num" inputmode="decimal" enterkeyhint="next" type="number"')
+
+# ---------------------------------------------------------------- Cuaderno: el resumen por alumno va en su propio botón
+cambia(':`<h3>Resumen general de estudiantes</h3>',
+       ':`${nbSwitchHTML()}${(window.nbView||\'bloques\')===\'resumen\'?`<h3>Resumen general por alumno</h3>')
+cambia('</tbody></table></div></div>${blockHTML}`}`;', '</tbody></table></div></div>`:blockHTML}`}`;')
 
 # ---------------------------------------------------------------- PDA ocultos por ahora (los datos NO se borran)
 # Se ocultan la pestaña «Avance por PDA», las casillas de PDA al crear actividades, la columna PDA de las
@@ -166,6 +184,24 @@ body.theme-dark .hq-a b{color:#C9D8F0}
   background:rgba(255,255,255,.80);-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);
   border:1px solid rgba(255,255,255,.85);box-shadow:0 20px 44px -14px rgba(16,36,72,.38),inset 0 1px 0 #fff}
 .dock .more-menu button{border-radius:16px}
+/* Con una ventana abierta, los avisos salen arriba para no tapar sus botones */
+body:has(#modal) #toasts{bottom:auto;top:calc(16px + env(safe-area-inset-top))}
+.tg-open{white-space:nowrap}
+.sheet-bar .tg-open{margin-left:auto}
+.tg-pick{display:flex;flex-direction:column;gap:14px;max-height:62vh;overflow:auto;margin:10px 0;padding-right:4px}
+.tg-disc h3{margin:0 0 8px;padding-left:10px;font-size:15px}
+.tg-disc{display:flex;flex-direction:column;gap:8px}
+.tg-act{display:flex;flex-direction:column;align-items:flex-start;gap:3px;width:100%;text-align:left;padding:13px 16px;min-height:58px;border-radius:14px;border:1px solid #d6e0e8;background:#F6F9FD;color:#1B3560}
+.tg-act small{color:#56708F;font-weight:500}
+.tg-act:active{transform:scale(.99);background:#EAF0F8}
+body.theme-dark .tg-act{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.12);color:var(--ink)}
+body.theme-dark .tg-act small{color:#9FB2CB}
+.tg-row{min-height:64px}
+.tg-row .tg-num{max-width:140px;font-size:18px;text-align:center}
+.nb-switch{display:flex;width:100%;margin:6px 0 16px;padding:5px;border-radius:16px;background:rgba(47,95,167,.08)}
+.nb-switch .seg-b{flex:1;min-height:52px;font-size:15.5px;border-radius:12px;border:0;background:transparent}
+.nb-switch .seg-b.on{background:var(--accent,#2F5FA7);color:#fff;box-shadow:0 6px 14px -8px rgba(30,63,120,.7)}
+body.theme-dark .nb-switch{background:rgba(255,255,255,.05)}
 .menu-ver{display:flex;flex-direction:column;align-items:flex-start;gap:2px;margin-top:6px;padding:8px 10px 2px;border-top:1px solid rgba(30,63,120,.12);font-size:12.5px;color:#56708F}
 .menu-ver .linkbtn{font-size:14px;min-height:40px;padding:6px 0;text-align:left}
 body.theme-dark .menu-ver{color:#9FB2CB;border-top-color:rgba(255,255,255,.1)}
@@ -421,6 +457,34 @@ abPanelHTML=function(){
     <div class="hint" id="snapBox"><b>Puntos de regreso:</b> cargando…</div>`;
 };
 setTimeout(snapTake,1500);
+/* ===== 97_equipos_y_cuaderno.js ===== */
+/* Calificar por equipo: primero eliges la actividad (de cualquier disciplina del grupo, periodo actual) */
+function pickTeamActivity(){
+  const g=group();if(!g)return warn('Primero elige un grupo.');
+  if(!teamSetsOf(g).length)return openModal(`<h2>Calificar por equipo</h2><p>Primero forma y guarda tus equipos en <b>Equipos</b> (barra de abajo) con el botón «Guardar esta organización». Después vuelve aquí.</p><div class="actions" style="justify-content:center"><button class="primary" data-autofocus onclick="closeModal();switchTo('equipos')">Ir a formar equipos</button><button class="secondary" onclick="closeModal()">Ahora no</button></div>`,{label:'Calificar por equipo'});
+  const ros=roster(g),scopes=scopesForGroup(g),cur=scopeId(g);
+  const acts=state.activities.filter(a=>a.groupId===g.id&&!a.archived&&a.period===currentPeriod&&scopes.some(s=>s.id===a.scopeId));
+  if(!acts.length)return openModal(`<h2>Calificar por equipo</h2><p>Todavía no hay actividades en ${esc(g.name)} (${esc(periodLabel(g))} ${currentPeriod}). Créala primero con el botón <b>＋</b> de la barra.</p><div class="actions" style="justify-content:center"><button class="primary" data-autofocus onclick="closeModal();switchTo('actividades')">＋ Crear actividad</button><button class="secondary" onclick="closeModal()">Cancelar</button></div>`,{label:'Calificar por equipo'});
+  const order=[...scopes].sort((x,y)=>(y.id===cur)-(x.id===cur));
+  const blocks=order.map(sc=>{const list=acts.filter(a=>a.scopeId===sc.id).reverse();if(!list.length)return '';
+    return `<div class="tg-disc"><h3 style="border-left:6px solid ${scopeColor(sc.id)}">${esc(sc.name)}</h3>${list.map(a=>{const n=ros.filter(st=>hasEvaluation(a,st.id)).length;
+      return `<button class="tg-act" onclick="tgOpenFor('${a.id}')"><b>${esc(a.name)}</b><small>${esc(kindName(a))} · ${esc(modeName(modeOf(a)))} · ${n} de ${ros.length} con calificación</small></button>`}).join('')}</div>`}).join('');
+  const set=teamSetsOf(g).find(s=>s.id===tgSetId(g));
+  openModal(`<h2>Calificar por equipo</h2><p class="helper">${esc(g.name)} · equipos «${esc(set?set.name:'')}». Elige la actividad; luego pones una calificación por equipo y se copia a cada integrante.</p><div class="tg-pick">${blocks}</div><div class="actions"><button class="secondary" onclick="closeModal()">Cancelar</button></div>`,{label:'Calificar por equipo',wide:true});
+}
+function tgOpenFor(aid){
+  const g=group(),a=state.activities.find(x=>x.id===aid);if(!g||!a)return;
+  closeModal();tgDraft={};
+  if(scopeByGroup[g.id]!==a.scopeId){scopeByGroup[g.id]=a.scopeId;gradeActivityId=a.id;render()}
+  openTeamGrade(aid);
+}
+/* Cuaderno: «Actividades por disciplina» o «Resumen por alumno» (se recuerda la última que usaste) */
+try{window.nbView=localStorage.getItem(KEY+'_nbview')||'bloques'}catch(e){window.nbView='bloques'}
+function nbSwitchHTML(){
+  const v=window.nbView||'bloques';
+  return `<div class="seg nb-switch" role="group" aria-label="Qué ver en el cuaderno"><button class="seg-b ${v!=='resumen'?'on':''}" aria-pressed="${v!=='resumen'}" onclick="setNbView('bloques')">📚 Actividades por disciplina</button><button class="seg-b ${v==='resumen'?'on':''}" aria-pressed="${v==='resumen'}" onclick="setNbView('resumen')">👤 Resumen por alumno</button></div>`;
+}
+function setNbView(v){window.nbView=v==='resumen'?'resumen':'bloques';try{localStorage.setItem(KEY+'_nbview',window.nbView)}catch(e){}render();const sw=document.querySelector('.nb-switch');if(sw)sw.scrollIntoView({block:'start',behavior:'smooth'})}
 /* Botón «Buscar actualización» (Más): pide la versión más nueva y recarga. Tus datos no se tocan. */
 async function buscarActualizacion(){
   if(!/^https?:$/.test(location.protocol))return notify('Esta copia se abrió como archivo: para actualizarla, abre la dirección de internet de '+APP_NAME+'.','info',{ms:8000});

@@ -31,6 +31,8 @@ Versión de **Mi Bitácora Secundaria v0.13.0** adaptada para usarse con el dedo
 - Botones, casillas y filas de la cuadrícula de al menos 44 px para el dedo.
 - **PDA ocultos por ahora**: no aparece «Avance por PDA» ni las casillas de PDA. Los PDA ya capturados no se borran; para mostrarlos de nuevo, pon `PDA_VISIBLES = True` en `herramientas/hacer_tablet.py`.
 - Disciplina **Integración Curricular** disponible para cualquier grupo (sección «Integración de los campos formativos»).
+- **Calificar por equipo** a la vista: botón «👥 Calificar por equipo» en Calificar y «Calificar con estos equipos» en cada organización guardada de Equipos. Eliges la actividad, pones una nota por equipo y se copia a cada integrante (con Deshacer).
+- **Cuaderno** con dos botones: «Actividades por disciplina» y «Resumen por alumno» (el resumen ya no aparece encima de todo).
 - Al calificar, el teclado muestra «Siguiente» y baja al siguiente alumno.
 - **Copia automática**: una vez al día, al primer toque después de cambiar algo, se guarda sola `MiBitacora_Secundaria_auto_AAAA-MM-DD.json` en **Descargas**. Se puede apagar en Más → Copias de seguridad.
 - **Puntos de regreso**: cada día, al abrir la app, se guarda dentro de la tablet cómo estaba tu información (últimos 7 días), con botón «Volver a como estaba».

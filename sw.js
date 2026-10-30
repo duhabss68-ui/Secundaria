@@ -1,7 +1,7 @@
 /* Mi Bitácora Secundaria (tablet) — guarda el programa en la tablet para que abra sin internet.
    Solo guarda los archivos del programa; los datos del docente nunca pasan por aquí.
    Este archivo lo genera herramientas/hacer_tablet.py: no lo edites a mano. */
-const VERSION = 'mb-sec-tablet-1.7';
+const VERSION = 'mb-sec-tablet-1.8';
 const ARCHIVOS = ['./', './index.html', './manifest.webmanifest', './icono-192.png', './icono-512.png', './icono-maskable-512.png'];
 const fresco = u => fetch(new Request(u, {cache: 'reload'}));
 
