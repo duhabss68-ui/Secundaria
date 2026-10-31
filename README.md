@@ -27,12 +27,18 @@ Versión de **Mi Bitácora Secundaria v0.13.0** adaptada para usarse con el dedo
 
 - Instalable y sin internet.
 - Menú en una **barra flotante abajo** con efecto vidrio: Inicio, Mi grupo, Asistencia, **＋ Actividades** (botón grande al centro), Calificaciones, Equipos y Más. Se esconde mientras escribes.
-- **Frase del día** de un pedagogo al centro de la parte de arriba; al tocarla muestra otra.
+- **Franja azul marino arriba** con logo, **frase del día** de un pedagogo al centro (botón «↻ Otra frase») y A+ / ?.
+- **Íconos a color** en el menú, Inicio, pestañas y ayuda.
+- **Inicio**: la bienvenida es una tarjeta chica junto al saludo.
 - Botones, casillas y filas de la cuadrícula de al menos 44 px para el dedo.
 - **PDA ocultos por ahora**: no aparece «Avance por PDA» ni las casillas de PDA. Los PDA ya capturados no se borran; para mostrarlos de nuevo, pon `PDA_VISIBLES = True` en `herramientas/hacer_tablet.py`.
 - Disciplina **Integración Curricular** disponible para cualquier grupo (sección «Integración de los campos formativos»).
 - **Calificar por equipo** a la vista: botón «👥 Calificar por equipo» en Calificar y «Calificar con estos equipos» en cada organización guardada de Equipos. Eliges la actividad, pones una nota por equipo y se copia a cada integrante (con Deshacer).
-- **Cuaderno** con dos botones: «Actividades por disciplina» y «Resumen por alumno» (el resumen ya no aparece encima de todo).
+- **«👥 Por equipos»** también en cada actividad de la lista y en el aviso al crear una actividad.
+- **Cuaderno**: «📊 Resumen de alumnos» se abre en ventana (y sí sale al imprimir); el filtro de disciplinas queda plegado; totales en fichas junto al grupo.
+- **Exportar el cuaderno con ceros**: en el Excel y el CSV las casillas vacías de actividades que cuentan valen 0 y los promedios se calculan con esos ceros. En la app nada cambia (lo pendiente no cuenta).
+- **Formato oficial de asistencias (SEPEN Nayarit)** en Asistencia › Historial: Excel oficio horizontal con fechas giradas, marcas «.» «/» «J», totales con fórmulas, % de asistencia, **rasgos** (tus rubros) y **calificación**. La herramienta está en `herramientas/formato_oficial.js`.
+- **Mis datos**: Clave del C.C.T., Sector y Zona escolar.
 - Al calificar, el teclado muestra «Siguiente» y baja al siguiente alumno.
 - **Copia automática**: una vez al día, al primer toque después de cambiar algo, se guarda sola `MiBitacora_Secundaria_auto_AAAA-MM-DD.json` en **Descargas**. Se puede apagar en Más → Copias de seguridad.
 - **Puntos de regreso**: cada día, al abrir la app, se guarda dentro de la tablet cómo estaba tu información (últimos 7 días), con botón «Volver a como estaba».

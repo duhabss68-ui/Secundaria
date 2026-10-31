@@ -566,6 +566,23 @@ body{-webkit-tap-highlight-color:transparent}
 body.theme-dark .hq-t{color:var(--ink,#E6EDF6)}
 body.theme-dark .hq-a{color:#9FB2CB}
 body.theme-dark .hq-a b{color:#C9D8F0}
+/* v14.1: franja de color que contrasta (azul marino); con temas Alegre y Personalizado toma su color */
+body.secondary-edition .side,body.theme-dark .side{background:linear-gradient(118deg,#132B57 0%,#1E3F78 46%,#2F5FA7 100%)!important;color:#fff!important;border-bottom:3px solid #D8A45A!important;box-shadow:0 6px 18px rgba(16,36,72,.22)}
+body.themed:not(.theme-dark) .side{background:linear-gradient(118deg,var(--accent-dark,#1E3F78),var(--accent,#2F5FA7))!important}
+.side .brand,.side .brand-name,.side .brand-mi,.side .brand small,body.secondary-edition .side .brand small,body.secondary-edition .brand-mi{color:#fff!important}
+.side .brand small{opacity:.85}
+.side .brand-ico svg{border-radius:12px;box-shadow:0 0 0 2px rgba(255,255,255,.55)}
+.side .tool-btn{background:rgba(255,255,255,.14)!important;border:1px solid rgba(255,255,255,.4)!important;color:#fff!important}
+.side .tool-btn:active,.side .tool-btn[aria-pressed=true]{background:rgba(255,255,255,.3)!important}
+.side .hq-t,body.theme-dark .side .hq-t{color:#fff}
+.side .hq-a,body.theme-dark .side .hq-a{color:#D3E0F5}
+.side .hq-a b,body.theme-dark .side .hq-a b{color:#fff}
+.hdr-quote:active{background:rgba(255,255,255,.08)}
+.hq-row{display:flex;align-items:center;justify-content:center;gap:10px;max-width:100%;min-width:0}
+.hq-row .hq-a{min-width:0}
+.hq-more{flex:none;min-height:40px;padding:6px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap}
+.hq-more:active{background:rgba(255,255,255,.28)}
+@media print{.side,.dock,#updBar{display:none!important}}
 /* ===== Barra flotante de abajo, efecto vidrio ===== */
 .dock{position:fixed;left:0;right:0;margin:0 auto;width:max-content;max-width:calc(100vw - 24px);
   bottom:calc(16px + env(safe-area-inset-bottom));z-index:90;display:flex;align-items:center;gap:2px;padding:7px;
@@ -585,6 +602,14 @@ body.theme-dark .hq-a b{color:#C9D8F0}
   color:#3E5373;font-size:13px;font-weight:700;letter-spacing:.01em;white-space:nowrap;
   transition:color .25s ease,transform .15s ease}
 .dock .nav .svgi{width:25px;height:25px;color:#2F5FA7;transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+/* v15.1: íconos a color */
+.emo{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;line-height:1;display:inline-block}
+.dock .nav .emo{font-size:25px;transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+.dock .nav.on .emo{transform:translateY(-1px) scale(1.14)}
+.more-menu .emo,.subtab .emo{font-size:18px;vertical-align:-2px}
+.home-card .hc-ico .emo{font-size:36px}
+.help-ico .emo{font-size:42px}
+.dz-ico .emo{font-size:40px}
 .dock .nav.on{color:#1E3F78}
 .dock .nav.on .svgi{color:#1E3F78;transform:translateY(-1px) scale(1.08)}
 .dock .nav:active{transform:scale(.93)}
@@ -600,6 +625,30 @@ body.theme-dark .hq-a b{color:#C9D8F0}
 /* Con una ventana abierta, los avisos salen arriba para no tapar sus botones */
 body:has(#modal) #toasts{bottom:auto;top:calc(16px + env(safe-area-inset-top))}
 .tg-open{white-space:nowrap}
+/* v14.2: cuaderno */
+.nb-print-summary{display:none}
+@media print{.nb-print-summary{display:block!important}.filter-fold,.nb-sum-btn{display:none!important}}
+.nb-sum-modal{max-height:64vh;overflow:auto}
+.filter-fold>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;min-height:44px}
+.filter-fold>summary::-webkit-details-marker{display:none}
+.filter-fold>summary::before{content:"▸";color:var(--accent,#2F5FA7);transition:transform .2s}
+.filter-fold[open]>summary::before{transform:rotate(90deg)}
+.filter-fold .ff-hint{color:#56708F;font-weight:500}
+.filter-fold:not([open]){padding-top:4px;padding-bottom:4px}
+/* v15.1: tarjeta chica de bienvenida en Inicio */
+header.top{flex-wrap:wrap}
+.welcome-mini{display:flex;align-items:center;gap:12px;margin-left:auto;max-width:380px;padding:10px 16px 10px 10px;border-radius:18px;color:#fff;background:linear-gradient(110deg,#1E3F78,#2F5FA7);box-shadow:0 10px 22px -12px rgba(16,36,72,.6)}
+.welcome-mini b{display:block;font-size:15px}
+.welcome-mini small{display:block;font-size:12.5px;opacity:.9;line-height:1.3}
+.welcome-mini .wm-ico{flex:none;display:grid;place-items:center}
+body.themed .welcome-mini{background:linear-gradient(110deg,var(--accent-dark,#1E3F78),var(--accent,#2F5FA7))}
+/* v15.1: ventana del formato oficial */
+.fo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:10px 0}
+.fo-grid label{display:flex;flex-direction:column;gap:4px;font-weight:650;font-size:14px}
+.fo-clase{margin:6px 0}
+.fo-count{margin:8px 0 4px;padding:10px 14px;border-radius:12px;background:#EEF3FA;color:#24395C}
+body.theme-dark .fo-count{background:#16243A;color:#C9D8F0}
+.fo-head>summary{min-height:44px}
 .sheet-bar .tg-open{margin-left:auto}
 .tg-pick{display:flex;flex-direction:column;gap:14px;max-height:62vh;overflow:auto;margin:10px 0;padding-right:4px}
 .tg-disc h3{margin:0 0 8px;padding-left:10px;font-size:15px}
@@ -631,6 +680,8 @@ body.theme-dark .menu-ver{color:#9FB2CB;border-top-color:rgba(255,255,255,.1)}
 .dock>.nav,.dock>.more-wrap{min-width:0}
 .dock .more-wrap>.nav{width:100%;min-width:0}
 @media(max-width:760px){.dock .nav{padding:6px 2px}}
+/* v14.1: en pantallas angostas la barra muestra solo íconos */
+@media(max-width:600px){.dock .nav .lbl{display:none}.dock .nav{height:56px}.dock .dock-fab{padding-bottom:0}}
 .dock .dock-fab{justify-content:flex-end;padding-bottom:9px}
 .dock-fab .fab-c{position:absolute;left:50%;top:-30px;transform:translateX(-50%);width:66px;height:66px;border-radius:50%;
   display:grid;place-items:center;color:#fff;overflow:hidden;
@@ -691,7 +742,7 @@ label:has(>input[type=checkbox]),label:has(>input[type=radio]){min-height:40px}
 .snap-row small{display:block;color:#56708F;font-weight:500;margin-top:2px}
 body.theme-dark .snap-row{background:rgba(255,255,255,.05)}
 body.theme-dark .snap-row small{color:#9FB2CB}
-</style></head><body class="secondary-edition"><div class="layout"><aside class="side"><div class="brand"><span class="brand-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="40" height="40"><rect width="200" height="200" rx="48" fill="#1E3F78"/><rect x="58" y="24" width="26" height="20" rx="7" fill="#F2643F"/><rect x="58" y="42" width="26" height="10" fill="#B9C9D2"/><rect x="58" y="52" width="26" height="90" fill="#FFC145"/><path d="M58 142 L84 142 L71 172 Z" fill="#F6D9AE"/><path d="M66.5 162 L75.5 162 L71 172 Z" fill="#1E3A4C"/><circle cx="117" cy="122" r="33" stroke="#FFF8EC" stroke-width="18" fill="none"/></svg></span><span class="brand-txt"><span class="brand-name"><span class="brand-mi">Mi</span> Bitácora</span><small>SECUNDARIA</small></span></div><div class="hdr-quote" id="hdrQuote" role="button" tabindex="0" title="Toca para ver otra frase" aria-label="Frase del día. Toca para ver otra" onclick="nextQuote()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();nextQuote()}"></div><div class="hdr-tools"><button class="tool-btn" id="textBtn" aria-pressed="false" title="Letra grande" onclick="toggleBigText()">A+</button><button class="tool-btn" id="helpBtn" title="Ayuda" aria-label="Ayuda" onclick="showHelp()">?</button></div><div class="bottom">Mi Bitácora Secundaria · v0.13.0 · Tablet 1.8<br>Datos guardados en esta tablet<br>No usar con datos reales de menores.</div></aside><main class="main"><header class="top"><div><div class="eyebrow" id="eyebrow">MI ESPACIO DE TRABAJO</div><h1 class="title" id="page-title">Buenos días, docente</h1><p class="sub" id="page-sub">Todo lo importante, sin complicaciones.</p></div><span class="tag">● Funciona sin internet</span></header><div id="topbar" class="topbar" role="status"></div><div id="content"></div></main></div><nav class="dock" id="dock" aria-label="Menú principal"><span class="dock-pill" aria-hidden="true"></span><button class="nav on" data-view="inicio"><span class="ic" data-ico="home"></span><span class="lbl">Inicio</span></button><button class="nav" data-view="alumnos"><span class="ic" data-ico="users"></span><span class="lbl">Mi grupo</span></button><button class="nav" data-view="asistencia"><span class="ic" data-ico="attendance"></span><span class="lbl">Asistencia</span></button><button class="nav dock-fab" data-view="actividades" aria-label="Actividades: crear o corregir"><span class="fab-c" aria-hidden="true"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><span class="lbl">Actividades</span></button><button class="nav" data-view="cuadricula"><span class="ic" data-ico="grades"></span><span class="lbl">Calificaciones</span></button><button class="nav" data-view="equipos"><span class="ic" data-ico="ruleta"></span><span class="lbl">Equipos</span></button><div class="more-wrap"><button class="nav" id="moreBtn" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()"><span class="ic" data-ico="more"></span><span class="lbl">Más</span></button><div class="more-menu" id="moreMenu" hidden><button data-view="horario"><span class="ic" data-ico="calendar"></span> &nbsp;Mi horario</button><button data-view="datos"><span class="ic" data-ico="save"></span> &nbsp;Copias de seguridad</button><button data-view="perfil"><span class="ic" data-ico="settings"></span> &nbsp;Mis datos y colores</button><div class="menu-ver"><span>Mi Bitácora · Tablet 1.8</span><button class="linkbtn" onclick="setMenu(false);buscarActualizacion()">↻ Buscar actualización</button></div></div></div></nav><script>
+</style></head><body class="secondary-edition"><div class="layout"><aside class="side"><div class="brand"><span class="brand-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="40" height="40"><rect width="200" height="200" rx="48" fill="#1E3F78"/><rect x="58" y="24" width="26" height="20" rx="7" fill="#F2643F"/><rect x="58" y="42" width="26" height="10" fill="#B9C9D2"/><rect x="58" y="52" width="26" height="90" fill="#FFC145"/><path d="M58 142 L84 142 L71 172 Z" fill="#F6D9AE"/><path d="M66.5 162 L75.5 162 L71 172 Z" fill="#1E3A4C"/><circle cx="117" cy="122" r="33" stroke="#FFF8EC" stroke-width="18" fill="none"/></svg></span><span class="brand-txt"><span class="brand-name"><span class="brand-mi">Mi</span> Bitácora</span><small>SECUNDARIA</small></span></div><div class="hdr-quote" id="hdrQuote" role="button" tabindex="0" title="Toca para ver otra frase" aria-label="Frase del día. Toca para ver otra" onclick="nextQuote()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();nextQuote()}"></div><div class="hdr-tools"><button class="tool-btn" id="textBtn" aria-pressed="false" title="Letra grande" onclick="toggleBigText()">A+</button><button class="tool-btn" id="helpBtn" title="Ayuda" aria-label="Ayuda" onclick="showHelp()">?</button></div><div class="bottom">Mi Bitácora Secundaria · v0.13.0 · Tablet 1.9<br>Datos guardados en esta tablet<br>No usar con datos reales de menores.</div></aside><main class="main"><header class="top"><div><div class="eyebrow" id="eyebrow">MI ESPACIO DE TRABAJO</div><h1 class="title" id="page-title">Buenos días, docente</h1><p class="sub" id="page-sub">Todo lo importante, sin complicaciones.</p></div><span class="tag">● Funciona sin internet</span></header><div id="topbar" class="topbar" role="status"></div><div id="content"></div></main></div><nav class="dock" id="dock" aria-label="Menú principal"><span class="dock-pill" aria-hidden="true"></span><button class="nav on" data-view="inicio"><span class="ic" data-ico="home"></span><span class="lbl">Inicio</span></button><button class="nav" data-view="alumnos"><span class="ic" data-ico="users"></span><span class="lbl">Mi grupo</span></button><button class="nav" data-view="asistencia"><span class="ic" data-ico="attendance"></span><span class="lbl">Asistencia</span></button><button class="nav dock-fab" data-view="actividades" aria-label="Actividades: crear o corregir"><span class="fab-c" aria-hidden="true"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><span class="lbl">Actividades</span></button><button class="nav" data-view="cuadricula"><span class="ic" data-ico="grades"></span><span class="lbl">Calificaciones</span></button><button class="nav" data-view="equipos"><span class="ic" data-ico="ruleta"></span><span class="lbl">Equipos</span></button><div class="more-wrap"><button class="nav" id="moreBtn" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()"><span class="ic" data-ico="more"></span><span class="lbl">Más</span></button><div class="more-menu" id="moreMenu" hidden><button data-view="horario"><span class="ic" data-ico="calendar"></span> &nbsp;Mi horario</button><button data-view="datos"><span class="ic" data-ico="save"></span> &nbsp;Copias de seguridad</button><button data-view="perfil"><span class="ic" data-ico="settings"></span> &nbsp;Mis datos y colores</button><div class="menu-ver"><span>Mi Bitácora · Tablet 1.9</span><button class="linkbtn" onclick="setMenu(false);buscarActualizacion()">↻ Buscar actualización</button></div></div></div></nav><script>
 'use strict';
 /* ===== configuración de la edición (generada por build.py) ===== */
 const APP_NAME='Mi Bitácora';const EDITION="Secundaria";const KEY="aulagestion_v09_secundaria";const APP_VERSION="0.13.0";
@@ -799,7 +850,7 @@ const QUOTES=[
 /* ---------- Iconos ----------
    Primaria: emojis a color (alegres). Secundaria: iconos de línea propios en SVG (sobrios, del color de la edición).
    Cada icono se pide por función y no por dibujo: ico('attendance'). */
-const ICON_EMOJI={home:'🏠',users:'👥',grupos:'📚',discipline:'🎓',attendance:'✅',history:'📊',grades:'🧮',activities:'📝',notebook:'📒',scale:'⚖️',ruleta:'🎡',teams:'🧩',calendar:'🗓️',save:'💾',settings:'⚙️',file:'📄',more:'⋯'};
+const ICON_EMOJI={home:'🏠',users:'👥',grupos:'📚',discipline:'🎓',attendance:'✅',history:'📊',grades:'🧮',activities:'📝',notebook:'📒',scale:'⚖️',ruleta:'🎡',teams:'🧩',calendar:'🗓️',save:'💾',settings:'⚙️',file:'📄',more:'📂',print:'🖨️',rubric:'📋',target:'🎯',ficha:'🪪'};var ICONOS_DE_LINEA=false;
 const ICON_SVG={
   home:'<path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/>',
   users:'<circle cx="9" cy="8" r="3.2"/><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 13.8c2.8 0 4.7 1.8 4.7 4.7"/>',
@@ -821,7 +872,7 @@ const ICON_SVG={
 };
 const ICON_FOR_VIEW={inicio:'home',bienvenida:'home',alumnos:'users',grupos:'grupos',disciplinas:'discipline',asistencia:'attendance',historial:'history',cuadricula:'grades',actividades:'activities',libreta:'notebook',detallelibreta:'scale',ruleta:'ruleta',equipos:'teams',horario:'calendar',datos:'save',perfil:'settings'};
 function ico(name){
-  if(EDITION==='Secundaria'&&ICON_SVG[name])return `<svg class="svgi" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${ICON_SVG[name]}</svg>`;
+  if(ICONOS_DE_LINEA&&ICON_SVG[name])return `<svg class="svgi" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${ICON_SVG[name]}</svg>`;
   return `<span class="emo" aria-hidden="true">${ICON_EMOJI[name]||''}</span>`;
 }
 
@@ -909,7 +960,7 @@ const TIME_RE=/^([01]\d|2[0-3]):[0-5]\d$/;
 const ATT_CODES=['P','F','FJ','FI'];
 let loadWarning='';
 
-function defaultProfile(){return {teacher:'',school:'',cycle:'',shift:'',grade:'',group:'',period:'1',onboarded:false,schedule:[]}}
+function defaultProfile(){return {teacher:'',school:'',cycle:'',shift:'',grade:'',cct:'',sector:'',zona:'',group:'',period:'1',onboarded:false,schedule:[]}}
 
 /* v0.9: una rúbrica (o lista de cotejo). Lanza Error si no es válida.
    {id,name,kind:'rubrica'|'cotejo',levels:[{n,p}],criteria:[{id,n,w,d:[texto por nivel],pda}]} */
@@ -1039,7 +1090,7 @@ function normalizeState(raw,opt={}){
   if(isObj(raw.weights))for(const [k,v] of Object.entries(raw.weights)){const [g,sc,...r]=k.split('|');if(r.length||!gOk(g)||!okId(sc)||!isObj(v))continue;const w={};let good=true;for(const t of TIPOS){const n=Number(v[t]);if(!Number.isFinite(n)||n<0||n>100)good=false;w[t]=n}if(good)s.weights[k]=w}
   /* Perfil y horario */
   const p=isObj(raw.profile)?raw.profile:{};
-  s.profile={...defaultProfile(),teacher:str(p.teacher,120),school:str(p.school,160),cycle:str(p.cycle,20),shift:SHIFTS.includes(p.shift)?p.shift:'',grade:str(p.grade,20),
+  s.profile={...defaultProfile(),teacher:str(p.teacher,120),school:str(p.school,160),cycle:str(p.cycle,20),shift:SHIFTS.includes(p.shift)?p.shift:'',grade:str(p.grade,20),cct:str(p.cct,20),sector:str(p.sector,20),zona:str(p.zona,20),
     group:okId(p.group)&&gOk(p.group)?p.group:'',period:['1','2','3'].includes(String(p.period))?String(p.period):'1',schedule:[]};
   /* Asistente de bienvenida: sólo para quien aún tiene únicamente el grupo de demostración sin uso */
   const pristine=raw.groups.length===1&&['g1','g2'].includes(raw.groups[0].id)&&!(Array.isArray(raw.activities)&&raw.activities.length)&&!Object.keys(isObj(raw.attendance)?raw.attendance:{}).length&&!s.profile.teacher;
@@ -1135,9 +1186,11 @@ function rubricMaxPts(r){return Math.max(...r.levels.map(l=>l.p))}
 function rubricResult(a,sid){
   const r=a.rubric,rec=state.rscores[a.id+'|'+sid]||{},mp=rubricMaxPts(r);let wsum=0,acc=0,done=0;
   for(const c of r.criteria){wsum+=c.w;const li=rec[c.id];if(li===undefined||!r.levels[li])continue;done++;acc+=c.w*r.levels[li].p/mp}
-  return {done,total:r.criteria.length,frac:done===r.criteria.length&&wsum>0?acc/wsum:null};
+  return {done,total:r.criteria.length,frac:(done===r.criteria.length||EXPORT_CEROS)&&wsum>0?acc/wsum:null};
 }
-function scoreOf(a,sid){
+var EXPORT_CEROS=false;
+function scoreOf(a,sid){const v=scoreOfBase(a,sid);return v===undefined&&EXPORT_CEROS&&countsInAverage(a)?0:v}
+function scoreOfBase(a,sid){
   const k=a.id+'|'+sid;
   if(a.mode==='icon'){const m=ICON_MARKS.find(x=>x.c===state.marks[k]);return m?m.pct*a.max:undefined}
   if(a.mode==='level'){const c=state.marks[k];return c?levelValue(c)/10*a.max:undefined}
@@ -1150,7 +1203,8 @@ function hasEvaluation(a,sid){const k=a.id+'|'+sid;return a.mode==='text'?!!stat
 function activityHasData(a){const pre=a.id+'|';return [state.grades,state.marks,state.rscores,state.obs].some(m=>Object.keys(m).some(k=>k.startsWith(pre)))}
 function clearActivityData(id){const pre=id+'|';for(const m of [state.grades,state.marks,state.rscores,state.obs])for(const k of Object.keys(m))if(k.startsWith(pre))delete m[k]}
 /* Texto corto para mostrar una casilla (cuaderno, ficha, Excel) */
-function cellText(a,sid,long){
+function cellText(a,sid,long){if(EXPORT_CEROS&&countsInAverage(a)&&!hasEvaluation(a,sid))return '0';return cellTextBase(a,sid,long)}
+function cellTextBase(a,sid,long){
   const k=a.id+'|'+sid;
   if(a.mode==='icon'){const m=ICON_MARKS.find(x=>x.c===state.marks[k]);return m?(long?m.sym+' '+m.name:m.sym):''}
   if(a.mode==='level'){const m=LEVEL_MARKS.find(x=>x.c===state.marks[k]);return m?(long?m.name:m.sym):''}
@@ -1501,7 +1555,7 @@ VIEWS.inicio=function(c,g){
   const cards=[['c1','attendance','Pasar lista','Toca solo a quien faltó',"switchTo('asistencia')"],['c2','grades','Calificar','Escribe las notas en la cuadrícula',"switchTo('cuadricula')"],
     ['c3','notebook','Ver mi cuaderno','Promedios por '+(EDITION==='Primaria'?'campo formativo':'disciplina'),"switchTo('libreta')"],['c4','ruleta','Ruleta y Equipos','Elige un alumno al azar o forma equipos',"switchTo('ruleta')"],
     ['c6','save','Guardar copia','Guarda tu información en la tablet','backup()']];
-  c.innerHTML=`<div class="welcome-strip"><div><h2>${EDITION_TEXT.welcomeTitle}</h2><p>${EDITION_TEXT.welcomeText}</p></div>${mascot(92,'wink')}</div>
+  c.innerHTML=`
   
   ${todayStatusHTML(g)}
   <div class="home-grid">${cards.map(([k,ic,t,s,fn])=>`<button class="home-card ${k}" onclick="${fn}"><span class="hc-ico" aria-hidden="true">${ico(ic)}</span><b>${t}</b><small>${s}</small></button>`).join('')}</div>`;
@@ -1680,7 +1734,7 @@ VIEWS.historial=function(c,g){
   if(!g){c.innerHTML=emptyPanel('Primero crea un grupo.');return}
   const st=attendanceStats(g,attRange.from,attRange.to),rule=state.settings.attRule,thr=state.settings.alertPct;
   const log=state.attendanceLog.filter(e=>e.g===g.id).slice(-50).reverse(),nameOf=id=>g.students.find(s=>s.id===id)?.name||'Alumno borrado';
-  c.innerHTML=`<section class="panel"><div class="flex">${groupSelect()}<button class="secondary" onclick="downloadHistory()">↓ Bajar historial (CSV)</button></div>
+  c.innerHTML=`<section class="panel"><div class="flex">${groupSelect()}<button class="secondary" onclick="downloadHistory()">↓ Bajar historial (CSV)</button><button class="primary" onclick="openFormatoOficial()">📄 Formato oficial de asistencias (Excel)</button></div>
   <div class="scope-controls"><div class="flex"><label class="label-inline">Desde <input class="field" type="date" value="${esc(attRange.from)}" onchange="attRange.from=this.value;render()"></label><label class="label-inline">Hasta <input class="field" type="date" value="${esc(attRange.to)}" onchange="attRange.to=this.value;render()"></label>${(attRange.from||attRange.to)?'<button class="mini" onclick="attRange={from:\'\',to:\'\'};render()">Quitar fechas</button>':''}</div>
   <div class="flex" style="margin-top:10px"><label class="label-inline">Cómo calcular el porcentaje <select class="field" onchange="setAttSetting('attRule',this.value)"><option value="strict" ${rule==='strict'?'selected':''}>Cuentan solo las asistencias</option><option value="withJustified" ${rule==='withJustified'?'selected':''}>Asistencias + faltas justificadas</option></select></label><label class="label-inline">Avisar si baja de <input class="field percent-input" type="number" min="1" max="100" value="${thr}" onchange="setAttSetting('alertPct',this.value)"> %</label></div></div>
   <p class="hint">El porcentaje = ${rule==='strict'?'asistencias':'asistencias + faltas justificadas'} ÷ días con lista${(attRange.from||attRange.to)?' en las fechas elegidas':''}. Tú decides la regla: el programa <b>no reprueba ni sanciona automáticamente</b>.</p>
@@ -2002,13 +2056,13 @@ VIEWS.libreta=function(c,g){
   const showOverall=EDITION==='Primaria';   /* en secundaria no se promedian disciplinas distintas entre sí */
   const overall=showOverall?meanOf(summary.map(x=>meanOf(x.values))):null,none=data.length===0;
   const blockHTML=data.map(b=>`<div class="book-block" style="border-left:8px solid ${b.color}"><div class="book-header" style="background:${tint(b.color,.82)}"><span>${esc(b.scope.name)}</span><span class="badge-avg">${b.activities.length} actividades</span></div>${b.activities.length?`<div class="table-wrap sheet-wrap dens-${state.settings.sheetDensity||'compact'}"><table class="rows sheet"><thead><tr><th class="stickycol">Alumno</th>${b.activities.map(a=>`<th title="${esc(kindName(a))} · ${esc(modeName(modeOf(a)))}">${esc(a.name)}<small> ${esc(colTag(a))}</small></th>`).join('')}<th>Promedio provisional /10</th></tr></thead><tbody>${ros.map(st=>`<tr><td class="stickycol"><b>${esc(st.name)}</b></td>${b.activities.map(a=>{const t=cellText(a,st.id);return `<td class="${modeOf(a)==='text'?'td-text':''}" ${modeOf(a)==='text'&&t?`title="${esc(t)}"`:''}>${t?esc(t):'—'}</td>`}).join('')}<td><b>${averageLabel(averageInScope(g,b.scope,st,b.activities))}</b></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty-scope">Todavía no hay actividades en este bloque.</div>'}</div>`).join('');
-  c.innerHTML=`<div class="book-lead"><div class="flex">${groupSelect()}${periodSelect(g)}</div>
-  <div class="filter-panel"><div class="flex"><b>${lbl}</b><button class="mini" onclick="notebookSelectAll(true)">Mostrar todos</button><button class="mini" onclick="notebookSelectAll(false)">Ocultar todos</button></div><div class="filter-options">${scopes.map(sc=>`<label class="filter-option" style="border-left:6px solid ${scopeColor(sc.id)}"><input type="checkbox" ${(f===null||f.has(sc.id))?'checked':''} onchange="toggleNotebookScope('${sc.id}',this.checked)"><span>${esc(sc.name)}</span></label>`).join('')}</div><p class="helper">Puedes visualizar y exportar uno, varios o todos. El resumen y los promedios se actualizan con tu selección, y la selección se conserva.</p></div>
-  <div class="flex" style="margin-top:10px"><span class="chip ok">${all.length} actividades</span><span class="chip">${ros.length} alumnos</span>${showOverall?`<span class="chip">Promedio general provisional: ${averageLabel(overall)}</span>`:''}</div>
+  c.innerHTML=`<div class="book-lead"><div class="flex">${groupSelect()}${periodSelect(g)}<span class="chip ok">${all.length} actividades</span><span class="chip">${ros.length} alumnos</span>${showOverall?`<span class="chip">Promedio general provisional: ${averageLabel(overall)}</span>`:''}</div>
+  <details class="filter-panel filter-fold" ${(none||window.nbFilterOpen)?'open':''} ontoggle="window.nbFilterOpen=this.open"><summary><b>${lbl}:</b> ${data.length} de ${scopes.length} <span class="ff-hint">· toca para elegir</span></summary><div class="flex"><button class="mini" onclick="notebookSelectAll(true)">Mostrar todos</button><button class="mini" onclick="notebookSelectAll(false)">Ocultar todos</button></div><div class="filter-options">${scopes.map(sc=>`<label class="filter-option" style="border-left:6px solid ${scopeColor(sc.id)}"><input type="checkbox" ${(f===null||f.has(sc.id))?'checked':''} onchange="toggleNotebookScope('${sc.id}',this.checked)"><span>${esc(sc.name)}</span></label>`).join('')}</div><p class="helper">Puedes visualizar y exportar uno, varios o todos. El resumen y los promedios se actualizan con tu selección, y la selección se conserva.</p></details>
+  
   <p class="book-muted">Los pendientes no cuentan como cero. Cada bloque utiliza sus ponderaciones si están configuradas. ${showOverall?'El promedio general es sólo orientativo (promedia por igual los campos con notas) y':'Cada disciplina se evalúa por separado:'} no representa una calificación oficial.</p>
-  <div class="book-actions"><button class="primary" ${none?'disabled':''} onclick="exportRealXLSX()">↓ Exportar Excel completo (.xlsx)</button><button class="secondary" ${none?'disabled':''} onclick="exportFullCSV()">↓ CSV</button><button class="secondary" ${none?'disabled':''} onclick="window.print()">Imprimir / Guardar PDF</button><button class="secondary" onclick="switchTo('actividades')">+ Crear actividad</button>${EDITION==='Primaria'?`<button class="secondary" onclick="switchTo('rubros')">Rubros y porcentajes</button>`:`<button class="secondary" onclick="switchTo('detallelibreta')">Cuánto vale cada tipo de trabajo por bloque</button>`}</div></div>
+  <div class="book-actions"><button class="secondary nb-sum-btn" ${none?'disabled':''} onclick="openNbSummary()">📊 Resumen de alumnos</button><button class="primary" ${none?'disabled':''} onclick="exportRealXLSX()">↓ Exportar Excel completo (.xlsx)</button><button class="secondary" ${none?'disabled':''} onclick="exportFullCSV()">↓ CSV</button><button class="secondary" ${none?'disabled':''} onclick="window.print()">Imprimir / Guardar PDF</button><button class="secondary" onclick="switchTo('actividades')">+ Crear actividad</button>${EDITION==='Primaria'?`<button class="secondary" onclick="switchTo('rubros')">Rubros y porcentajes</button>`:`<button class="secondary" onclick="switchTo('detallelibreta')">Cuánto vale cada tipo de trabajo por bloque</button>`}</div></div>
   ${none?`<div class="hint warn" id="nbNone">⚠ No hay ${EDITION==='Primaria'?'ningún campo formativo':'ninguna disciplina'} seleccionado. Marca al menos uno arriba para ver y exportar tu cuaderno.</div>`
-  :`${nbSwitchHTML()}${(window.nbView||'bloques')==='resumen'?`<h3>Resumen general por alumno</h3><div class="book-block"><div class="table-wrap sheet-wrap dens-${state.settings.sheetDensity||'compact'}"><table class="rows sheet"><thead><tr><th class="stickycol">Alumno</th>${data.map(b=>`<th>${esc(b.scope.name)}</th>`).join('')}${showOverall?'<th>Promedio orientativo</th>':''}</tr></thead><tbody>${summary.map(x=>`<tr><td class="stickycol"><b>${esc(x.st.name)}</b></td>${x.values.map(v=>`<td>${averageLabel(v)}</td>`).join('')}${showOverall?`<td><b>${averageLabel(meanOf(x.values))}</b></td>`:''}</tr>`).join('')}</tbody></table></div></div>`:blockHTML}`}`;
+  :`<div class="nb-print-summary" id="nbSummary"><h3>Resumen general de alumnos</h3><div class="book-block"><div class="table-wrap sheet-wrap dens-${state.settings.sheetDensity||'compact'}"><table class="rows sheet"><thead><tr><th class="stickycol">Alumno</th>${data.map(b=>`<th>${esc(b.scope.name)}</th>`).join('')}${showOverall?'<th>Promedio orientativo</th>':''}</tr></thead><tbody>${summary.map(x=>`<tr><td class="stickycol"><b>${esc(x.st.name)}</b></td>${x.values.map(v=>`<td>${averageLabel(v)}</td>`).join('')}${showOverall?`<td><b>${averageLabel(meanOf(x.values))}</b></td>`:''}</tr>`).join('')}</tbody></table></div></div></div>${blockHTML}`}`;
 };
 function toggleNotebookScope(id,checked){const g=group();if(!g)return;const f=nbFilter(g)||new Set(scopesForGroup(g).map(s=>s.id));checked?f.add(id):f.delete(id);setNbFilter(g,f);render()}
 function notebookSelectAll(all){const g=group();if(!g)return;setNbFilter(g,all?null:new Set());render()}
@@ -2550,7 +2604,7 @@ VIEWS.perfil=function(c){
   <div class="settings-grid"><label>Nombre del docente<input class="field" id="teacherProfile" value="${esc(p.teacher)}" placeholder="Nombre completo" maxlength="120"></label>
   <label>Escuela<input class="field" id="schoolProfile" value="${esc(p.school)}" placeholder="Nombre de la escuela" maxlength="160"></label>
   <label>Ciclo escolar<input class="field" id="cycleProfile" value="${esc(p.cycle)}" placeholder="Ej. 2026-2027" maxlength="20"></label>
-  <label>Turno<select class="field" id="shiftProfile"><option value="">Sin indicar</option>${SHIFTS.map(s=>`<option ${p.shift===s?'selected':''}>${s}</option>`).join('')}</select></label>
+  <label>Turno<select class="field" id="shiftProfile"><option value="">Sin indicar</option>${SHIFTS.map(s=>`<option ${p.shift===s?'selected':''}>${s}</option>`).join('')}</select></label><label>Clave del C.C.T.<input class="field" id="cctProfile" value="${esc(p.cct||'')}" placeholder="Ej. 18DES0000X" maxlength="20" style="text-transform:uppercase"></label><label>Sector<input class="field" id="sectorProfile" value="${esc(p.sector||'')}" placeholder="Ej. 02" maxlength="20"></label><label>Zona escolar<input class="field" id="zonaProfile" value="${esc(p.zona||'')}" placeholder="Ej. 015" maxlength="20"></label>
   ${EDITION==='Primaria'?`<label>Grado<select class="field" id="gradeProfile"><option value="">Sin indicar</option>${['1°','2°','3°','4°','5°','6°'].map(x=>`<option ${p.grade===x?'selected':''}>${x}</option>`).join('')}</select></label>
   <label>Grupo que atiende<select class="field" id="groupProfile"><option value="">Selecciona el grupo</option>${groups.map(gr=>`<option value="${esc(gr.id)}" ${p.group===gr.id?'selected':''}>${esc(gr.name)}</option>`).join('')}</select></label>`:''}
   <label>${pl} de evaluación actual<select class="field" id="periodProfile">${['1','2','3'].map(n=>`<option value="${n}" ${p.period===n?'selected':''}>${pl} ${n}</option>`).join('')}</select></label></div>
@@ -2561,7 +2615,7 @@ VIEWS.perfil=function(c){
 function saveProfile(){
   const v=id=>document.getElementById(id)?.value??'',p=state.profile;
   p.teacher=v('teacherProfile').trim().slice(0,120);p.school=v('schoolProfile').trim().slice(0,160);p.cycle=v('cycleProfile').trim().slice(0,20);
-  const sh=v('shiftProfile');p.shift=SHIFTS.includes(sh)?sh:'';
+  const sh=v('shiftProfile');p.shift=SHIFTS.includes(sh)?sh:'';p.cct=v('cctProfile').trim().toUpperCase().slice(0,20);p.sector=v('sectorProfile').trim().slice(0,20);p.zona=v('zonaProfile').trim().slice(0,20);
   if(EDITION==='Primaria'){p.grade=v('gradeProfile');const gp=v('groupProfile');p.group=activeGroups().some(g=>g.id===gp)?gp:'';if(p.group)selectedGroup=p.group}
   const per=v('periodProfile');if(['1','2','3'].includes(per)){p.period=per;currentPeriod=per}
   save();render();notify('Tus datos se guardaron.','success');
@@ -2969,13 +3023,13 @@ function actividadesPrimaria(c,g){
   const row=a=>{
     const n=ros.filter(s=>hasEvaluation(a,s.id)).length,md=modeOf(a),editing=editingActivity===a.id;
     return `<tr data-a="${a.id}" class="${editing?'editing':''}"><td><b>${esc(a.name)}</b>${a.notes?`<div class="helper">📝 ${esc(a.notes)}</div>`:''}${pdaChips(g,a)}</td><td><span class="chip">${esc(rubroName(a))}</span></td><td>${esc(modeName(md))}${md==='num'?` <span class="helper">/ ${a.max}</span>`:''}${md==='rubric'?`<div class="helper">${esc(a.rubric.name)}</div>`:''}</td><td>${esc(fmtIso(a.date))}</td><td>${n} de ${ros.length}</td>
-    <td><div class="flex act-actions"><button class="mini" onclick="editActivityRow('${a.id}')" ${editing?'disabled':''}>✎ Corregir</button><button class="mini" onclick="goGrade('${a.id}')">Calificar →</button></div></td></tr>
+    <td><div class="flex act-actions"><button class="mini" onclick="editActivityRow('${a.id}')" ${editing?'disabled':''}>✎ Corregir</button><button class="mini" onclick="goGrade('${a.id}')">Calificar →</button><button class="mini tg-open" onclick="tgOpenFor('${a.id}')">👥 Por equipos</button></div></td></tr>
     ${editing?`<tr class="edit-row"><td colspan="6"><div class="scope-controls"><h3>Corregir «${esc(a.name)}»</h3>${activityFormHTML('e',g,a)}<div style="margin-top:12px"><label class="helper" for="eNotes">Observaciones (opcional)</label><br><textarea id="eNotes" class="field" rows="2" style="width:100%;max-width:640px" maxlength="500">${esc(a.notes||'')}</textarea></div>
     <div class="actions"><button class="primary" onclick="saveActivityEdit('${a.id}')">Guardar cambios</button><button class="secondary" onclick="editingActivity='';render()">Cancelar</button>${md==='rubric'?`<button class="secondary" onclick="editActivityRubric('${a.id}')">Ver o cambiar la rúbrica</button>`:''}<span class="spacer"></span><button class="secondary" onclick="archiveActivity('${a.id}',true)">Ocultar</button><button class="danger" onclick="deleteActivity('${a.id}')">Eliminar</button></div>
     <p class="helper">Las notas ya capturadas se conservan. «Ocultar» la saca del promedio sin borrar nada; «Eliminar» borra la actividad y sus notas.</p></div></td></tr>`:''}`;
   };
   c.innerHTML=`<section class="panel">${scopeHeader(g)}
-  ${flash?`<div class="done-card" role="status">${mascot(56,'cheer')}<div><b>${EDITION==='Primaria'?'¡Listo, profe!':'Listo'}</b><div>Creaste «${esc(flash.name)}».</div></div><span class="spacer"></span><button class="primary" onclick="goGrade('${flash.id}')">Calificar ahora →</button></div>`:''}
+  ${flash?`<div class="done-card" role="status">${mascot(56,'cheer')}<div><b>${EDITION==='Primaria'?'¡Listo, profe!':'Listo'}</b><div>Creaste «${esc(flash.name)}».</div></div><span class="spacer"></span><button class="primary" onclick="goGrade('${flash.id}')">Calificar ahora →</button><button class="secondary" onclick="tgOpenFor('${flash.id}')">👥 Por equipos</button></div>`:''}
   <h3>Nueva actividad</h3>${activityFormHTML('act',g)}<p class="helper">Se guardará en <b>${esc(scopeName(g,sc))}</b> · ${esc(periodLabel(g))} ${currentPeriod}. Los rubros se configuran en <button class="linkbtn" onclick="switchTo('rubros')">Opciones del cuaderno › Rubros y porcentajes</button>.</p></section>
   ${pending.length?`<section class="section panel"><h3>Revisar actividades anteriores (${pending.length})</h3><p class="hint">Estas actividades vienen de una versión anterior y no tenían ${SCOPE_W.one}. Asígnalas; sus notas se conservan.</p>${pending.map(a=>`<div class="flex review-item"><b>${esc(a.name)}</b><span class="helper">${esc(a.date)}</span><select class="field" id="migrate_${a.id}"><option value="">Selecciona destino</option>${scopesForGroup(g).map(x=>`<option value="${esc(x.id)}">${esc(x.name)}</option>`).join('')}</select><button class="secondary" onclick="classifyActivity('${a.id}')">Asignar</button></div>`).join('')}</section>`:''}
   <section class="section panel"><h3>Actividades de ${esc(scopeName(g,sc))} · ${esc(periodLabel(g))} ${currentPeriod} (${arr.length})</h3>
@@ -3455,7 +3509,7 @@ async function shareBackup(){
 /* Frase del día en la parte de arriba (cambia sola cada día; al tocarla muestra otra) */
 function hdrQuoteRender(anim){
   const el=document.getElementById('hdrQuote');if(!el)return;const q=QUOTES[quoteIndex()];
-  el.innerHTML=`<span class="hq-t">“${esc(q.t)}”</span><span class="hq-a">— <b>${esc(q.a)}</b><cite>, ${esc(q.w)}</cite></span>`;
+  el.innerHTML=`<span class="hq-t">“${esc(q.t)}”</span><span class="hq-row"><span class="hq-a">— <b>${esc(q.a)}</b><cite>, ${esc(q.w)}</cite></span><button class="hq-more" onclick="event.stopPropagation();nextQuote()" aria-label="Ver otra frase">↻ Otra frase</button></span>`;
   el.title='“'+q.t+'” — '+q.a+', '+q.w+'. Toca para ver otra frase';
   if(anim){el.classList.remove('swap');void el.offsetWidth;el.classList.add('swap')}
 }
@@ -3564,13 +3618,27 @@ function tgOpenFor(aid){
   if(scopeByGroup[g.id]!==a.scopeId){scopeByGroup[g.id]=a.scopeId;gradeActivityId=a.id;render()}
   openTeamGrade(aid);
 }
-/* Cuaderno: «Actividades por disciplina» o «Resumen por alumno» (se recuerda la última que usaste) */
-try{window.nbView=localStorage.getItem(KEY+'_nbview')||'bloques'}catch(e){window.nbView='bloques'}
-function nbSwitchHTML(){
-  const v=window.nbView||'bloques';
-  return `<div class="seg nb-switch" role="group" aria-label="Qué ver en el cuaderno"><button class="seg-b ${v!=='resumen'?'on':''}" aria-pressed="${v!=='resumen'}" onclick="setNbView('bloques')">📚 Actividades por disciplina</button><button class="seg-b ${v==='resumen'?'on':''}" aria-pressed="${v==='resumen'}" onclick="setNbView('resumen')">👤 Resumen por alumno</button></div>`;
+/* Cuaderno: el resumen general de alumnos se abre en una ventana (y sí sale al imprimir) */
+function openNbSummary(){
+  const box=document.getElementById('nbSummary'),g=group();if(!box||!g)return warn('Elige al menos una disciplina para ver el resumen.');
+  openModal(`<h2>📊 Resumen de alumnos</h2><p class="helper">${esc(g.name)} · ${esc(periodLabel(g))} ${currentPeriod} · promedios provisionales por disciplina (lo pendiente no cuenta).</p><div class="nb-sum-modal">${box.querySelector('.book-block').outerHTML}</div><div class="actions"><button class="secondary" data-autofocus onclick="closeModal()">Cerrar</button></div>`,{label:'Resumen de alumnos',wide:true});
 }
-function setNbView(v){window.nbView=v==='resumen'?'resumen':'bloques';try{localStorage.setItem(KEY+'_nbview',window.nbView)}catch(e){}render();const sw=document.querySelector('.nb-switch');if(sw)sw.scrollIntoView({block:'start',behavior:'smooth'})}
+/* Inicio: tarjeta chica a la derecha del saludo (solo en Inicio) */
+function welcomeMini(){
+  const top=document.querySelector('header.top');if(!top)return;let w=top.querySelector('.welcome-mini');
+  if(active==='inicio'&&state.profile.onboarded){
+    if(!w){w=document.createElement('div');w.className='welcome-mini';top.insertBefore(w,top.querySelector('.tag'))}
+    w.innerHTML=`<span class="wm-ico" aria-hidden="true">${mascot(46,'wink')}</span><span><b>${EDITION_TEXT.welcomeTitle}</b><small>${EDITION_TEXT.welcomeText}</small></span>`;
+  }else if(w)w.remove();
+}
+{const _r=render;render=function(){const out=_r.apply(this,arguments);try{welcomeMini()}catch(e){}return out}}
+welcomeMini();
+/* v15.2: el cuaderno se exporta con ceros (Excel y CSV); el modo se apaga siempre al terminar */
+const NOTA_CEROS='Las casillas vacías se cuentan como 0 para acercarse a la calificación real. No son calificaciones oficiales.';
+function conCeros(fn){return function(){EXPORT_CEROS=true;try{return fn.apply(this,arguments)}finally{EXPORT_CEROS=false}}}
+exportRealXLSX=conCeros(exportRealXLSX);exportFullCSV=conCeros(exportFullCSV);
+{const _b=buildNotebookSheets;buildNotebookSheets=function(g){const sh=_b(g);if(EXPORT_CEROS&&sh&&sh[0])sh[0].rows.push([],[{v:'Nota: '+NOTA_CEROS}]);return sh}}
+{const _n=notebookRows;notebookRows=function(g){const rows=_n(g);if(EXPORT_CEROS&&Array.isArray(rows))rows.push([],['Nota: '+NOTA_CEROS]);return rows}}
 /* Botón «Buscar actualización» (Más): pide la versión más nueva y recarga. Tus datos no se tocan. */
 async function buscarActualizacion(){
   if(!/^https?:$/.test(location.protocol))return notify('Esta copia se abrió como archivo: para actualizarla, abre la dirección de internet de '+APP_NAME+'.','info',{ms:8000});
@@ -3600,4 +3668,227 @@ async function buscarActualizacion(){
   });
   try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persisted().then(p=>p||navigator.storage.persist()).catch(()=>{})}catch(e){}
 })();
+/* ===== 98_formato_oficial.js — Formato oficial de asistencias (SEPEN Nayarit, ciclo 2026-2027) =====
+   Asistencia › Historial › «📄 Formato oficial de asistencias (Excel)».
+   · Ventana previa con los datos del encabezado; lo que se escribe se guarda en «Mis datos».
+   · Excel .xlsx real (el XML se escribe aquí): oficio horizontal, una página de ancho, texto girado,
+     celdas combinadas, bordes y fórmulas COUNTIF para que los totales se recalculen si se corrige una marca.
+   · Marcas: «.» asistencia · «/» falta (injustificada o sin clasificar) · «J» falta justificada · vacío sin registro.
+   · RASGOS = un renglón por rubro de la disciplina (mín. 4 columnas); CALIFICACIÓN = promedio final.
+     Ambos se calculan con ceros (modo de exportación) y con las actividades del periodo elegido. */
+const FO_LETRA=['D','L','M','M','J','V','S'];
+const FO_DIA=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const FO_MOMENTO={'1':'PRIMER PERIODO','2':'SEGUNDO PERIODO','3':'TERCER PERIODO'};
+let foDraft=null;
+
+function foGradoGrupo(name){
+  const s=String(name||'').toUpperCase().trim();
+  const m=s.match(/(\d)\s*[°º.\-]?\s*([A-ZÑ])\b/)||s.match(/(\d).*?([A-ZÑ])\s*$/);
+  return {grado:m?m[1]:((s.match(/\d/)||[''])[0]),grupo:m?m[2]:''};
+}
+function foDateObj(iso){const [y,m,d]=iso.split('-').map(Number);return new Date(y,m-1,d)}
+function foListDays(g){return Object.keys(state.attendance).filter(k=>k.startsWith(g.id+'|')).map(k=>k.split('|')[1]).sort()}
+function foClassDays(g,sc){return [...new Set(state.profile.schedule.filter(x=>x.groupId===g.id&&x.scopeId===sc).map(x=>x.day))].sort((a,b)=>FO_DIA.indexOf(a)-FO_DIA.indexOf(b))}
+function foDays(g,d){
+  let days=foListDays(g).filter(x=>(!d.desde||x>=d.desde)&&(!d.hasta||x<=d.hasta));
+  if(d.soloClase){const ok=new Set(foClassDays(g,d.sc));if(ok.size)days=days.filter(x=>ok.has(FO_DIA[foDateObj(x).getDay()]))}
+  return days;
+}
+function foJoinDays(list){const l=list.map(x=>x.toLowerCase());return l.length<2?l.join(''):l.slice(0,-1).join(', ')+' y '+l[l.length-1]}
+
+function openFormatoOficial(){
+  const g=group();if(!g)return warn('Primero elige un grupo.');
+  const scopes=scopesForGroup(g);if(!scopes.length)return warn('Este grupo todavía no tiene disciplinas. Agrégalas en Mi grupo › Disciplinas.');
+  const all=foListDays(g);if(!all.length)return warn('Este grupo todavía no tiene listas guardadas. Pasa lista primero en «Asistencia».');
+  const p=state.profile,gg=foGradoGrupo(g.name),cur=scopeId(g),sc=scopes.some(s=>s.id===cur)?cur:scopes[0].id;
+  foDraft={sc,momento:String(currentPeriod),desde:attRange.from||all[0],hasta:attRange.to||all[all.length-1],
+    escuela:p.school||'',cct:p.cct||'',sector:p.sector||'',zona:p.zona||'',grado:gg.grado,grupo:gg.grupo,
+    turno:p.shift||'',ciclo:p.cycle||'',profesor:p.teacher||'',soloClase:foClassDays(g,sc).length>0};
+  const d=foDraft,f=(k,label,ph,extra)=>`<label>${label}<input class="field" id="fo_${k}" value="${esc(d[k])}" placeholder="${esc(ph||'')}" ${extra||''} oninput="foSet('${k}',this.value)"></label>`;
+  openModal(`<div class="fo-box"><h2>📄 Formato oficial de asistencias</h2>
+  <p class="helper">${esc(g.name)} · Excel tamaño oficio horizontal, listo para imprimir. Revisa los datos del encabezado: lo que escribas se guarda para la próxima vez.</p>
+  <div class="fo-grid">
+    <label>Disciplina<select class="field" id="fo_sc" onchange="foSet('sc',this.value)">${scopes.map(s=>`<option value="${esc(s.id)}" ${s.id===d.sc?'selected':''}>${esc(s.name)}</option>`).join('')}</select></label>
+    <label>Momento de registro<select class="field" id="fo_momento" onchange="foSet('momento',this.value)">${['1','2','3'].map(n=>`<option value="${n}" ${d.momento===n?'selected':''}>${FO_MOMENTO[n].charAt(0)+FO_MOMENTO[n].slice(1).toLowerCase()}</option>`).join('')}</select></label>
+    <label>Desde<input class="field" type="date" id="fo_desde" value="${esc(d.desde)}" onchange="foSet('desde',this.value)"></label>
+    <label>Hasta<input class="field" type="date" id="fo_hasta" value="${esc(d.hasta)}" onchange="foSet('hasta',this.value)"></label>
+  </div>
+  <label class="check-inline fo-clase"><input type="checkbox" id="fo_soloClase" ${d.soloClase?'checked':''} onchange="foSet('soloClase',this.checked)"> <span id="fo_claseTxt"></span></label>
+  <p class="fo-count" id="fo_count" role="status"></p>
+  <details class="import-panel fo-head" open><summary>Datos del encabezado</summary><div class="fo-grid">
+    ${f('escuela','Escuela','Nombre de la escuela','maxlength="160"')}${f('cct','Clave del C.C.T.','Ej. 18DES0000X','maxlength="20" style="text-transform:uppercase"')}
+    ${f('sector','Sector','Ej. 02','maxlength="20"')}${f('zona','Zona escolar','Ej. 015','maxlength="20"')}
+    ${f('grado','Grado','Ej. 3','maxlength="10"')}${f('grupo','Grupo','Ej. A','maxlength="10" style="text-transform:uppercase"')}
+    <label>Turno<select class="field" id="fo_turno" onchange="foSet('turno',this.value)"><option value="">Sin indicar</option>${SHIFTS.map(s=>`<option ${d.turno===s?'selected':''}>${s}</option>`).join('')}</select></label>
+    ${f('ciclo','Ciclo escolar','Ej. 2026-2027','maxlength="20"')}${f('profesor','Nombre del profesor','Nombre completo','maxlength="120"')}
+  </div></details>
+  <div class="actions"><button class="primary big" id="fo_go" onclick="foGenerate()">📄 Generar Excel</button><button class="secondary" onclick="closeModal()">Cancelar</button></div></div>`,{label:'Formato oficial de asistencias',wide:true});
+  foRefresh();
+}
+function foSet(k,v){if(!foDraft)return;foDraft[k]=v;if(k==='sc'&&!foClassDays(group(),v).length)foDraft.soloClase=false;foRefresh()}
+function foRefresh(){
+  const g=group(),d=foDraft;if(!g||!d)return;
+  const cls=foClassDays(g,d.sc),scn=scopeName(g,d.sc),box=document.getElementById('fo_soloClase'),txt=document.getElementById('fo_claseTxt');
+  if(box){box.disabled=!cls.length;box.checked=!!(d.soloClase&&cls.length)}
+  if(txt)txt.innerHTML=cls.length?`Solo los días de clase de ${esc(scn)} (${esc(foJoinDays(cls))}, según tu horario)`:`Solo los días de clase de ${esc(scn)} <span class="helper">— no está en tu horario; se usan todos los días con lista</span>`;
+  const days=foDays(g,d),inRange=foListDays(g).filter(x=>(!d.desde||x>=d.desde)&&(!d.hasta||x<=d.hasta)).length,n=roster(g).length;
+  const c=document.getElementById('fo_count'),go=document.getElementById('fo_go');
+  if(c)c.innerHTML=days.length?`Saldrán <b>${days.length} ${days.length===1?'día':'días'} con lista</b>${d.soloClase&&cls.length&&inRange!==days.length?` (de ${inRange} en esas fechas)`:''} y <b>${n} alumnos</b>.${days.length>31?' La hoja se hace más ancha para que quepan, y sigue saliendo en una página de ancho.':''}`
+    :'<span class="imp-flag">No hay días con lista en esas fechas'+(d.soloClase?' para los días de clase de la disciplina':'')+'. Cambia las fechas o quita la casilla.</span>';
+  if(go)go.disabled=!days.length||(d.desde&&d.hasta&&d.desde>d.hasta);
+  if(d.desde&&d.hasta&&d.desde>d.hasta&&c)c.innerHTML='<span class="imp-flag">«Desde» no puede ser después de «Hasta».</span>';
+}
+function foGenerate(){
+  const g=group(),d=foDraft;if(!g||!d)return;const days=foDays(g,d);
+  if(!days.length)return warn('No hay días con lista para ese periodo. No se generó el archivo.');
+  const p=state.profile;   /* se guardan en «Mis datos» para la próxima vez */
+  p.school=String(d.escuela).trim().slice(0,160);p.cct=String(d.cct).trim().toUpperCase().slice(0,20);p.sector=String(d.sector).trim().slice(0,20);p.zona=String(d.zona).trim().slice(0,20);
+  if(SHIFTS.includes(d.turno))p.shift=d.turno;p.cycle=String(d.ciclo).trim().slice(0,20);p.teacher=String(d.profesor).trim().slice(0,120);save();
+  let blob,name;
+  try{
+    EXPORT_CEROS=true;   /* rasgos y calificación con ceros; se apaga siempre en finally */
+    const files=foXlsxFiles(g,d,days);blob=zipBlob(files);
+    name='Formato_asistencias_'+safeName(g.name)+'_'+safeName(scopeName(g,d.sc))+'_P'+d.momento+'.xlsx';
+  }catch(e){return warn('No se pudo generar el formato oficial ('+(e&&e.message||e)+'). No se descargó nada.')}
+  finally{EXPORT_CEROS=false}
+  download(name,blob);closeModal();
+  notify(`Formato oficial listo en Descargas: ${name} (${days.length} días, ${roster(g).length} alumnos).`,'success',{ms:9000});
+}
+
+/* ---------- cálculo de rasgos y calificación (con ceros, periodo elegido) ---------- */
+function foRasgos(g,sc,momento){
+  const R=rubrosOf(g,sc),acts=scopedActivities(g,sc,momento).filter(countsInAverage);
+  return {R,acts,items:R.items.map(it=>({it,acts:acts.filter(a=>a.rubro===it.id)}))};
+}
+function foRasgoValue(st,x){if(!x.acts.length)return null;const v=x.acts.map(a=>gradeOnTen(a,st.id)).filter(n=>n!==null);return v.length?round2(v.reduce((a,b)=>a+b,0)/v.length):null}
+
+/* ---------- Excel ---------- */
+function foXlsxFiles(g,d,days){
+  const ros=roster(g),scn=scopeName(g,d.sc),RS=foRasgos(g,d.sc,d.momento);
+  const withJ=state.settings.attRule==='withJustified';
+  const nD=Math.max(31,days.length),nR=Math.max(4,RS.items.length);
+  const C_NUM=0,C_NAME=1,C_D0=2,C_T0=C_D0+nD,C_R0=C_T0+4,C_CAL=C_R0+nR,LAST=C_CAL;
+  /* estilos (ver foStyles): índices de cellXfs */
+  const S={TITLE:1,ESC:2,BOXL:3,BOXV:4,DISC:5,PROF:6,HDR:7,HROT:8,LET:9,DROT:10,MARK:11,NAME:12,NUM:13,INT:14,PCT:15,DEC:16,DECB:17,SPACED:18,NOTE:19,BORDER:20};
+  const rows=[],merges=[],heights={};
+  const put=(r,c,o)=>{(rows[r]=rows[r]||[])[c]=o};
+  const box=(r,c,o)=>put(r,c,typeof o==='object'?o:{v:o,s:S.BORDER});
+  const merge=(r1,c1,r2,c2,o)=>{put(r1,c1,o);for(let r=r1;r<=r2;r++)for(let c=c1;c<=c2;c++)if(r!==r1||c!==c1)put(r,c,{s:o.s});if(r1!==r2||c1!==c2)merges.push(colName(c1)+(r1+1)+':'+colName(c2)+(r2+1))};
+  /* 1–3: títulos */
+  ['SISTEMA INTEGRAL INFORMATIVA EDUCATIVA','LISTA PARA EL REGISTRO DE ASISTENCIAS Y CALIFICACIONES','SERVICIOS DE EDUCACION PUBLICA DEL ESTADO DE NAYARIT']
+    .forEach((t,i)=>{merge(i,0,i,LAST,{v:t,s:S.TITLE});heights[i]=16});
+  /* 4–5: escuela, recuadros y servicio escolar */
+  merge(3,C_NUM,4,C_NAME,{v:String(d.escuela||'').toUpperCase(),s:S.ESC});
+  const boxes=[['CLAVE DEL C.C.T.',String(d.cct||'').toUpperCase()],['SECTOR',d.sector],['ZONA ESCOLAR',d.zona],['GRADO',d.grado],['GRUPO',String(d.grupo||'').toUpperCase()],['TURNO',String(d.turno||'').toUpperCase()]];
+  boxes.forEach(([l,v],k)=>{const a=C_D0+Math.floor(k*nD/6),b=C_D0+Math.floor((k+1)*nD/6)-1;merge(3,a,3,b,{v:l,s:S.BOXL});merge(4,a,4,b,{v:v||'',s:S.BOXV})});
+  merge(3,C_T0,3,LAST,{v:'SERVICIO ESCOLAR',s:S.BOXL});merge(4,C_T0,4,LAST,{v:d.ciclo||'',s:S.BOXV});
+  heights[3]=13;heights[4]=24;
+  /* 6–7: disciplina, profesor y momento */
+  const mid=C_D0+Math.floor(nD*0.6);
+  merge(5,C_NUM,5,mid,{v:'DISCIPLINA: '+String(scn).toUpperCase(),s:S.DISC});
+  merge(6,C_NUM,6,mid,{v:'NOMBRE DEL PROFESOR: '+String(d.profesor||'').toUpperCase(),s:S.PROF});
+  merge(5,C_T0,5,LAST,{v:'MOMENTO DE REGISTRO DE EVALUACIÓN',s:S.BOXL});merge(6,C_T0,6,LAST,{v:FO_MOMENTO[d.momento]||'',s:S.BOXV});
+  heights[5]=26;heights[6]=20;
+  /* 8–10: cabeza de la tabla */
+  const H0=7;
+  merge(H0,C_NUM,H0+2,C_NUM,{v:'NUM. DE LISTA',s:S.HROT});
+  merge(H0,C_NAME,H0+2,C_NAME,{v:'NOMBRE DEL ALUMNO',s:S.HDR});
+  merge(H0,C_D0,H0,C_T0-1,{v:'A S I S T E N C I A S',s:S.SPACED});
+  for(let i=0;i<nD;i++){
+    const iso=days[i];
+    put(H0+1,C_D0+i,{v:iso?FO_LETRA[foDateObj(iso).getDay()]:'',s:S.LET});
+    put(H0+2,C_D0+i,{v:iso?foDateObj(iso).toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}):'',s:S.DROT});
+  }
+  ['ASISTENCIAS','FALTAS JUSTIFICADAS','FALTAS INJUSTIFICADAS','% ASISTENCIA'].forEach((t,k)=>merge(H0,C_T0+k,H0+2,C_T0+k,{v:t,s:S.HROT}));
+  merge(H0,C_R0,H0,C_CAL-1,{v:'RASGOS',s:S.HDR});
+  for(let k=0;k<nR;k++){const x=RS.items[k];merge(H0+1,C_R0+k,H0+2,C_R0+k,{v:x?String(x.it.name).toUpperCase()+(RS.R.pct?` (${numfmt(x.it.w)} %)`:''):'',s:S.HROT})}
+  merge(H0,C_CAL,H0+2,C_CAL,{v:'CALIFICACIÓN',s:S.HROT});
+  heights[H0]=18;heights[H0+1]=15;heights[H0+2]=118;
+  /* alumnos */
+  const MARK={P:'.',F:'/',FI:'/',FJ:'J'};
+  ros.forEach((st,i)=>{
+    const r=H0+3+i,R1=r+1,rng=`${colName(C_D0)}${R1}:${colName(C_T0-1)}${R1}`;
+    put(r,C_NUM,{v:i+1,s:S.NUM});put(r,C_NAME,{v:String(st.name).toUpperCase(),s:S.NAME});
+    let P=0,J=0,I=0,n=0;
+    for(let k=0;k<nD;k++){
+      const iso=days[k],x=iso?(state.attendance[g.id+'|'+iso]||{})[st.id]:undefined,m=x?MARK[x]:'';
+      if(m){n++;if(m==='.')P++;else if(m==='J')J++;else I++}
+      put(r,C_D0+k,{v:m,s:S.MARK});
+    }
+    const cA=colName(C_T0)+R1,cJ=colName(C_T0+1)+R1;
+    put(r,C_T0,{f:`COUNTIF(${rng},".")`,v:P,s:S.INT});
+    put(r,C_T0+1,{f:`COUNTIF(${rng},"J")`,v:J,s:S.INT});
+    put(r,C_T0+2,{f:`COUNTIF(${rng},"/")`,v:I,s:S.INT});
+    put(r,C_T0+3,{f:`IF(COUNTA(${rng})=0,"",${withJ?`(${cA}+${cJ})`:cA}/COUNTA(${rng}))`,v:n?((withJ?P+J:P)/n):'',t:n?undefined:'str',s:S.PCT});
+    for(let k=0;k<nR;k++){const x=RS.items[k],v=x?foRasgoValue(st,x):null;put(r,C_R0+k,{v:v===null?'':v,s:S.DEC})}
+    const cal=averageInScope(g,{id:d.sc},st,RS.acts);put(r,C_CAL,{v:cal===null?'':round2(cal),s:S.DECB});
+    heights[r]=15;
+  });
+  const end=H0+3+ros.length;
+  merge(end+1,C_NUM,end+1,LAST,{v:`Marcas: «.» asistencia · «/» falta (injustificada o sin clasificar) · «J» falta justificada. % de asistencia = ${withJ?'(asistencias + justificadas)':'asistencias'} ÷ días con registro. Rasgos y calificación: promedio de 0 a 10 del ${FO_MOMENTO[d.momento].toLowerCase()}; las actividades sin calificar se cuentan como 0. No son calificaciones oficiales hasta que el docente las revise.`,s:S.NOTE});
+  heights[end+1]=30;
+  /* anchos */
+  const cols=[];cols[C_NUM]=4.6;cols[C_NAME]=34;for(let k=0;k<nD;k++)cols[C_D0+k]=3.3;for(let k=0;k<4;k++)cols[C_T0+k]=5;for(let k=0;k<nR;k++)cols[C_R0+k]=6;cols[C_CAL]=7;
+  return foPackage(foSheetXml(rows,merges,heights,cols,LAST,H0),'Asistencias',`Formato oficial de asistencias — ${g.name} — ${scn}`);
+}
+function foCellXml(r,c,o){
+  if(!o)return '';const ref=colName(c)+(r+1),sa=o.s?` s="${o.s}"`:'';
+  if(o.f!==undefined){
+    const cached=o.v===''||o.v===undefined?'':(typeof o.v==='number'?`<v>${o.v}</v>`:`<v>${xmlEsc(o.v)}</v>`);
+    return `<c r="${ref}"${sa}${o.t==='str'||typeof o.v==='string'?' t="str"':''}><f>${xmlEsc(o.f)}</f>${cached||(o.t==='str'?'<v></v>':'')}</c>`;
+  }
+  if(o.v===undefined||o.v===null||o.v==='')return sa?`<c r="${ref}"${sa}/>`:'';
+  if(typeof o.v==='number'&&Number.isFinite(o.v))return `<c r="${ref}"${sa}><v>${o.v}</v></c>`;
+  return `<c r="${ref}"${sa} t="inlineStr"><is><t xml:space="preserve">${xmlEsc(String(o.v))}</t></is></c>`;
+}
+function foSheetXml(rows,merges,heights,cols,LAST,H0){
+  const n=rows.length;let data='';
+  for(let r=0;r<n;r++){const row=rows[r]||[];let cells='';for(let c=0;c<=LAST;c++)cells+=foCellXml(r,c,row[c]);
+    data+=`<row r="${r+1}"${heights[r]?` ht="${heights[r]}" customHeight="1"`:''}>${cells}</row>`}
+  const colsXml='<cols>'+cols.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')+'</cols>';
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="${XML_NS}" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheetPr><pageSetUpPr fitToPage="1"/></sheetPr><dimension ref="A1:${colName(LAST)}${n}"/><sheetViews><sheetView showGridLines="0" workbookViewId="0" zoomScale="90"><pane xSplit="2" ySplit="${H0+3}" topLeftCell="C${H0+4}" activePane="bottomRight" state="frozen"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="15"/>${colsXml}<sheetData>${data}</sheetData><mergeCells count="${merges.length}">${merges.map(m=>`<mergeCell ref="${m}"/>`).join('')}</mergeCells><printOptions horizontalCentered="1"/><pageMargins left="0.25" right="0.25" top="0.35" bottom="0.35" header="0.2" footer="0.2"/><pageSetup paperSize="5" orientation="landscape" fitToWidth="1" fitToHeight="0"/></worksheet>`;
+}
+function foStyles(){
+  const font=(sz,b)=>`<font>${b?'<b/>':''}<sz val="${sz}"/><color rgb="FF000000"/><name val="Arial"/><family val="2"/></font>`;
+  const fonts=[font(9),font(11,1),font(12,1),font(7),font(14,1),font(16,1),font(9,1),font(8,1)];
+  const al=(h,v,o)=>`<alignment horizontal="${h}" vertical="${v||'center'}"${o&&o.rot?` textRotation="${o.rot}"`:''}${o&&o.wrap?' wrapText="1"':''}/>`;
+  const xf=(num,f,b,align)=>`<xf numFmtId="${num}" fontId="${f}" fillId="0" borderId="${b}" xfId="0" applyNumberFormat="1" applyFont="1" applyBorder="1" applyAlignment="1">${align}</xf>`;
+  const x=[
+    '<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>',
+    xf(0,1,0,al('center')),                      /* 1 TITLE */
+    xf(0,2,1,al('left','center',{wrap:1})),      /* 2 ESC */
+    xf(0,3,1,al('center','center',{wrap:1})),    /* 3 BOXL */
+    xf(0,4,1,al('center')),                      /* 4 BOXV */
+    xf(0,5,0,al('left')),                        /* 5 DISC */
+    xf(0,6,0,al('left')),                        /* 6 PROF */
+    xf(0,7,1,al('center','center',{wrap:1})),    /* 7 HDR */
+    xf(0,7,1,al('center','center',{rot:90,wrap:1})), /* 8 HROT */
+    xf(0,6,1,al('center')),                      /* 9 LET */
+    xf(0,3,1,al('center','center',{rot:90,wrap:1})), /* 10 DROT */
+    xf(0,6,1,al('center')),                      /* 11 MARK */
+    xf(0,0,1,al('left')),                        /* 12 NAME */
+    xf(0,0,1,al('center')),                      /* 13 NUM */
+    xf(1,0,1,al('center')),                      /* 14 INT */
+    xf(9,0,1,al('center')),                      /* 15 PCT */
+    xf(164,0,1,al('center')),                    /* 16 DEC */
+    xf(164,6,1,al('center')),                    /* 17 DECB */
+    xf(0,6,1,al('center')),                      /* 18 SPACED */
+    xf(0,3,0,al('left','top',{wrap:1})),         /* 19 NOTE */
+    xf(0,0,1,al('center'))                       /* 20 BORDER */
+  ];
+  const thin='<left style="thin"><color rgb="FF000000"/></left><right style="thin"><color rgb="FF000000"/></right><top style="thin"><color rgb="FF000000"/></top><bottom style="thin"><color rgb="FF000000"/></bottom><diagonal/>';
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="${XML_NS}"><numFmts count="1"><numFmt numFmtId="164" formatCode="0.00"/></numFmts><fonts count="${fonts.length}">${fonts.join('')}</fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border>${thin}</border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="${x.length}">${x.join('')}</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+}
+function foPackage(sheetXml,sheetName,title){
+  const R='http://schemas.openxmlformats.org/officeDocument/2006/relationships',PR='http://schemas.openxmlformats.org/package/2006/relationships',CT='application/vnd.openxmlformats-officedocument.spreadsheetml',hdr='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+  return [
+    ['[Content_Types].xml',hdr+`<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="${CT}.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="${CT}.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="${CT}.styles+xml"/><Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/></Types>`],
+    ['_rels/.rels',hdr+`<Relationships xmlns="${PR}"><Relationship Id="rId1" Type="${R}/officeDocument" Target="xl/workbook.xml"/><Relationship Id="rId2" Type="${PR}/metadata/core-properties" Target="docProps/core.xml"/></Relationships>`],
+    ['docProps/core.xml',hdr+`<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title>${xmlEsc(title)}</dc:title><dc:creator>${APP_NAME} ${EDITION}</dc:creator><dcterms:created xsi:type="dcterms:W3CDTF">${new Date().toISOString().replace(/\.\d+Z$/,'Z')}</dcterms:created></cp:coreProperties>`],
+    ['xl/workbook.xml',hdr+`<workbook xmlns="${XML_NS}" xmlns:r="${R}"><bookViews><workbookView activeTab="0"/></bookViews><sheets><sheet name="${xmlEsc(sheetName)}" sheetId="1" r:id="rId1"/></sheets><definedNames><definedName name="_xlnm.Print_Titles" localSheetId="0">'${sheetName}'!$8:$10</definedName></definedNames><calcPr calcId="191029" fullCalcOnLoad="1"/></workbook>`],
+    ['xl/_rels/workbook.xml.rels',hdr+`<Relationships xmlns="${PR}"><Relationship Id="rId1" Type="${R}/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="${R}/styles" Target="styles.xml"/></Relationships>`],
+    ['xl/styles.xml',foStyles()],
+    ['xl/worksheets/sheet1.xml',sheetXml]
+  ];
+}
 </script></body></html>

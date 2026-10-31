@@ -13,7 +13,7 @@ import sys
 ORIGEN, DESTINO = sys.argv[1], sys.argv[2]
 # Versión de la edición para tablet: súbela en cada entrega. Con ella se genera también sw.js,
 # así la tablet sabe que hay versión nueva.
-TABLET_VERSION = '1.8'
+TABLET_VERSION = '1.9'
 html = open(ORIGEN, encoding='utf-8').read()
 
 
@@ -51,9 +51,64 @@ cambia('Primero forma y guarda tus equipos en <b>Más › Ruleta y Equipos › E
 cambia('class="field tg-num" type="number"', 'class="field tg-num" inputmode="decimal" enterkeyhint="next" type="number"')
 
 # ---------------------------------------------------------------- Cuaderno: el resumen por alumno va en su propio botón
-cambia(':`<h3>Resumen general de estudiantes</h3>',
-       ':`${nbSwitchHTML()}${(window.nbView||\'bloques\')===\'resumen\'?`<h3>Resumen general por alumno</h3>')
-cambia('</tbody></table></div></div>${blockHTML}`}`;', '</tbody></table></div></div>`:blockHTML}`}`;')
+# El resumen se abre en una ventana con «📊 Resumen de alumnos» y sí sale al imprimir.
+cambia(':`<h3>Resumen general de estudiantes</h3><div class="book-block">',
+       ':`<div class="nb-print-summary" id="nbSummary"><h3>Resumen general de alumnos</h3><div class="book-block">')
+cambia('</tbody></table></div></div>${blockHTML}`}`;', '</tbody></table></div></div></div>${blockHTML}`}`;')
+cambia('<div class="book-actions"><button class="primary" ${none?\'disabled\':\'\'} onclick="exportRealXLSX()">',
+       '<div class="book-actions"><button class="secondary nb-sum-btn" ${none?\'disabled\':\'\'} onclick="openNbSummary()">📊 Resumen de alumnos</button>'
+       '<button class="primary" ${none?\'disabled\':\'\'} onclick="exportRealXLSX()">')
+# Filtro de disciplinas plegado en un renglón; se abre solo si no hay ninguna elegida
+cambia('<div class="filter-panel"><div class="flex"><b>${lbl}</b>',
+       '<details class="filter-panel filter-fold" ${(none||window.nbFilterOpen)?\'open\':\'\'} ontoggle="window.nbFilterOpen=this.open">'
+       '<summary><b>${lbl}:</b> ${data.length} de ${scopes.length} <span class="ff-hint">· toca para elegir</span></summary><div class="flex">')
+cambia('la selección se conserva.</p></div>', 'la selección se conserva.</p></details>')
+# Totales en fichas chicas junto al selector de grupo
+cambia('<div class="book-lead"><div class="flex">${groupSelect()}${periodSelect(g)}</div>',
+       '<div class="book-lead"><div class="flex">${groupSelect()}${periodSelect(g)}<span class="chip ok">${all.length} actividades</span><span class="chip">${ros.length} alumnos</span>'
+       '${showOverall?`<span class="chip">Promedio general provisional: ${averageLabel(overall)}</span>`:\'\'}</div>')
+cambia('<div class="flex" style="margin-top:10px"><span class="chip ok">${all.length} actividades</span><span class="chip">${ros.length} alumnos</span>${showOverall?`<span class="chip">Promedio general provisional: ${averageLabel(overall)}</span>`:\'\'}</div>', '')
+
+# ---------------------------------------------------------------- v14.2: «Por equipos» en cada actividad y en el aviso al crear
+cambia('<button class="mini" onclick="goGrade(\'${a.id}\')">Calificar →</button></div></td></tr>',
+       '<button class="mini" onclick="goGrade(\'${a.id}\')">Calificar →</button><button class="mini tg-open" onclick="tgOpenFor(\'${a.id}\')">👥 Por equipos</button></div></td></tr>')
+cambia('<button class="primary" onclick="goGrade(\'${flash.id}\')">Calificar ahora →</button></div>',
+       '<button class="primary" onclick="goGrade(\'${flash.id}\')">Calificar ahora →</button><button class="secondary" onclick="tgOpenFor(\'${flash.id}\')">👥 Por equipos</button></div>')
+
+# ---------------------------------------------------------------- v15.1: íconos a color (emojis) en toda la app
+cambia("if(EDITION==='Secundaria'&&ICON_SVG[name])return", "if(ICONOS_DE_LINEA&&ICON_SVG[name])return")
+cambia("more:'⋯'}", "more:'📂',print:'🖨️',rubric:'📋',target:'🎯',ficha:'🪪'};var ICONOS_DE_LINEA=false")
+
+# ---------------------------------------------------------------- v15.1: Inicio con tarjeta chica a la derecha del saludo
+cambia("c.innerHTML=`<div class=\"welcome-strip\"><div><h2>${EDITION_TEXT.welcomeTitle}</h2><p>${EDITION_TEXT.welcomeText}</p></div>${mascot(92,'wink')}</div>", "c.innerHTML=`")
+
+# ---------------------------------------------------------------- v15.1: Mis datos con Clave del C.C.T., Sector y Zona escolar
+cambia("function defaultProfile(){return {teacher:'',school:'',cycle:'',shift:'',grade:'',", "function defaultProfile(){return {teacher:'',school:'',cycle:'',shift:'',grade:'',cct:'',sector:'',zona:'',")
+cambia("grade:str(p.grade,20),", "grade:str(p.grade,20),cct:str(p.cct,20),sector:str(p.sector,20),zona:str(p.zona,20),")
+cambia("SHIFTS.map(s=>`<option ${p.shift===s?'selected':''}>${s}</option>`).join('')}</select></label>",
+       "SHIFTS.map(s=>`<option ${p.shift===s?'selected':''}>${s}</option>`).join('')}</select></label>"
+       "<label>Clave del C.C.T.<input class=\"field\" id=\"cctProfile\" value=\"${esc(p.cct||'')}\" placeholder=\"Ej. 18DES0000X\" maxlength=\"20\" style=\"text-transform:uppercase\"></label>"
+       "<label>Sector<input class=\"field\" id=\"sectorProfile\" value=\"${esc(p.sector||'')}\" placeholder=\"Ej. 02\" maxlength=\"20\"></label>"
+       "<label>Zona escolar<input class=\"field\" id=\"zonaProfile\" value=\"${esc(p.zona||'')}\" placeholder=\"Ej. 015\" maxlength=\"20\"></label>")
+cambia("const sh=v('shiftProfile');p.shift=SHIFTS.includes(sh)?sh:'';",
+       "const sh=v('shiftProfile');p.shift=SHIFTS.includes(sh)?sh:'';"
+       "p.cct=v('cctProfile').trim().toUpperCase().slice(0,20);p.sector=v('sectorProfile').trim().slice(0,20);p.zona=v('zonaProfile').trim().slice(0,20);")
+
+# ---------------------------------------------------------------- v15.1: botón del formato oficial en Asistencia › Historial
+cambia('<button class="secondary" onclick="downloadHistory()">↓ Bajar historial (CSV)</button>',
+       '<button class="secondary" onclick="downloadHistory()">↓ Bajar historial (CSV)</button>'
+       '<button class="primary" onclick="openFormatoOficial()">📄 Formato oficial de asistencias (Excel)</button>')
+
+# ---------------------------------------------------------------- v15.2: vacíos = 0 SOLO al exportar
+# Un modo que se enciende solo durante la exportación (EXPORT_CEROS) y siempre se apaga en finally.
+cambia("function scoreOf(a,sid){",
+       "var EXPORT_CEROS=false;\n"
+       "function scoreOf(a,sid){const v=scoreOfBase(a,sid);return v===undefined&&EXPORT_CEROS&&countsInAverage(a)?0:v}\n"
+       "function scoreOfBase(a,sid){")
+cambia("frac:done===r.criteria.length&&wsum>0?acc/wsum:null}", "frac:(done===r.criteria.length||EXPORT_CEROS)&&wsum>0?acc/wsum:null}")
+cambia("function cellText(a,sid,long){",
+       "function cellText(a,sid,long){if(EXPORT_CEROS&&countsInAverage(a)&&!hasEvaluation(a,sid))return '0';return cellTextBase(a,sid,long)}\n"
+       "function cellTextBase(a,sid,long){")
 
 # ---------------------------------------------------------------- PDA ocultos por ahora (los datos NO se borran)
 # Se ocultan la pestaña «Avance por PDA», las casillas de PDA al crear actividades, la columna PDA de las
@@ -153,6 +208,23 @@ body{-webkit-tap-highlight-color:transparent}
 body.theme-dark .hq-t{color:var(--ink,#E6EDF6)}
 body.theme-dark .hq-a{color:#9FB2CB}
 body.theme-dark .hq-a b{color:#C9D8F0}
+/* v14.1: franja de color que contrasta (azul marino); con temas Alegre y Personalizado toma su color */
+body.secondary-edition .side,body.theme-dark .side{background:linear-gradient(118deg,#132B57 0%,#1E3F78 46%,#2F5FA7 100%)!important;color:#fff!important;border-bottom:3px solid #D8A45A!important;box-shadow:0 6px 18px rgba(16,36,72,.22)}
+body.themed:not(.theme-dark) .side{background:linear-gradient(118deg,var(--accent-dark,#1E3F78),var(--accent,#2F5FA7))!important}
+.side .brand,.side .brand-name,.side .brand-mi,.side .brand small,body.secondary-edition .side .brand small,body.secondary-edition .brand-mi{color:#fff!important}
+.side .brand small{opacity:.85}
+.side .brand-ico svg{border-radius:12px;box-shadow:0 0 0 2px rgba(255,255,255,.55)}
+.side .tool-btn{background:rgba(255,255,255,.14)!important;border:1px solid rgba(255,255,255,.4)!important;color:#fff!important}
+.side .tool-btn:active,.side .tool-btn[aria-pressed=true]{background:rgba(255,255,255,.3)!important}
+.side .hq-t,body.theme-dark .side .hq-t{color:#fff}
+.side .hq-a,body.theme-dark .side .hq-a{color:#D3E0F5}
+.side .hq-a b,body.theme-dark .side .hq-a b{color:#fff}
+.hdr-quote:active{background:rgba(255,255,255,.08)}
+.hq-row{display:flex;align-items:center;justify-content:center;gap:10px;max-width:100%;min-width:0}
+.hq-row .hq-a{min-width:0}
+.hq-more{flex:none;min-height:40px;padding:6px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap}
+.hq-more:active{background:rgba(255,255,255,.28)}
+@media print{.side,.dock,#updBar{display:none!important}}
 /* ===== Barra flotante de abajo, efecto vidrio ===== */
 .dock{position:fixed;left:0;right:0;margin:0 auto;width:max-content;max-width:calc(100vw - 24px);
   bottom:calc(16px + env(safe-area-inset-bottom));z-index:90;display:flex;align-items:center;gap:2px;padding:7px;
@@ -172,6 +244,14 @@ body.theme-dark .hq-a b{color:#C9D8F0}
   color:#3E5373;font-size:13px;font-weight:700;letter-spacing:.01em;white-space:nowrap;
   transition:color .25s ease,transform .15s ease}
 .dock .nav .svgi{width:25px;height:25px;color:#2F5FA7;transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+/* v15.1: íconos a color */
+.emo{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;line-height:1;display:inline-block}
+.dock .nav .emo{font-size:25px;transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+.dock .nav.on .emo{transform:translateY(-1px) scale(1.14)}
+.more-menu .emo,.subtab .emo{font-size:18px;vertical-align:-2px}
+.home-card .hc-ico .emo{font-size:36px}
+.help-ico .emo{font-size:42px}
+.dz-ico .emo{font-size:40px}
 .dock .nav.on{color:#1E3F78}
 .dock .nav.on .svgi{color:#1E3F78;transform:translateY(-1px) scale(1.08)}
 .dock .nav:active{transform:scale(.93)}
@@ -187,6 +267,30 @@ body.theme-dark .hq-a b{color:#C9D8F0}
 /* Con una ventana abierta, los avisos salen arriba para no tapar sus botones */
 body:has(#modal) #toasts{bottom:auto;top:calc(16px + env(safe-area-inset-top))}
 .tg-open{white-space:nowrap}
+/* v14.2: cuaderno */
+.nb-print-summary{display:none}
+@media print{.nb-print-summary{display:block!important}.filter-fold,.nb-sum-btn{display:none!important}}
+.nb-sum-modal{max-height:64vh;overflow:auto}
+.filter-fold>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;min-height:44px}
+.filter-fold>summary::-webkit-details-marker{display:none}
+.filter-fold>summary::before{content:"▸";color:var(--accent,#2F5FA7);transition:transform .2s}
+.filter-fold[open]>summary::before{transform:rotate(90deg)}
+.filter-fold .ff-hint{color:#56708F;font-weight:500}
+.filter-fold:not([open]){padding-top:4px;padding-bottom:4px}
+/* v15.1: tarjeta chica de bienvenida en Inicio */
+header.top{flex-wrap:wrap}
+.welcome-mini{display:flex;align-items:center;gap:12px;margin-left:auto;max-width:380px;padding:10px 16px 10px 10px;border-radius:18px;color:#fff;background:linear-gradient(110deg,#1E3F78,#2F5FA7);box-shadow:0 10px 22px -12px rgba(16,36,72,.6)}
+.welcome-mini b{display:block;font-size:15px}
+.welcome-mini small{display:block;font-size:12.5px;opacity:.9;line-height:1.3}
+.welcome-mini .wm-ico{flex:none;display:grid;place-items:center}
+body.themed .welcome-mini{background:linear-gradient(110deg,var(--accent-dark,#1E3F78),var(--accent,#2F5FA7))}
+/* v15.1: ventana del formato oficial */
+.fo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:10px 0}
+.fo-grid label{display:flex;flex-direction:column;gap:4px;font-weight:650;font-size:14px}
+.fo-clase{margin:6px 0}
+.fo-count{margin:8px 0 4px;padding:10px 14px;border-radius:12px;background:#EEF3FA;color:#24395C}
+body.theme-dark .fo-count{background:#16243A;color:#C9D8F0}
+.fo-head>summary{min-height:44px}
 .sheet-bar .tg-open{margin-left:auto}
 .tg-pick{display:flex;flex-direction:column;gap:14px;max-height:62vh;overflow:auto;margin:10px 0;padding-right:4px}
 .tg-disc h3{margin:0 0 8px;padding-left:10px;font-size:15px}
@@ -218,6 +322,8 @@ body.theme-dark .menu-ver{color:#9FB2CB;border-top-color:rgba(255,255,255,.1)}
 .dock>.nav,.dock>.more-wrap{min-width:0}
 .dock .more-wrap>.nav{width:100%;min-width:0}
 @media(max-width:760px){.dock .nav{padding:6px 2px}}
+/* v14.1: en pantallas angostas la barra muestra solo íconos */
+@media(max-width:600px){.dock .nav .lbl{display:none}.dock .nav{height:56px}.dock .dock-fab{padding-bottom:0}}
 .dock .dock-fab{justify-content:flex-end;padding-bottom:9px}
 .dock-fab .fab-c{position:absolute;left:50%;top:-30px;transform:translateX(-50%);width:66px;height:66px;border-radius:50%;
   display:grid;place-items:center;color:#fff;overflow:hidden;
@@ -369,7 +475,7 @@ async function shareBackup(){
 /* Frase del día en la parte de arriba (cambia sola cada día; al tocarla muestra otra) */
 function hdrQuoteRender(anim){
   const el=document.getElementById('hdrQuote');if(!el)return;const q=QUOTES[quoteIndex()];
-  el.innerHTML=`<span class="hq-t">“${esc(q.t)}”</span><span class="hq-a">— <b>${esc(q.a)}</b><cite>, ${esc(q.w)}</cite></span>`;
+  el.innerHTML=`<span class="hq-t">“${esc(q.t)}”</span><span class="hq-row"><span class="hq-a">— <b>${esc(q.a)}</b><cite>, ${esc(q.w)}</cite></span><button class="hq-more" onclick="event.stopPropagation();nextQuote()" aria-label="Ver otra frase">↻ Otra frase</button></span>`;
   el.title='“'+q.t+'” — '+q.a+', '+q.w+'. Toca para ver otra frase';
   if(anim){el.classList.remove('swap');void el.offsetWidth;el.classList.add('swap')}
 }
@@ -478,13 +584,27 @@ function tgOpenFor(aid){
   if(scopeByGroup[g.id]!==a.scopeId){scopeByGroup[g.id]=a.scopeId;gradeActivityId=a.id;render()}
   openTeamGrade(aid);
 }
-/* Cuaderno: «Actividades por disciplina» o «Resumen por alumno» (se recuerda la última que usaste) */
-try{window.nbView=localStorage.getItem(KEY+'_nbview')||'bloques'}catch(e){window.nbView='bloques'}
-function nbSwitchHTML(){
-  const v=window.nbView||'bloques';
-  return `<div class="seg nb-switch" role="group" aria-label="Qué ver en el cuaderno"><button class="seg-b ${v!=='resumen'?'on':''}" aria-pressed="${v!=='resumen'}" onclick="setNbView('bloques')">📚 Actividades por disciplina</button><button class="seg-b ${v==='resumen'?'on':''}" aria-pressed="${v==='resumen'}" onclick="setNbView('resumen')">👤 Resumen por alumno</button></div>`;
+/* Cuaderno: el resumen general de alumnos se abre en una ventana (y sí sale al imprimir) */
+function openNbSummary(){
+  const box=document.getElementById('nbSummary'),g=group();if(!box||!g)return warn('Elige al menos una disciplina para ver el resumen.');
+  openModal(`<h2>📊 Resumen de alumnos</h2><p class="helper">${esc(g.name)} · ${esc(periodLabel(g))} ${currentPeriod} · promedios provisionales por disciplina (lo pendiente no cuenta).</p><div class="nb-sum-modal">${box.querySelector('.book-block').outerHTML}</div><div class="actions"><button class="secondary" data-autofocus onclick="closeModal()">Cerrar</button></div>`,{label:'Resumen de alumnos',wide:true});
 }
-function setNbView(v){window.nbView=v==='resumen'?'resumen':'bloques';try{localStorage.setItem(KEY+'_nbview',window.nbView)}catch(e){}render();const sw=document.querySelector('.nb-switch');if(sw)sw.scrollIntoView({block:'start',behavior:'smooth'})}
+/* Inicio: tarjeta chica a la derecha del saludo (solo en Inicio) */
+function welcomeMini(){
+  const top=document.querySelector('header.top');if(!top)return;let w=top.querySelector('.welcome-mini');
+  if(active==='inicio'&&state.profile.onboarded){
+    if(!w){w=document.createElement('div');w.className='welcome-mini';top.insertBefore(w,top.querySelector('.tag'))}
+    w.innerHTML=`<span class="wm-ico" aria-hidden="true">${mascot(46,'wink')}</span><span><b>${EDITION_TEXT.welcomeTitle}</b><small>${EDITION_TEXT.welcomeText}</small></span>`;
+  }else if(w)w.remove();
+}
+{const _r=render;render=function(){const out=_r.apply(this,arguments);try{welcomeMini()}catch(e){}return out}}
+welcomeMini();
+/* v15.2: el cuaderno se exporta con ceros (Excel y CSV); el modo se apaga siempre al terminar */
+const NOTA_CEROS='Las casillas vacías se cuentan como 0 para acercarse a la calificación real. No son calificaciones oficiales.';
+function conCeros(fn){return function(){EXPORT_CEROS=true;try{return fn.apply(this,arguments)}finally{EXPORT_CEROS=false}}}
+exportRealXLSX=conCeros(exportRealXLSX);exportFullCSV=conCeros(exportFullCSV);
+{const _b=buildNotebookSheets;buildNotebookSheets=function(g){const sh=_b(g);if(EXPORT_CEROS&&sh&&sh[0])sh[0].rows.push([],[{v:'Nota: '+NOTA_CEROS}]);return sh}}
+{const _n=notebookRows;notebookRows=function(g){const rows=_n(g);if(EXPORT_CEROS&&Array.isArray(rows))rows.push([],['Nota: '+NOTA_CEROS]);return rows}}
 /* Botón «Buscar actualización» (Más): pide la versión más nueva y recarga. Tus datos no se tocan. */
 async function buscarActualizacion(){
   if(!/^https?:$/.test(location.protocol))return notify('Esta copia se abrió como archivo: para actualizarla, abre la dirección de internet de '+APP_NAME+'.','info',{ms:8000});
@@ -518,7 +638,9 @@ async function buscarActualizacion(){
 i = html.rfind('</script>')
 if html.count('</script>') != 1:
     sys.exit('ERROR: se esperaba un solo </script>')
-html = html[:i] + JS_TABLET + html[i:]
+import os as _os
+FO_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'formato_oficial.js'), encoding='utf-8').read()
+html = html[:i] + JS_TABLET + FO_JS + html[i:]
 
 open(DESTINO, 'w', encoding='utf-8').write(html)
 
