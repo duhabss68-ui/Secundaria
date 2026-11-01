@@ -13,7 +13,7 @@ import sys
 ORIGEN, DESTINO = sys.argv[1], sys.argv[2]
 # Versión de la edición para tablet: súbela en cada entrega. Con ella se genera también sw.js,
 # así la tablet sabe que hay versión nueva.
-TABLET_VERSION = '1.9'
+TABLET_VERSION = '1.10'
 html = open(ORIGEN, encoding='utf-8').read()
 
 
@@ -376,6 +376,8 @@ label:has(>input[type=checkbox]),label:has(>input[type=radio]){min-height:40px}
 .sheet-wrap.dens-normal{--rowh:50px}
 .sheet-wrap.dens-wide{--rowh:58px}
 .gradegrid .colbtn{min-height:52px}
+/* Nombre del alumno en Calificar: 11 px para que se lea completo (solo el nombre) */
+#gradeGrid tbody td.stickycol{font-size:11px}
 .gradegrid .gh-name{-webkit-hyphens:auto;hyphens:auto;word-break:normal;overflow-wrap:normal}
 .sheet-wrap{-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 /* Copias automáticas: lista de puntos de regreso */
