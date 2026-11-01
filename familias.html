@@ -133,6 +133,7 @@
   .act-nombre { font-weight: 700; overflow-wrap: anywhere; }
   .act-sub { font-size: .82rem; color: var(--suave); margin-top: 2px; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
   .estado-txt.ok { color: var(--ok); font-weight: 700; } .estado-txt.pend { color: var(--pend); font-weight: 700; } .estado-txt.no { color: var(--no); font-weight: 700; }
+  .calif { font-weight: 800; color: var(--texto); background: var(--bg); border: 1px solid var(--borde); border-radius: 8px; padding: 0 8px; font-size: .82rem; }
   .nivel { border-radius: 999px; padding: 1px 9px; font-weight: 700; font-size: .75rem; border: 1px solid currentColor; }
   .nivel.apoyo { color: var(--no); } .nivel.proceso { color: var(--pend); } .nivel.esperado { color: var(--ok); } .nivel.otro { color: var(--suave); }
   .act-com { font-size: .85rem; color: var(--suave); margin-top: 4px; font-style: italic; }
@@ -268,8 +269,8 @@ function datosDemo(codigo) {
     ],
     actividades: [
       { fecha: dia(3), actividad: 'Guion del podcast (final)', tipo: 'Proyecto', estado: 'pendiente', nivel: '' },
-      { fecha: dia(2), actividad: 'Edición: cortar silencios y ruido', tipo: 'Práctica', estado: 'entregado', nivel: 'En proceso', comentario: 'Le costó usar la herramienta de reducción de ruido.' },
-      { fecha: dia(0), actividad: 'Guion del podcast (borrador)', tipo: 'Proyecto', estado: 'entregado', nivel: 'Nivel esperado' },
+      { fecha: dia(2), actividad: 'Edición: cortar silencios y ruido', tipo: 'Práctica', estado: 'entregado', calificacion: '7 / 10', nivel: 'En proceso', comentario: 'Le costó usar la herramienta de reducción de ruido.' },
+      { fecha: dia(0), actividad: 'Guion del podcast (borrador)', tipo: 'Proyecto', estado: 'entregado', calificacion: '9 / 10', nivel: 'Nivel esperado' },
       { fecha: dia(-3), actividad: 'Práctica 4: grabar voces en Audacity', tipo: 'Práctica', estado: 'entregado', nivel: 'Nivel esperado' },
       { fecha: dia(-5), actividad: 'Mapa mental: historia de Xalisco', tipo: 'Clase', estado: 'no_entregado', nivel: '' },
       { fecha: dia(-7), actividad: 'Investigación: origen del Día de Muertos', tipo: 'Tarea', estado: 'entregado', nivel: 'Nivel esperado' },
@@ -379,6 +380,7 @@ function render(d) {
                     <span class="estado-txt ${a.e}">${txt}</span>
                     ${a.f ? `<span>${esc(fDia.format(a.f))}</span>` : ''}
                     ${a.tipo ? `<span>${esc(a.tipo)}</span>` : ''}
+                    ${a.calificacion ? `<span class="calif" title="Calificación">${esc(a.calificacion)}</span>` : ''}
                     ${nv ? `<span class="nivel ${nv[0]}">${esc(nv[1])}</span>` : ''}
                   </div>
                   ${a.comentario ? `<div class="act-com">${esc(a.comentario)}</div>` : ''}

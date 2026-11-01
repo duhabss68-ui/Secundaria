@@ -2,7 +2,7 @@
 /* ===== 99_portal_familias.js — Portal de familias (Más › Portal de familias) =====
    · La app sigue funcionando sin internet. Con conexión, «Publicar ahora» manda a tu Google Sheets
      un resumen de los grupos elegidos: actividades de las últimas semanas (entregó / pendiente /
-     no entregó y nivel de logro, SIN calificaciones numéricas), anuncios y notas para la familia.
+     no entregó, calificación y nivel de logro; la calificación se puede apagar), anuncios y notas.
    · Cada padre entra a familias.html con el código de su hijo (tarjeta con QR) y ve SOLO lo de su hijo.
    · La configuración (dirección del script, clave, anuncios, notas y códigos) se guarda aparte,
      NO va en las copias de seguridad: así una copia enviada por WhatsApp nunca lleva tu clave.
@@ -14,7 +14,7 @@ let pfNotaGrupo='',pfBusy=false,pfAnEdit=null;
 function pfCfg(){
   let c={};try{c=JSON.parse(localStorage.getItem(PF_KEY)||'{}')||{}}catch(e){}
   return {url:c.url||'',clave:c.clave||'',portal:c.portal||'',grupos:Array.isArray(c.grupos)?c.grupos:[],semanas:[2,4,6,8].includes(c.semanas)?c.semanas:4,
-    nivel:c.nivel!==false,anuncios:Array.isArray(c.anuncios)?c.anuncios:[],notas:c.notas&&typeof c.notas==='object'?c.notas:{},
+    nivel:c.nivel!==false,calif:c.calif!==false,anuncios:Array.isArray(c.anuncios)?c.anuncios:[],notas:c.notas&&typeof c.notas==='object'?c.notas:{},
     codigos:c.codigos&&typeof c.codigos==='object'?c.codigos:{},ultima:c.ultima||'',probado:c.probado||''};
 }
 function pfSave(c){try{localStorage.setItem(PF_KEY,JSON.stringify(c));return true}catch(e){warn('No se pudo guardar la configuración del portal en este navegador.');return false}}
@@ -28,20 +28,26 @@ function pfShift(iso,dias){const [y,m,d]=iso.split('-').map(Number);const x=new 
 function pfNid(){return 'an'+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
 
 /* ---------- Qué se publica ---------- */
-function pfEstado(a,sid,conNivel){
+/* Calificación como la ve el docente: «8.5 / 10». Solo número y rúbrica (en icono y nivel ya se ve el estado o el nivel). */
+function pfCalif(a,sid){
+  if(a.mode!=='num'&&a.mode!=='rubric')return '';
+  const v=scoreOf(a,sid);if(v===undefined||v===null||!isFinite(v))return '';
+  return numfmt(round2(v))+' / '+numfmt(a.max);
+}
+function pfEstado(a,sid,conNivel,conCalif){
   const k=a.id+'|'+sid;
-  if(!hasEvaluation(a,sid))return {estado:'pendiente',nivel:'',comentario:''};
+  if(!hasEvaluation(a,sid))return {estado:'pendiente',nivel:'',comentario:'',calificacion:''};
   if(a.mode==='icon'){
-    if(state.marks[k]==='NO')return {estado:'no_entregado',nivel:'',comentario:''};
-    return {estado:'entregado',nivel:'',comentario:state.marks[k]==='MID'?'Entregó incompleto':''};
+    if(state.marks[k]==='NO')return {estado:'no_entregado',nivel:'',comentario:'',calificacion:''};
+    return {estado:'entregado',nivel:'',comentario:state.marks[k]==='MID'?'Entregó incompleto':'',calificacion:''};
   }
-  if(a.mode==='num'&&Number(state.grades[k])===0)return {estado:'no_entregado',nivel:'',comentario:''};
+  if(a.mode==='num'&&Number(state.grades[k])===0)return {estado:'no_entregado',nivel:'',comentario:'',calificacion:conCalif?pfCalif(a,sid):''};
   let nivel='';
   if(conNivel){
     if(a.mode==='level'){const m=LEVEL_MARKS.find(x=>x.c===state.marks[k]);nivel=m?m.name:''}
     else{const m=levelOfTen(gradeOnTen(a,sid));nivel=m?m.name:''}
   }
-  return {estado:'entregado',nivel,comentario:''};
+  return {estado:'entregado',nivel,comentario:'',calificacion:conCalif?pfCalif(a,sid):''};
 }
 function pfGruposElegidos(c){return activeGroups().filter(g=>c.grupos.includes(g.id))}
 function pfPaquete(){
@@ -54,8 +60,8 @@ function pfPaquete(){
       alumnos.push({id:st.id,grupo:g.name,nombre:st.name});
       const n=c.notas[st.id];if(n&&n.t&&n.t.trim())notas.push({alumno_id:st.id,nota:n.t.trim(),fecha:n.f||hoy});
       for(const a of acts){
-        const e=pfEstado(a,st.id,c.nivel);
-        actividades.push({alumno_id:st.id,fecha:a.date,actividad:a.name,tipo:scopeName(g,a.scopeId)||a.type||'',estado:e.estado,nivel:e.nivel,comentario:e.comentario});
+        const e=pfEstado(a,st.id,c.nivel,c.calif);
+        actividades.push({alumno_id:st.id,fecha:a.date,actividad:a.name,tipo:scopeName(g,a.scopeId)||a.type||'',estado:e.estado,calificacion:e.calificacion,nivel:e.nivel,comentario:e.comentario});
       }
     }
   }
@@ -204,7 +210,7 @@ VIEWS.familias=function(c){
     <div class="pf-chips">${gs.map(g=>`<label class="pf-chip ${cf.grupos.includes(g.id)?'on':''}"><input type="checkbox" ${cf.grupos.includes(g.id)?'checked':''} onchange="pfToggleGrupo('${esc(g.id)}',this.checked)"> ${esc(g.name)}</label>`).join('')||'<span class="helper">Aún no tienes grupos.</span>'}</div>
     ${resumen?`<p class="helper">${resumen}</p>`:''}
     <div class="actions"><button class="primary big" ${pfBusy||!listo||!elegidos.length?'disabled':''} onclick="pfPublicar()">${pfBusy?'Publicando…':'📤 Publicar ahora'}</button></div>
-    <p class="helper">${cf.ultima?'Última publicación: <b>'+esc(pfHace(cf.ultima))+'</b>.':'Todavía no has publicado.'} Los padres ven lo de la última publicación, no los cambios en vivo. No se envían calificaciones numéricas.</p>
+    <p class="helper">${cf.ultima?'Última publicación: <b>'+esc(pfHace(cf.ultima))+'</b>.':'Todavía no has publicado.'} Los padres ven lo de la última publicación, no los cambios en vivo. ${cf.calif?'Se envían las calificaciones de cada actividad.':'No se envían calificaciones numéricas.'}</p>
   </section>
 
   <section class="panel">
@@ -242,6 +248,7 @@ VIEWS.familias=function(c){
     <p class="helper">Si la dejas vacía se usa <b>${esc(pfPortal({portal:''}))}</b>.</p>
     <div class="pf-grid">
       <label>Semanas que se muestran<select class="field" onchange="pfSet('semanas',Number(this.value));render()">${[2,4,6,8].map(n=>`<option value="${n}" ${cf.semanas===n?'selected':''}>Últimas ${n}</option>`).join('')}</select></label>
+      <label class="check-inline pf-chk"><input type="checkbox" ${cf.calif?'checked':''} onchange="pfSet('calif',this.checked);render()"> Mostrar la calificación de cada actividad (ej. 8.5 / 10)</label>
       <label class="check-inline pf-chk"><input type="checkbox" ${cf.nivel?'checked':''} onchange="pfSet('nivel',this.checked);render()"> Mostrar nivel de logro (Requiere apoyo / En proceso / Nivel esperado)</label>
     </div>
     <div class="actions"><button class="secondary" onclick="pfProbar()">Probar conexión</button></div>
