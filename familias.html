@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0f4c5c">
+<title>Mi Bitácora · Familias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ============ Configuración ============ */
+  :root {
+    --petroleo: #0f4c5c;
+    --petroleo-2: #0b3a46;
+    --turquesa: #1a9e9a;
+    --ambar: #f2a541;
+    --bg: #f3f6f7;
+    --card: #ffffff;
+    --texto: #16262c;
+    --suave: #5b6f76;
+    --borde: #dde6e8;
+    --ok: #1f8a4c;    --ok-bg: #e4f5ea;
+    --pend: #a66a00;  --pend-bg: #fdf1dc;
+    --no: #c0392b;    --no-bg: #fbe6e3;
+    --sombra: 0 1px 2px rgba(15,76,92,.06), 0 4px 16px rgba(15,76,92,.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0d1a1e; --card: #15262b; --texto: #e6eef0; --suave: #93a7ad; --borde: #24393f;
+      --ok: #5fd08f; --ok-bg: #173327; --pend: #f2b85c; --pend-bg: #3a2d14; --no: #ff8a7d; --no-bg: #3d1d1a;
+      --sombra: none;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0d1a1e; --card: #15262b; --texto: #e6eef0; --suave: #93a7ad; --borde: #24393f;
+    --ok: #5fd08f; --ok-bg: #173327; --pend: #f2b85c; --pend-bg: #3a2d14; --no: #ff8a7d; --no-bg: #3d1d1a;
+    --sombra: none;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg); color: var(--texto);
+    font: 16px/1.45 "Nunito Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  .contenedor { max-width: 560px; margin: 0 auto; padding: 0 16px 40px; }
+  [hidden] { display: none !important; }
+
+  /* ---------- Logo ---------- */
+  .logo { width: 44px; height: 44px; border-radius: 12px; background: var(--ambar); display: grid; place-items: center; flex: none; }
+  .logo svg { width: 28px; height: 28px; }
+
+  /* ---------- Acceso ---------- */
+  #acceso { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 32px 0; }
+  .acceso-cab { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+  .acceso-cab h1 { margin: 0; font-size: 1.35rem; line-height: 1.15; }
+  .acceso-cab small { display: block; color: var(--suave); font-weight: 600; font-size: .85rem; }
+  .tarjeta { background: var(--card); border: 1px solid var(--borde); border-radius: 16px; box-shadow: var(--sombra); padding: 20px; }
+  label { font-weight: 700; display: block; margin-bottom: 8px; }
+  .ayuda { color: var(--suave); font-size: .92rem; margin: 0 0 16px; }
+  #codigo {
+    width: 100%; font: 800 1.6rem/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: .12em;
+    text-align: center; text-transform: uppercase; padding: 14px 10px; border-radius: 12px;
+    border: 2px solid var(--borde); background: var(--bg); color: var(--texto); outline: none;
+  }
+  #codigo:focus { border-color: var(--turquesa); }
+  .check { display: flex; align-items: center; gap: 8px; margin: 14px 0 18px; font-size: .92rem; color: var(--suave); }
+  .check input { width: 18px; height: 18px; accent-color: var(--turquesa); }
+  .btn {
+    width: 100%; border: 0; border-radius: 12px; padding: 14px; font: 800 1rem "Nunito Sans", sans-serif;
+    background: var(--petroleo); color: #fff; cursor: pointer;
+  }
+  .btn:disabled { opacity: .6; cursor: wait; }
+  .error { color: var(--no); background: var(--no-bg); border-radius: 10px; padding: 10px 12px; margin-top: 14px; font-weight: 600; font-size: .92rem; }
+  .privado { color: var(--suave); font-size: .8rem; text-align: center; margin-top: 18px; }
+
+  /* ---------- Panel ---------- */
+  .barra {
+    position: sticky; top: 0; z-index: 5; background: var(--petroleo); color: #fff;
+    padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
+  }
+  .barra .dentro { max-width: 560px; margin: 0 auto; display: flex; align-items: center; gap: 10px; }
+  .barra .logo { width: 34px; height: 34px; border-radius: 9px; }
+  .barra .logo svg { width: 22px; height: 22px; }
+  .barra strong { flex: 1; font-size: 1rem; }
+  .salir { background: rgba(255,255,255,.14); color: #fff; border: 0; border-radius: 999px; padding: 7px 14px; font: 700 .85rem "Nunito Sans", sans-serif; cursor: pointer; }
+
+  .alumno { margin-top: 16px; background: linear-gradient(135deg, var(--petroleo), var(--turquesa)); color: #fff; border-radius: 18px; padding: 18px 20px; }
+  .alumno h2 { margin: 0; font-size: 1.5rem; }
+  .alumno .grupo { display: inline-block; margin-top: 6px; background: rgba(255,255,255,.18); border-radius: 999px; padding: 2px 12px; font-weight: 700; font-size: .85rem; }
+  .alumno .act { margin: 10px 0 0; font-size: .82rem; opacity: .9; }
+
+  .resumen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+  .cifra { background: var(--card); border: 1px solid var(--borde); border-radius: 14px; padding: 12px 8px; text-align: center; box-shadow: var(--sombra); }
+  .cifra b { display: block; font-size: 1.6rem; line-height: 1.1; }
+  .cifra span { font-size: .78rem; color: var(--suave); font-weight: 700; }
+  .cifra.ok b { color: var(--ok); } .cifra.pend b { color: var(--pend); } .cifra.no b { color: var(--no); }
+  .resumen-titulo { margin: 18px 0 0; font-size: .8rem; color: var(--suave); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+
+  h3 { font-size: 1.05rem; margin: 26px 0 10px; display: flex; align-items: center; gap: 8px; }
+  .vacio { color: var(--suave); font-size: .92rem; background: var(--card); border: 1px dashed var(--borde); border-radius: 14px; padding: 14px; text-align: center; }
+
+  .anuncio { background: var(--card); border: 1px solid var(--borde); border-left: 5px solid var(--turquesa); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--sombra); }
+  .anuncio.tarea { border-left-color: var(--ambar); }
+  .anuncio.evento { border-left-color: var(--petroleo); }
+  .anuncio .meta { display: flex; justify-content: space-between; gap: 8px; font-size: .78rem; color: var(--suave); font-weight: 700; }
+  .anuncio .chip { text-transform: uppercase; letter-spacing: .04em; }
+  .anuncio h4 { margin: 4px 0 4px; font-size: 1rem; }
+  .anuncio p { margin: 0; white-space: pre-line; }
+
+  .nota { background: var(--pend-bg); border-radius: 14px; padding: 14px 16px; }
+  .nota p { margin: 0; white-space: pre-line; }
+  .nota small { display: block; color: var(--suave); margin-top: 6px; font-weight: 600; }
+
+  details.semana { background: var(--card); border: 1px solid var(--borde); border-radius: 14px; margin-bottom: 10px; box-shadow: var(--sombra); overflow: hidden; }
+  details.semana summary { list-style: none; cursor: pointer; padding: 14px 16px; display: flex; align-items: center; gap: 10px; font-weight: 800; }
+  details.semana summary::-webkit-details-marker { display: none; }
+  details.semana summary .tit { flex: 1; }
+  details.semana summary .cuenta { font-size: .8rem; color: var(--suave); font-weight: 700; }
+  details.semana summary::after { content: "›"; font-size: 1.4rem; color: var(--suave); transition: transform .2s; }
+  details.semana[open] summary::after { transform: rotate(90deg); }
+  .act-lista { list-style: none; margin: 0; padding: 0 12px 10px; }
+  .act-item { display: flex; gap: 12px; padding: 10px 4px; border-top: 1px solid var(--borde); }
+  .icono { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; flex: none; font-weight: 800; font-size: .95rem; }
+  .icono.ok { background: var(--ok-bg); color: var(--ok); }
+  .icono.pend { background: var(--pend-bg); color: var(--pend); }
+  .icono.no { background: var(--no-bg); color: var(--no); }
+  .act-cuerpo { flex: 1; min-width: 0; }
+  .act-nombre { font-weight: 700; overflow-wrap: anywhere; }
+  .act-sub { font-size: .82rem; color: var(--suave); margin-top: 2px; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+  .estado-txt.ok { color: var(--ok); font-weight: 700; } .estado-txt.pend { color: var(--pend); font-weight: 700; } .estado-txt.no { color: var(--no); font-weight: 700; }
+  .nivel { border-radius: 999px; padding: 1px 9px; font-weight: 700; font-size: .75rem; border: 1px solid currentColor; }
+  .nivel.apoyo { color: var(--no); } .nivel.proceso { color: var(--pend); } .nivel.esperado { color: var(--ok); } .nivel.otro { color: var(--suave); }
+  .act-com { font-size: .85rem; color: var(--suave); margin-top: 4px; font-style: italic; }
+
+  .demo { background: var(--ambar); color: #3a2600; text-align: center; font-weight: 800; font-size: .8rem; padding: 6px 12px; }
+  .pie { color: var(--suave); font-size: .78rem; text-align: center; margin-top: 30px; }
+  .cargando { text-align: center; color: var(--suave); padding: 60px 0; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div id="aviso-demo" class="demo" hidden>Modo de prueba · los datos no son reales</div>
+
+<!-- ================= Acceso ================= -->
+<main id="acceso" class="contenedor">
+  <div class="acceso-cab">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 32 32"><path d="M10 4v17a7 7 0 1 0 7-7h-3" fill="none" stroke="#0f4c5c" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 4l-2.2-1.2" stroke="#0f4c5c" stroke-width="3.2" stroke-linecap="round"/></svg>
+    </div>
+    <div>
+      <h1>Mi Bitácora · Familias</h1>
+      <small>Prof. Nicolás Contreras Medina</small>
+    </div>
+  </div>
+
+  <form id="form-acceso" class="tarjeta" autocomplete="off">
+    <label for="codigo">Código de su hijo o hija</label>
+    <p class="ayuda">Está en la tarjeta que le entregó el maestro. También puede escanear el código QR.</p>
+    <input id="codigo" inputmode="text" maxlength="9" placeholder="XXXX-XXXX" spellcheck="false" autocapitalize="characters" aria-describedby="error">
+    <label class="check"><input type="checkbox" id="recordar" checked> Recordar en este celular</label>
+    <button class="btn" id="btn-entrar" type="submit">Entrar</button>
+    <div id="error" class="error" role="alert" hidden></div>
+  </form>
+  <p class="privado">Información confidencial. Cada código muestra solo los datos de un alumno.</p>
+</main>
+
+<!-- ================= Panel ================= -->
+<div id="panel" hidden>
+  <header class="barra">
+    <div class="dentro">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path d="M10 4v17a7 7 0 1 0 7-7h-3" fill="none" stroke="#0f4c5c" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <strong>Mi Bitácora · Familias</strong>
+      <button class="salir" id="btn-salir" type="button">Salir</button>
+    </div>
+  </header>
+  <main class="contenedor" id="contenido"></main>
+</div>
+
+<script>
+/* =====================================================================
+   1) Pega aquí la URL de tu Apps Script (la que termina en /exec).
+      Mientras esté vacía, la página funciona en MODO DE PRUEBA.
+   ===================================================================== */
+const API_URL = 'https://script.google.com/macros/s/AKfycbz_G4QxXSxUk5te4CnjoqtNezfYgtZwApxCLxXF1c5HRh_wA1VCxiJDPebohdj5ymHuSQ/exec';
+
+const LLAVE = 'mb_familias_codigo';
+const params = new URLSearchParams(location.search);
+const DEMO = !API_URL || params.has('demo');
+const $ = s => document.querySelector(s);
+
+/* ---------- Utilidades ---------- */
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const sinAcentos = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+const normCodigo = s => String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+const fmtCodigo = s => { const n = normCodigo(s).slice(0, 8); return n.length > 4 ? n.slice(0, 4) + '-' + n.slice(4) : n; };
+
+function aFecha(iso) {
+  if (!iso) return null;
+  const [y, m, d] = String(iso).slice(0, 10).split('-').map(Number);
+  return y ? new Date(y, m - 1, d) : null;
+}
+function isoLocal(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function lunesDe(d) { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; }
+const fDia = new Intl.DateTimeFormat('es-MX', { weekday: 'short', day: 'numeric', month: 'short' });
+const fCorta = new Intl.DateTimeFormat('es-MX', { day: 'numeric', month: 'long' });
+const fHora = new Intl.DateTimeFormat('es-MX', { weekday: 'long', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit' });
+
+function etiquetaSemana(lunes) {
+  const hoy = lunesDe(new Date()).getTime();
+  const dif = Math.round((hoy - lunes.getTime()) / (7 * 864e5));
+  const viernes = new Date(lunes.getTime() + 4 * 864e5);
+  const rango = lunes.getMonth() === viernes.getMonth()
+    ? lunes.getDate() + ' al ' + fCorta.format(viernes)
+    : fCorta.format(lunes) + ' al ' + fCorta.format(viernes);
+  if (dif === 0) return 'Esta semana · ' + rango;
+  if (dif === 1) return 'Semana pasada · ' + rango;
+  return 'Semana del ' + rango;
+}
+
+function estadoDe(s) {
+  const t = sinAcentos(s).trim();
+  if (/^no|no.?entreg|sin.?entreg|falt/.test(t)) return 'no';
+  if (/entreg|complet|hecho|^si$|^ok$/.test(t)) return 'ok';
+  return 'pend';
+}
+const ESTADO = { ok: ['✓', 'Entregó'], pend: ['•', 'Pendiente'], no: ['✕', 'No entregó'] };
+
+function nivelDe(s) {
+  const t = sinAcentos(s);
+  if (!t.trim()) return null;
+  if (/apoyo/.test(t)) return ['apoyo', 'Requiere apoyo'];
+  if (/proceso/.test(t)) return ['proceso', 'En proceso'];
+  if (/esperado|logrado|destacado/.test(t)) return ['esperado', 'Nivel esperado'];
+  return ['otro', String(s)];
+}
+
+function guardar(c) { try { localStorage.setItem(LLAVE, c); } catch (e) {} }
+function recuperar() { try { return localStorage.getItem(LLAVE) || ''; } catch (e) { return ''; } }
+function olvidar() { try { localStorage.removeItem(LLAVE); } catch (e) {} }
+
+/* ---------- Datos ---------- */
+async function consultar(codigo) {
+  if (DEMO) return datosDemo(codigo);
+  const r = await fetch(API_URL + '?c=' + encodeURIComponent(codigo), { method: 'GET', cache: 'no-store' });
+  if (!r.ok) throw new Error('red');
+  return r.json();
+}
+
+function datosDemo(codigo) {
+  const lunes = lunesDe(new Date());
+  const dia = k => isoLocal(new Date(lunes.getTime() + k * 864e5));
+  return new Promise(res => setTimeout(() => res({
+    ok: true,
+    alumno: { nombre: 'Ana P.', grupo: '2A' },
+    actualizado: isoLocal(new Date()) + 'T18:30',
+    nota: { texto: 'Muy buena participación en su equipo esta semana. Le falta entregar el guion final.', fecha: dia(3) },
+    anuncios: [
+      { fecha: dia(0), tipo: 'Material', titulo: 'Audífonos para el podcast', texto: 'A partir del miércoles traer audífonos con cable para editar en Audacity.' },
+      { fecha: dia(0), tipo: 'Tarea', titulo: 'Guion final del podcast', texto: 'Entregar el guion impreso el jueves. Mínimo una cuartilla, con nombres del equipo.' },
+      { fecha: dia(-2), tipo: 'Evento', titulo: 'Festival de noviembre', texto: 'Los mejores podcasts se presentarán en el festival. Están invitados.' },
+    ],
+    actividades: [
+      { fecha: dia(3), actividad: 'Guion del podcast (final)', tipo: 'Proyecto', estado: 'pendiente', nivel: '' },
+      { fecha: dia(2), actividad: 'Edición: cortar silencios y ruido', tipo: 'Práctica', estado: 'entregado', nivel: 'En proceso', comentario: 'Le costó usar la herramienta de reducción de ruido.' },
+      { fecha: dia(0), actividad: 'Guion del podcast (borrador)', tipo: 'Proyecto', estado: 'entregado', nivel: 'Nivel esperado' },
+      { fecha: dia(-3), actividad: 'Práctica 4: grabar voces en Audacity', tipo: 'Práctica', estado: 'entregado', nivel: 'Nivel esperado' },
+      { fecha: dia(-5), actividad: 'Mapa mental: historia de Xalisco', tipo: 'Clase', estado: 'no_entregado', nivel: '' },
+      { fecha: dia(-7), actividad: 'Investigación: origen del Día de Muertos', tipo: 'Tarea', estado: 'entregado', nivel: 'Nivel esperado' },
+    ],
+  }), 350));
+}
+
+/* ---------- Pantallas ---------- */
+function mostrarAcceso(msg) {
+  $('#panel').hidden = true;
+  $('#acceso').hidden = false;
+  const e = $('#error');
+  e.hidden = !msg; e.textContent = msg || '';
+}
+
+function render(d) {
+  const acts = (d.actividades || []).map(a => ({ ...a, f: aFecha(a.fecha), e: estadoDe(a.estado) }));
+
+  // Agrupa por semana (de lunes a domingo)
+  const semanas = new Map();
+  acts.forEach(a => {
+    const k = a.f ? isoLocal(lunesDe(a.f)) : 'sin-fecha';
+    if (!semanas.has(k)) semanas.set(k, []);
+    semanas.get(k).push(a);
+  });
+  const claves = [...semanas.keys()].sort().reverse();
+
+  // Resumen de la semana más reciente con actividades
+  const reciente = claves.length ? semanas.get(claves[0]) : [];
+  const cuenta = t => reciente.filter(a => a.e === t).length;
+  const tituloResumen = claves.length && claves[0] !== 'sin-fecha' ? etiquetaSemana(aFecha(claves[0])) : 'Actividades';
+
+  let act = '';
+  if (d.actualizado) {
+    const [f, h] = String(d.actualizado).split('T');
+    const fecha = aFecha(f);
+    if (fecha && h) { const [hh, mm] = h.split(':').map(Number); fecha.setHours(hh || 0, mm || 0); }
+    if (fecha) act = 'Actualizado el ' + fHora.format(fecha);
+  }
+
+  const html = [];
+  html.push(`
+    <section class="alumno">
+      <h2>${esc(d.alumno.nombre)}</h2>
+      <span class="grupo">Grupo ${esc(d.alumno.grupo)}</span>
+      ${act ? `<p class="act">${esc(act)}</p>` : ''}
+    </section>`);
+
+  if (reciente.length) {
+    html.push(`
+      <p class="resumen-titulo">${esc(tituloResumen)}</p>
+      <section class="resumen" aria-label="Resumen">
+        <div class="cifra ok"><b>${cuenta('ok')}</b><span>Entregadas</span></div>
+        <div class="cifra pend"><b>${cuenta('pend')}</b><span>Pendientes</span></div>
+        <div class="cifra no"><b>${cuenta('no')}</b><span>Sin entregar</span></div>
+      </section>`);
+  }
+
+  // Anuncios
+  html.push('<h3>📢 Anuncios</h3>');
+  if ((d.anuncios || []).length) {
+    d.anuncios.forEach(a => {
+      const tipo = sinAcentos(a.tipo);
+      const clase = /tarea/.test(tipo) ? 'tarea' : /evento/.test(tipo) ? 'evento' : '';
+      const f = aFecha(a.fecha);
+      html.push(`
+        <article class="anuncio ${clase}">
+          <div class="meta"><span class="chip">${esc(a.tipo || 'Aviso')}</span><span>${f ? esc(fDia.format(f)) : ''}</span></div>
+          <h4>${esc(a.titulo)}</h4>
+          ${a.texto ? `<p>${esc(a.texto)}</p>` : ''}
+        </article>`);
+    });
+  } else {
+    html.push('<div class="vacio">No hay anuncios por ahora.</div>');
+  }
+
+  // Nota del maestro
+  if (d.nota && d.nota.texto) {
+    const f = aFecha(d.nota.fecha);
+    html.push(`
+      <h3>✏️ Nota del maestro</h3>
+      <div class="nota"><p>${esc(d.nota.texto)}</p>${f ? `<small>${esc(fDia.format(f))}</small>` : ''}</div>`);
+  }
+
+  // Actividades por semana
+  html.push('<h3>📚 Actividades</h3>');
+  if (!claves.length) {
+    html.push('<div class="vacio">Aún no hay actividades publicadas.</div>');
+  } else {
+    claves.forEach((k, i) => {
+      const lista = semanas.get(k).sort((x, y) => (y.f || 0) - (x.f || 0));
+      const ent = lista.filter(a => a.e === 'ok').length;
+      const titulo = k === 'sin-fecha' ? 'Sin fecha' : etiquetaSemana(aFecha(k));
+      html.push(`
+        <details class="semana" ${i === 0 ? 'open' : ''}>
+          <summary><span class="tit">${esc(titulo)}</span><span class="cuenta">${ent}/${lista.length}</span></summary>
+          <ul class="act-lista">
+            ${lista.map(a => {
+              const [ic, txt] = ESTADO[a.e];
+              const nv = nivelDe(a.nivel);
+              return `
+              <li class="act-item">
+                <span class="icono ${a.e}" aria-hidden="true">${ic}</span>
+                <div class="act-cuerpo">
+                  <div class="act-nombre">${esc(a.actividad)}</div>
+                  <div class="act-sub">
+                    <span class="estado-txt ${a.e}">${txt}</span>
+                    ${a.f ? `<span>${esc(fDia.format(a.f))}</span>` : ''}
+                    ${a.tipo ? `<span>${esc(a.tipo)}</span>` : ''}
+                    ${nv ? `<span class="nivel ${nv[0]}">${esc(nv[1])}</span>` : ''}
+                  </div>
+                  ${a.comentario ? `<div class="act-com">${esc(a.comentario)}</div>` : ''}
+                </div>
+              </li>`;
+            }).join('')}
+          </ul>
+        </details>`);
+    });
+  }
+
+  html.push('<p class="pie">Si tiene dudas, comuníquese directamente con el maestro.<br>Información confidencial para la familia del alumno.</p>');
+
+  $('#contenido').innerHTML = html.join('');
+  $('#acceso').hidden = true;
+  $('#panel').hidden = false;
+  window.scrollTo(0, 0);
+}
+
+async function entrar(codigo) {
+  const c = fmtCodigo(codigo);
+  if (normCodigo(c).length !== 8) { mostrarAcceso('El código tiene 8 letras y números, por ejemplo K7PQ-29XM.'); return; }
+  const btn = $('#btn-entrar');
+  btn.disabled = true; btn.textContent = 'Consultando…';
+  $('#error').hidden = true;
+  try {
+    const d = await consultar(c);
+    if (!d || !d.ok) { olvidar(); mostrarAcceso((d && d.error) || 'Código no válido.'); return; }
+    if ($('#recordar').checked) guardar(c); else olvidar();
+    render(d);
+  } catch (e) {
+    mostrarAcceso('No se pudo conectar. Revise su internet e intente de nuevo.');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Entrar';
+  }
+}
+
+/* ---------- Eventos ---------- */
+$('#codigo').addEventListener('input', e => {
+  const v = fmtCodigo(e.target.value);
+  if (v !== e.target.value) e.target.value = v;
+});
+$('#form-acceso').addEventListener('submit', e => { e.preventDefault(); entrar($('#codigo').value); });
+$('#btn-salir').addEventListener('click', () => { olvidar(); $('#codigo').value = ''; mostrarAcceso(''); });
+
+/* ---------- Inicio ---------- */
+if (DEMO) $('#aviso-demo').hidden = false;
+(function inicio() {
+  // El QR trae ?c=CODIGO; se quita de la barra para que no quede en el historial
+  const delQR = params.get('c');
+  if (delQR) {
+    params.delete('c');
+    const resto = params.toString();
+    history.replaceState(null, '', location.pathname + (resto ? '?' + resto : ''));
+  }
+  const c = delQR || recuperar();
+  if (c) { $('#codigo').value = fmtCodigo(c); entrar(c); }
+})();
+</script>
+</body>
+</html>

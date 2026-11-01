@@ -13,7 +13,7 @@ import sys
 ORIGEN, DESTINO = sys.argv[1], sys.argv[2]
 # Versión de la edición para tablet: súbela en cada entrega. Con ella se genera también sw.js,
 # así la tablet sabe que hay versión nueva.
-TABLET_VERSION = '1.10'
+TABLET_VERSION = '1.11'
 html = open(ORIGEN, encoding='utf-8').read()
 
 
@@ -164,6 +164,7 @@ DOCK = ('<nav class="dock" id="dock" aria-label="Menú principal"><span class="d
           'onclick="toggleMenu()"><span class="ic" data-ico="more"></span><span class="lbl">Más</span></button>'
           '<div class="more-menu" id="moreMenu" hidden>'
           '<button data-view="horario"><span class="ic" data-ico="calendar"></span> &nbsp;Mi horario</button>'
+          '<button data-view="familias"><span class="ic" data-ico="users"></span> &nbsp;Portal de familias</button>'
           '<button data-view="datos"><span class="ic" data-ico="save"></span> &nbsp;Copias de seguridad</button>'
           '<button data-view="perfil"><span class="ic" data-ico="settings"></span> &nbsp;Mis datos y colores</button>'
           '<div class="menu-ver"><span>Mi Bitácora · Tablet ' + TABLET_VERSION + '</span>'
@@ -642,7 +643,10 @@ if html.count('</script>') != 1:
     sys.exit('ERROR: se esperaba un solo </script>')
 import os as _os
 FO_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'formato_oficial.js'), encoding='utf-8').read()
-html = html[:i] + JS_TABLET + FO_JS + html[i:]
+# Portal de familias (Más › Portal de familias) y generador de códigos QR para las tarjetas (MIT, sin internet)
+QR_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'qrcode.min.js'), encoding='utf-8').read()
+PF_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'portal_familias.js'), encoding='utf-8').read()
+html = html[:i] + JS_TABLET + FO_JS + '\n' + QR_JS + '\n' + PF_JS + html[i:]
 
 open(DESTINO, 'w', encoding='utf-8').write(html)
 
@@ -667,6 +671,9 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const req = e.request, url = new URL(req.url);
   if (req.method !== 'GET' || url.origin !== location.origin) return;
+  /* Otras páginas del sitio (p. ej. familias.html para los padres) van siempre a internet:
+     nunca se guardan como si fueran la app. */
+  if (!/\/(index\.html)?$/.test(url.pathname) && (req.mode === 'navigate' || /\.html$/.test(url.pathname))) return;
   const pagina = req.mode === 'navigate' || /\/(index\.html)?$/.test(url.pathname);
   if (pagina) {
     /* Con internet: siempre la versión más nueva (sin caché). Sin internet o si tarda: la guardada. */

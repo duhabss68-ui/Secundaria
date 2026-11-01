@@ -45,6 +45,13 @@ Versión de **Mi Bitácora Secundaria v0.13.0** adaptada para usarse con el dedo
 - Copias a mano: «Guardar una copia» (Descargas) y «Enviar copia» (correo, WhatsApp o Drive).
 - Los datos y el formato de los respaldos son los mismos: una copia de la laptop se recupera en la tablet sin cambios.
 
+## Portal de familias (Tablet 1.11)
+
+- En **Más → Portal de familias**: eliges los grupos, escribes anuncios y notas, y tocas **«📤 Publicar ahora»** cuando tengas internet.
+- Se envía a tu Google Sheets privada (script `Code.gs`, que **no** va en este repositorio) solo lo necesario: nombre, grupo, actividades de las últimas semanas con *Entregó / Pendiente / No entregó* y nivel de logro. **No** se envían calificaciones numéricas.
+- Cada familia entra a **https://duhabss68-ui.github.io/Secundaria/familias.html** con el código de su hijo (tarjeta con QR, que se imprime desde la misma pantalla, o mensaje por WhatsApp con «Enviar»).
+- La dirección del script y la clave se guardan solo en la tablet y no van en las copias de seguridad. En `familias.html` se pega la dirección del script en `API_URL`.
+
 ## Para actualizar con una versión nueva de laptop
 
 ```
