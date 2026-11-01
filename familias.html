@@ -10,137 +10,192 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* ============ Configuración ============ */
+  /* ============ Mi Bitácora · Familias — estilos ============ */
   :root {
-    --petroleo: #0f4c5c;
-    --petroleo-2: #0b3a46;
-    --turquesa: #1a9e9a;
-    --ambar: #f2a541;
-    --bg: #f3f6f7;
-    --card: #ffffff;
-    --texto: #16262c;
-    --suave: #5b6f76;
-    --borde: #dde6e8;
-    --ok: #1f8a4c;    --ok-bg: #e4f5ea;
-    --pend: #a66a00;  --pend-bg: #fdf1dc;
-    --no: #c0392b;    --no-bg: #fbe6e3;
-    --sombra: 0 1px 2px rgba(15,76,92,.06), 0 4px 16px rgba(15,76,92,.07);
+    --petroleo: #0f4c5c; --petroleo-2: #0b3a46; --turquesa: #1a9e9a; --ambar: #f2a541;
+    --bg: #eef3f4; --card: #ffffff; --texto: #13232a; --suave: #566a71; --borde: #dbe5e7;
+    --ok: #1d8049; --ok-bg: #e2f4e8; --pend: #9a6200; --pend-bg: #fdf0d8; --no: #b8352a; --no-bg: #fbe5e2;
+    /* mensaje del maestro y observaciones */
+    --msj-bg: #fff6e3; --msj-bg2: #ffe8b8; --msj-borde: #f2a541; --msj-texto: #3d2a00; --msj-eti: #8a5300;
+    --obs-bg: #e6f5f4; --obs-borde: #1a9e9a; --obs-eti: #0d6b68;
+    --sombra: 0 1px 2px rgba(15,76,92,.06), 0 6px 20px rgba(15,76,92,.08);
+    --radio: 16px;
+    --gutter: clamp(16px, 4vw, 32px);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #0d1a1e; --card: #15262b; --texto: #e6eef0; --suave: #93a7ad; --borde: #24393f;
-      --ok: #5fd08f; --ok-bg: #173327; --pend: #f2b85c; --pend-bg: #3a2d14; --no: #ff8a7d; --no-bg: #3d1d1a;
+      --bg: #0c181c; --card: #14252a; --texto: #e7eff1; --suave: #96aab0; --borde: #24393f;
+      --ok: #62d394; --ok-bg: #163226; --pend: #f3bb5f; --pend-bg: #382b13; --no: #ff8f82; --no-bg: #3b1c19;
+      --msj-bg: #3a2a0c; --msj-bg2: #4a3410; --msj-borde: #f2a541; --msj-texto: #fff1d6; --msj-eti: #ffcf7a;
+      --obs-bg: #12343a; --obs-borde: #3cc4bf; --obs-eti: #7fe0db;
       --sombra: none;
     }
   }
   :root[data-theme="dark"] {
-    --bg: #0d1a1e; --card: #15262b; --texto: #e6eef0; --suave: #93a7ad; --borde: #24393f;
-    --ok: #5fd08f; --ok-bg: #173327; --pend: #f2b85c; --pend-bg: #3a2d14; --no: #ff8a7d; --no-bg: #3d1d1a;
+    --bg: #0c181c; --card: #14252a; --texto: #e7eff1; --suave: #96aab0; --borde: #24393f;
+    --ok: #62d394; --ok-bg: #163226; --pend: #f3bb5f; --pend-bg: #382b13; --no: #ff8f82; --no-bg: #3b1c19;
+    --msj-bg: #3a2a0c; --msj-bg2: #4a3410; --msj-borde: #f2a541; --msj-texto: #fff1d6; --msj-eti: #ffcf7a;
+    --obs-bg: #12343a; --obs-borde: #3cc4bf; --obs-eti: #7fe0db;
     --sombra: none;
   }
 
   * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   html, body { margin: 0; }
   body {
     background: var(--bg); color: var(--texto);
-    font: 16px/1.45 "Nunito Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
+    font: clamp(15px, 0.35vw + 14px, 17px)/1.5 "Nunito Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased; min-height: 100vh; min-height: 100dvh;
+    overflow-x: hidden;
   }
-  .contenedor { max-width: 560px; margin: 0 auto; padding: 0 16px 40px; }
   [hidden] { display: none !important; }
+  button { font-family: inherit; }
+  :focus-visible { outline: 3px solid var(--turquesa); outline-offset: 2px; }
+  .ancho { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 var(--gutter); }
 
   /* ---------- Logo ---------- */
   .logo { width: 44px; height: 44px; border-radius: 12px; background: var(--ambar); display: grid; place-items: center; flex: none; }
   .logo svg { width: 28px; height: 28px; }
 
   /* ---------- Acceso ---------- */
-  #acceso { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 32px 0; }
-  .acceso-cab { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
-  .acceso-cab h1 { margin: 0; font-size: 1.35rem; line-height: 1.15; }
+  #acceso { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; justify-content: center;
+    width: 100%; max-width: 480px; margin: 0 auto; padding: 32px var(--gutter) calc(32px + env(safe-area-inset-bottom)); }
+  .acceso-cab { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .acceso-cab h1 { margin: 0; font-size: clamp(1.2rem, 4.5vw, 1.45rem); line-height: 1.15; }
   .acceso-cab small { display: block; color: var(--suave); font-weight: 600; font-size: .85rem; }
-  .tarjeta { background: var(--card); border: 1px solid var(--borde); border-radius: 16px; box-shadow: var(--sombra); padding: 20px; }
+  .tarjeta { background: var(--card); border: 1px solid var(--borde); border-radius: var(--radio); box-shadow: var(--sombra); padding: clamp(16px, 5vw, 24px); }
   label { font-weight: 700; display: block; margin-bottom: 8px; }
   .ayuda { color: var(--suave); font-size: .92rem; margin: 0 0 16px; }
   #codigo {
-    width: 100%; font: 800 1.6rem/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: .12em;
-    text-align: center; text-transform: uppercase; padding: 14px 10px; border-radius: 12px;
+    width: 100%; font: 800 clamp(1.25rem, 6vw, 1.6rem)/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: .1em;
+    text-align: center; text-transform: uppercase; padding: 14px 8px; border-radius: 12px;
     border: 2px solid var(--borde); background: var(--bg); color: var(--texto); outline: none;
   }
   #codigo:focus { border-color: var(--turquesa); }
-  .check { display: flex; align-items: center; gap: 8px; margin: 14px 0 18px; font-size: .92rem; color: var(--suave); }
-  .check input { width: 18px; height: 18px; accent-color: var(--turquesa); }
-  .btn {
-    width: 100%; border: 0; border-radius: 12px; padding: 14px; font: 800 1rem "Nunito Sans", sans-serif;
-    background: var(--petroleo); color: #fff; cursor: pointer;
-  }
+  .check { display: flex; align-items: center; gap: 10px; margin: 14px 0 18px; font-size: .95rem; color: var(--suave); min-height: 44px; }
+  .check input { width: 20px; height: 20px; accent-color: var(--turquesa); }
+  .btn { width: 100%; min-height: 50px; border: 0; border-radius: 12px; padding: 14px; font-weight: 800; font-size: 1rem; background: var(--petroleo); color: #fff; cursor: pointer; }
   .btn:disabled { opacity: .6; cursor: wait; }
   .error { color: var(--no); background: var(--no-bg); border-radius: 10px; padding: 10px 12px; margin-top: 14px; font-weight: 600; font-size: .92rem; }
   .privado { color: var(--suave); font-size: .8rem; text-align: center; margin-top: 18px; }
 
-  /* ---------- Panel ---------- */
-  .barra {
-    position: sticky; top: 0; z-index: 5; background: var(--petroleo); color: #fff;
-    padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
-  }
-  .barra .dentro { max-width: 560px; margin: 0 auto; display: flex; align-items: center; gap: 10px; }
+  /* ---------- Barra superior ---------- */
+  .barra { position: sticky; top: 0; z-index: 5; background: var(--petroleo); color: #fff; padding-top: env(safe-area-inset-top); }
+  .barra .ancho { display: flex; align-items: center; gap: 10px; min-height: 56px; }
   .barra .logo { width: 34px; height: 34px; border-radius: 9px; }
   .barra .logo svg { width: 22px; height: 22px; }
-  .barra strong { flex: 1; font-size: 1rem; }
-  .salir { background: rgba(255,255,255,.14); color: #fff; border: 0; border-radius: 999px; padding: 7px 14px; font: 700 .85rem "Nunito Sans", sans-serif; cursor: pointer; }
+  .barra strong { flex: 1; min-width: 0; font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .salir { background: rgba(255,255,255,.16); color: #fff; border: 0; border-radius: 999px; padding: 0 16px; min-height: 38px; font-weight: 700; font-size: .88rem; cursor: pointer; flex: none; }
 
-  .alumno { margin-top: 16px; background: linear-gradient(135deg, var(--petroleo), var(--turquesa)); color: #fff; border-radius: 18px; padding: 18px 20px; }
-  .alumno h2 { margin: 0; font-size: 1.5rem; }
-  .alumno .grupo { display: inline-block; margin-top: 6px; background: rgba(255,255,255,.18); border-radius: 999px; padding: 2px 12px; font-weight: 700; font-size: .85rem; }
-  .alumno .act { margin: 10px 0 0; font-size: .82rem; opacity: .9; }
+  /* ---------- Tablero: una columna en celular, dos en tablet y computadora ---------- */
+  #contenido { padding-top: 16px; padding-bottom: calc(40px + env(safe-area-inset-bottom)); }
+  .tablero { display: grid; gap: 0 28px; grid-template-columns: minmax(0, 1fr); }
+  .col { min-width: 0; }
+  @media (min-width: 820px) {
+    .tablero { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: start; }
+    .col-b > h3:first-child { margin-top: 0; }
+  }
 
-  .resumen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
-  .cifra { background: var(--card); border: 1px solid var(--borde); border-radius: 14px; padding: 12px 8px; text-align: center; box-shadow: var(--sombra); }
-  .cifra b { display: block; font-size: 1.6rem; line-height: 1.1; }
-  .cifra span { font-size: .78rem; color: var(--suave); font-weight: 700; }
+  .alumno { background: linear-gradient(135deg, var(--petroleo), var(--turquesa)); color: #fff; border-radius: 20px; padding: clamp(16px, 4.5vw, 22px); }
+  .alumno h2 { margin: 0; font-size: clamp(1.35rem, 5.5vw, 1.75rem); line-height: 1.15; overflow-wrap: anywhere; }
+  .alumno .grupo { display: inline-block; margin-top: 8px; background: rgba(255,255,255,.2); border-radius: 999px; padding: 2px 12px; font-weight: 700; font-size: .85rem; }
+  .alumno .act { margin: 10px 0 0; font-size: .82rem; opacity: .92; }
+
+  .resumen-titulo { margin: 16px 0 0; font-size: .78rem; color: var(--suave); font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+  .resumen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(6px, 2vw, 10px); margin-top: 10px; }
+  .cifra { background: var(--card); border: 1px solid var(--borde); border-radius: 14px; padding: 12px 4px; text-align: center; box-shadow: var(--sombra); }
+  .cifra b { display: block; font-size: clamp(1.4rem, 6vw, 1.8rem); line-height: 1.1; }
+  .cifra span { display: block; font-size: clamp(.7rem, 2.6vw, .8rem); color: var(--suave); font-weight: 700; line-height: 1.2; margin-top: 2px; }
   .cifra.ok b { color: var(--ok); } .cifra.pend b { color: var(--pend); } .cifra.no b { color: var(--no); }
-  .resumen-titulo { margin: 18px 0 0; font-size: .8rem; color: var(--suave); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
 
-  h3 { font-size: 1.05rem; margin: 26px 0 10px; display: flex; align-items: center; gap: 8px; }
+  h3 { font-size: 1.08rem; margin: 26px 0 12px; display: flex; align-items: center; gap: 8px; }
   .vacio { color: var(--suave); font-size: .92rem; background: var(--card); border: 1px dashed var(--borde); border-radius: 14px; padding: 14px; text-align: center; }
 
-  .anuncio { background: var(--card); border: 1px solid var(--borde); border-left: 5px solid var(--turquesa); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--sombra); }
-  .anuncio.tarea { border-left-color: var(--ambar); }
-  .anuncio.evento { border-left-color: var(--petroleo); }
-  .anuncio .meta { display: flex; justify-content: space-between; gap: 8px; font-size: .78rem; color: var(--suave); font-weight: 700; }
-  .anuncio .chip { text-transform: uppercase; letter-spacing: .04em; }
-  .anuncio h4 { margin: 4px 0 4px; font-size: 1rem; }
-  .anuncio p { margin: 0; white-space: pre-line; }
+  /* ---------- MENSAJE DEL MAESTRO (lo más visible después del nombre) ---------- */
+  .mensaje {
+    position: relative; margin-top: 16px; border-radius: 20px; padding: clamp(16px, 4.5vw, 22px);
+    background: linear-gradient(140deg, var(--msj-bg), var(--msj-bg2)); color: var(--msj-texto);
+    border: 2px solid var(--msj-borde); box-shadow: 0 8px 24px rgba(242,165,65,.25);
+  }
+  .msj-cab { display: flex; align-items: center; gap: 12px; }
+  .msj-ico { width: 46px; height: 46px; border-radius: 50%; background: var(--ambar); display: grid; place-items: center; flex: none; font-size: 1.4rem; box-shadow: 0 0 0 5px rgba(242,165,65,.25); }
+  .msj-quien { flex: 1; min-width: 0; }
+  .msj-eti { display: block; font-weight: 900; font-size: .78rem; letter-spacing: .07em; text-transform: uppercase; color: var(--msj-eti); }
+  .msj-quien small { display: block; font-weight: 700; font-size: .85rem; opacity: .85; }
+  .msj-txt { margin: 14px 0 0; font-size: clamp(1.05rem, 3.8vw, 1.2rem); font-weight: 700; line-height: 1.45; white-space: pre-line; overflow-wrap: anywhere; }
+  .mensaje > .nuevo { position: absolute; top: -12px; right: 16px; box-shadow: 0 2px 6px rgba(0,0,0,.2); }
+  .nuevo { flex: none; background: #c2410c; color: #fff; font-weight: 900; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; border-radius: 999px; padding: 4px 10px; animation: latido 2s ease-in-out 3; }
+  @keyframes latido { 50% { transform: scale(1.12); } }
+  @media (prefers-reduced-motion: reduce) { .nuevo { animation: none; } }
 
-  .nota { background: var(--pend-bg); border-radius: 14px; padding: 14px 16px; }
-  .nota p { margin: 0; white-space: pre-line; }
-  .nota small { display: block; color: var(--suave); margin-top: 6px; font-weight: 600; }
+  /* aviso: hay observaciones en las actividades */
+  .aviso-obs {
+    display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 12px; text-align: left; cursor: pointer;
+    background: var(--obs-bg); color: var(--texto); border: 2px solid var(--obs-borde); border-radius: 16px; padding: 12px 14px; font-size: .98rem;
+  }
+  .aviso-obs .n { flex: none; min-width: 34px; height: 34px; border-radius: 50%; background: var(--obs-borde); color: #fff; display: grid; place-items: center; font-weight: 900; }
+  .aviso-obs span { flex: 1; min-width: 0; } .aviso-obs b { color: var(--obs-eti); }
+  .aviso-obs .ir { flex: none; font-weight: 800; color: var(--obs-eti); white-space: nowrap; }
 
-  details.semana { background: var(--card); border: 1px solid var(--borde); border-radius: 14px; margin-bottom: 10px; box-shadow: var(--sombra); overflow: hidden; }
-  details.semana summary { list-style: none; cursor: pointer; padding: 14px 16px; display: flex; align-items: center; gap: 10px; font-weight: 800; }
+  /* ---------- Anuncios ---------- */
+  .anuncio { display: flex; gap: 12px; background: var(--card); border: 1px solid var(--borde); border-left: 6px solid var(--turquesa); border-radius: 16px; padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--sombra); }
+  .anuncio.tarea { border-left-color: var(--ambar); } .anuncio.evento { border-left-color: var(--petroleo); } .anuncio.reunion { border-left-color: #7c3aed; }
+  .an-ico { width: 40px; height: 40px; border-radius: 12px; background: var(--bg); display: grid; place-items: center; font-size: 1.25rem; flex: none; }
+  .an-cuerpo { flex: 1; min-width: 0; }
+  .anuncio .meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 8px; font-size: .78rem; color: var(--suave); font-weight: 700; }
+  .anuncio .chip { text-transform: uppercase; letter-spacing: .05em; font-weight: 900; }
+  .anuncio h4 { margin: 3px 0 4px; font-size: 1.05rem; line-height: 1.3; overflow-wrap: anywhere; }
+  .anuncio p { margin: 0; white-space: pre-line; overflow-wrap: anywhere; }
+  .anuncio .nuevo { animation: none; font-size: .65rem; padding: 2px 8px; margin-left: 6px; vertical-align: middle; }
+
+  /* ---------- Actividades ---------- */
+  details.semana { background: var(--card); border: 1px solid var(--borde); border-radius: 16px; margin-bottom: 10px; box-shadow: var(--sombra); overflow: hidden; }
+  details.semana summary { list-style: none; cursor: pointer; padding: 14px 16px; min-height: 52px; display: flex; align-items: center; gap: 10px; font-weight: 800; }
   details.semana summary::-webkit-details-marker { display: none; }
-  details.semana summary .tit { flex: 1; }
-  details.semana summary .cuenta { font-size: .8rem; color: var(--suave); font-weight: 700; }
-  details.semana summary::after { content: "›"; font-size: 1.4rem; color: var(--suave); transition: transform .2s; }
+  details.semana summary .tit { flex: 1; min-width: 0; }
+  details.semana summary .cuenta { font-size: .8rem; color: var(--suave); font-weight: 800; white-space: nowrap; }
+  details.semana summary .tiene-obs { font-size: .9rem; }
+  details.semana summary::after { content: "›"; font-size: 1.5rem; line-height: 1; color: var(--suave); transition: transform .2s; }
   details.semana[open] summary::after { transform: rotate(90deg); }
-  .act-lista { list-style: none; margin: 0; padding: 0 12px 10px; }
-  .act-item { display: flex; gap: 12px; padding: 10px 4px; border-top: 1px solid var(--borde); }
-  .icono { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; flex: none; font-weight: 800; font-size: .95rem; }
-  .icono.ok { background: var(--ok-bg); color: var(--ok); }
-  .icono.pend { background: var(--pend-bg); color: var(--pend); }
-  .icono.no { background: var(--no-bg); color: var(--no); }
+  .act-lista { list-style: none; margin: 0; padding: 0 clamp(8px, 3vw, 14px) 10px; }
+  .act-item { display: flex; gap: 12px; padding: 12px 4px; border-top: 1px solid var(--borde); }
+  .icono { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; flex: none; font-weight: 900; font-size: .95rem; }
+  .icono.ok { background: var(--ok-bg); color: var(--ok); } .icono.pend { background: var(--pend-bg); color: var(--pend); } .icono.no { background: var(--no-bg); color: var(--no); }
   .act-cuerpo { flex: 1; min-width: 0; }
-  .act-nombre { font-weight: 700; overflow-wrap: anywhere; }
-  .act-sub { font-size: .82rem; color: var(--suave); margin-top: 2px; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
-  .estado-txt.ok { color: var(--ok); font-weight: 700; } .estado-txt.pend { color: var(--pend); font-weight: 700; } .estado-txt.no { color: var(--no); font-weight: 700; }
-  .calif { font-weight: 800; color: var(--texto); background: var(--bg); border: 1px solid var(--borde); border-radius: 8px; padding: 0 8px; font-size: .82rem; }
-  .nivel { border-radius: 999px; padding: 1px 9px; font-weight: 700; font-size: .75rem; border: 1px solid currentColor; }
+  .act-top { display: flex; align-items: flex-start; gap: 10px; }
+  .act-nombre { flex: 1; min-width: 0; font-weight: 800; overflow-wrap: anywhere; line-height: 1.3; }
+  .calif { flex: none; font-weight: 900; font-size: 1rem; color: var(--texto); background: var(--bg); border: 1.5px solid var(--borde); border-radius: 10px; padding: 2px 10px; white-space: nowrap; }
+  .act-sub { font-size: .82rem; color: var(--suave); margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+  .estado-txt.ok { color: var(--ok); font-weight: 800; } .estado-txt.pend { color: var(--pend); font-weight: 800; } .estado-txt.no { color: var(--no); font-weight: 800; }
+  .nivel { border-radius: 999px; padding: 1px 9px; font-weight: 800; font-size: .75rem; border: 1.5px solid currentColor; }
   .nivel.apoyo { color: var(--no); } .nivel.proceso { color: var(--pend); } .nivel.esperado { color: var(--ok); } .nivel.otro { color: var(--suave); }
-  .act-com { font-size: .85rem; color: var(--suave); margin-top: 4px; font-style: italic; }
+
+  /* OBSERVACIÓN del maestro dentro de cada actividad */
+  .obs { margin-top: 10px; background: var(--obs-bg); border-left: 5px solid var(--obs-borde); border-radius: 0 12px 12px 0; padding: 10px 12px; scroll-margin-top: 80px; }
+  .obs-eti { display: flex; align-items: center; gap: 6px; font-weight: 900; font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; color: var(--obs-eti); }
+  .obs p { margin: 4px 0 0; font-size: .98rem; font-weight: 600; color: var(--texto); white-space: pre-line; overflow-wrap: anywhere; }
+  .obs.destello { animation: destello 1.6s ease-out 1; }
+  @keyframes destello { 0% { box-shadow: 0 0 0 6px rgba(26,158,154,.55); } 100% { box-shadow: 0 0 0 0 rgba(26,158,154,0); } }
 
   .demo { background: var(--ambar); color: #3a2600; text-align: center; font-weight: 800; font-size: .8rem; padding: 6px 12px; }
-  .pie { color: var(--suave); font-size: .78rem; text-align: center; margin-top: 30px; }
-  .cargando { text-align: center; color: var(--suave); padding: 60px 0; font-weight: 700; }
+  .pie { color: var(--suave); font-size: .78rem; text-align: center; margin-top: 30px; grid-column: 1 / -1; }
+
+  /* Pantallas muy angostas (≤ 340 px): números del resumen más compactos */
+  @media (max-width: 420px) { .cuenta-txt { display: none; } }
+  @media (max-width: 340px) {
+    .cifra { padding: 10px 2px; }
+    .msj-ico { width: 40px; height: 40px; font-size: 1.2rem; }
+    .aviso-obs .ir { display: none; }
+  }
+  /* Celular acostado: aprovecha el ancho */
+  @media (orientation: landscape) and (max-height: 500px) {
+    #acceso { justify-content: flex-start; }
+  }
+  @media print {
+    .barra, .salir, .aviso-obs, .demo { display: none !important; }
+    details.semana:not([open]) .act-lista { display: block; }
+    body { background: #fff; }
+  }
 </style>
 </head>
 <body>
@@ -148,7 +203,7 @@
 <div id="aviso-demo" class="demo" hidden>Modo de prueba · los datos no son reales</div>
 
 <!-- ================= Acceso ================= -->
-<main id="acceso" class="contenedor">
+<main id="acceso">
   <div class="acceso-cab">
     <div class="logo" aria-hidden="true">
       <svg viewBox="0 0 32 32"><path d="M10 4v17a7 7 0 1 0 7-7h-3" fill="none" stroke="#0f4c5c" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 4l-2.2-1.2" stroke="#0f4c5c" stroke-width="3.2" stroke-linecap="round"/></svg>
@@ -173,7 +228,7 @@
 <!-- ================= Panel ================= -->
 <div id="panel" hidden>
   <header class="barra">
-    <div class="dentro">
+    <div class="ancho">
       <div class="logo" aria-hidden="true">
         <svg viewBox="0 0 32 32"><path d="M10 4v17a7 7 0 1 0 7-7h-3" fill="none" stroke="#0f4c5c" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
@@ -181,7 +236,7 @@
       <button class="salir" id="btn-salir" type="button">Salir</button>
     </div>
   </header>
-  <main class="contenedor" id="contenido"></main>
+  <main class="ancho" id="contenido"></main>
 </div>
 
 <script>
@@ -272,7 +327,7 @@ function datosDemo(codigo) {
       { fecha: dia(2), actividad: 'Edición: cortar silencios y ruido', tipo: 'Práctica', estado: 'entregado', calificacion: '7 / 10', nivel: 'En proceso', comentario: 'Le costó usar la herramienta de reducción de ruido.' },
       { fecha: dia(0), actividad: 'Guion del podcast (borrador)', tipo: 'Proyecto', estado: 'entregado', calificacion: '9 / 10', nivel: 'Nivel esperado' },
       { fecha: dia(-3), actividad: 'Práctica 4: grabar voces en Audacity', tipo: 'Práctica', estado: 'entregado', nivel: 'Nivel esperado' },
-      { fecha: dia(-5), actividad: 'Mapa mental: historia de Xalisco', tipo: 'Clase', estado: 'no_entregado', nivel: '' },
+      { fecha: dia(-5), actividad: 'Mapa mental: historia de Xalisco', tipo: 'Clase', estado: 'no_entregado', nivel: '', comentario: 'No lo entregó en clase. Puede traerlo el lunes para revisión.' },
       { fecha: dia(-7), actividad: 'Investigación: origen del Día de Muertos', tipo: 'Tarea', estado: 'entregado', nivel: 'Nivel esperado' },
     ],
   }), 350));
@@ -286,8 +341,12 @@ function mostrarAcceso(msg) {
   e.hidden = !msg; e.textContent = msg || '';
 }
 
+const MAESTRO = 'Prof. Nicolás Contreras Medina';
+const ICONO_ANUNCIO = { tarea: '📝', material: '🎒', evento: '🎉', reunion: '👥', aviso: '📢' };
+const esReciente = (f, dias) => f && (Date.now() - f.getTime()) / 864e5 <= dias;
+
 function render(d) {
-  const acts = (d.actividades || []).map(a => ({ ...a, f: aFecha(a.fecha), e: estadoDe(a.estado) }));
+  const acts = (d.actividades || []).map((a, i) => ({ ...a, i, f: aFecha(a.fecha), e: estadoDe(a.estado) }));
 
   // Agrupa por semana (de lunes a domingo)
   const semanas = new Map();
@@ -297,11 +356,10 @@ function render(d) {
     semanas.get(k).push(a);
   });
   const claves = [...semanas.keys()].sort().reverse();
-
-  // Resumen de la semana más reciente con actividades
   const reciente = claves.length ? semanas.get(claves[0]) : [];
   const cuenta = t => reciente.filter(a => a.e === t).length;
   const tituloResumen = claves.length && claves[0] !== 'sin-fecha' ? etiquetaSemana(aFecha(claves[0])) : 'Actividades';
+  const conObs = acts.filter(a => String(a.comentario || '').trim());
 
   let act = '';
   if (d.actualizado) {
@@ -311,79 +369,105 @@ function render(d) {
     if (fecha) act = 'Actualizado el ' + fHora.format(fecha);
   }
 
-  const html = [];
-  html.push(`
+  const A = [], B = [];
+
+  A.push(`
     <section class="alumno">
       <h2>${esc(d.alumno.nombre)}</h2>
       <span class="grupo">Grupo ${esc(d.alumno.grupo)}</span>
       ${act ? `<p class="act">${esc(act)}</p>` : ''}
     </section>`);
 
+  // 1) Mensaje del maestro: lo primero que se ve
+  if (d.nota && d.nota.texto) {
+    const f = aFecha(d.nota.fecha);
+    A.push(`
+      <section class="mensaje" role="note" aria-label="Mensaje del maestro">
+        <div class="msj-cab">
+          <span class="msj-ico" aria-hidden="true">✉️</span>
+          <div class="msj-quien"><span class="msj-eti">Mensaje del maestro</span><small>${esc(MAESTRO)}</small>${f ? `<small>${esc(fDia.format(f))}</small>` : ''}</div>
+        </div>
+        ${esReciente(f, 7) ? '<span class="nuevo">Nuevo</span>' : ''}
+        <p class="msj-txt">${esc(d.nota.texto)}</p>
+      </section>`);
+  }
+
+  // 2) Aviso de observaciones en actividades
+  if (conObs.length) {
+    const n = conObs.length;
+    A.push(`
+      <button class="aviso-obs" type="button" id="ir-obs">
+        <span class="n" aria-hidden="true">${n}</span>
+        <span>El maestro dejó <b>${n === 1 ? 'una observación' : n + ' observaciones'}</b> en ${n === 1 ? 'una actividad' : 'las actividades'}.</span>
+        <span class="ir">Ver ↓</span>
+      </button>`);
+  }
+
+  // 3) Resumen
   if (reciente.length) {
-    html.push(`
+    A.push(`
       <p class="resumen-titulo">${esc(tituloResumen)}</p>
-      <section class="resumen" aria-label="Resumen">
+      <section class="resumen" aria-label="Resumen de la semana">
         <div class="cifra ok"><b>${cuenta('ok')}</b><span>Entregadas</span></div>
         <div class="cifra pend"><b>${cuenta('pend')}</b><span>Pendientes</span></div>
         <div class="cifra no"><b>${cuenta('no')}</b><span>Sin entregar</span></div>
       </section>`);
   }
 
-  // Anuncios
-  html.push('<h3>📢 Anuncios</h3>');
+  // 4) Anuncios
+  A.push('<h3>📢 Anuncios</h3>');
   if ((d.anuncios || []).length) {
     d.anuncios.forEach(a => {
       const tipo = sinAcentos(a.tipo);
-      const clase = /tarea/.test(tipo) ? 'tarea' : /evento/.test(tipo) ? 'evento' : '';
+      const clave = /tarea/.test(tipo) ? 'tarea' : /evento/.test(tipo) ? 'evento' : /reunion/.test(tipo) ? 'reunion' : /material/.test(tipo) ? 'material' : 'aviso';
       const f = aFecha(a.fecha);
-      html.push(`
-        <article class="anuncio ${clase}">
-          <div class="meta"><span class="chip">${esc(a.tipo || 'Aviso')}</span><span>${f ? esc(fDia.format(f)) : ''}</span></div>
-          <h4>${esc(a.titulo)}</h4>
-          ${a.texto ? `<p>${esc(a.texto)}</p>` : ''}
+      A.push(`
+        <article class="anuncio ${clave}">
+          <span class="an-ico" aria-hidden="true">${ICONO_ANUNCIO[clave]}</span>
+          <div class="an-cuerpo">
+            <div class="meta"><span class="chip">${esc(a.tipo || 'Aviso')}${esReciente(f, 3) ? '<span class="nuevo">Nuevo</span>' : ''}</span><span>${f ? esc(fDia.format(f)) : ''}</span></div>
+            <h4>${esc(a.titulo)}</h4>
+            ${a.texto ? `<p>${esc(a.texto)}</p>` : ''}
+          </div>
         </article>`);
     });
   } else {
-    html.push('<div class="vacio">No hay anuncios por ahora.</div>');
+    A.push('<div class="vacio">No hay anuncios por ahora.</div>');
   }
 
-  // Nota del maestro
-  if (d.nota && d.nota.texto) {
-    const f = aFecha(d.nota.fecha);
-    html.push(`
-      <h3>✏️ Nota del maestro</h3>
-      <div class="nota"><p>${esc(d.nota.texto)}</p>${f ? `<small>${esc(fDia.format(f))}</small>` : ''}</div>`);
-  }
-
-  // Actividades por semana
-  html.push('<h3>📚 Actividades</h3>');
+  // 5) Actividades por semana (columna derecha en pantallas grandes)
+  B.push('<h3>📚 Actividades</h3>');
   if (!claves.length) {
-    html.push('<div class="vacio">Aún no hay actividades publicadas.</div>');
+    B.push('<div class="vacio">Aún no hay actividades publicadas.</div>');
   } else {
     claves.forEach((k, i) => {
       const lista = semanas.get(k).sort((x, y) => (y.f || 0) - (x.f || 0));
       const ent = lista.filter(a => a.e === 'ok').length;
+      const obsSemana = lista.some(a => String(a.comentario || '').trim());
       const titulo = k === 'sin-fecha' ? 'Sin fecha' : etiquetaSemana(aFecha(k));
-      html.push(`
-        <details class="semana" ${i === 0 ? 'open' : ''}>
-          <summary><span class="tit">${esc(titulo)}</span><span class="cuenta">${ent}/${lista.length}</span></summary>
+      B.push(`
+        <details class="semana" ${i === 0 || obsSemana ? 'open' : ''}>
+          <summary><span class="tit">${esc(titulo)}</span>${obsSemana ? '<span class="tiene-obs" title="Tiene observaciones">💬</span>' : ''}<span class="cuenta">${ent}/${lista.length}<span class="cuenta-txt"> entregadas</span></span></summary>
           <ul class="act-lista">
             ${lista.map(a => {
               const [ic, txt] = ESTADO[a.e];
               const nv = nivelDe(a.nivel);
+              const obs = String(a.comentario || '').trim();
               return `
               <li class="act-item">
                 <span class="icono ${a.e}" aria-hidden="true">${ic}</span>
                 <div class="act-cuerpo">
-                  <div class="act-nombre">${esc(a.actividad)}</div>
+                  <div class="act-top">
+                    <div class="act-nombre">${esc(a.actividad)}</div>
+                    ${a.calificacion ? `<span class="calif" title="Calificación">${esc(a.calificacion)}</span>` : ''}
+                  </div>
                   <div class="act-sub">
                     <span class="estado-txt ${a.e}">${txt}</span>
                     ${a.f ? `<span>${esc(fDia.format(a.f))}</span>` : ''}
                     ${a.tipo ? `<span>${esc(a.tipo)}</span>` : ''}
-                    ${a.calificacion ? `<span class="calif" title="Calificación">${esc(a.calificacion)}</span>` : ''}
                     ${nv ? `<span class="nivel ${nv[0]}">${esc(nv[1])}</span>` : ''}
                   </div>
-                  ${a.comentario ? `<div class="act-com">${esc(a.comentario)}</div>` : ''}
+                  ${obs ? `<div class="obs" id="obs-${a.i}"><span class="obs-eti">💬 Observación del maestro</span><p>${esc(obs)}</p></div>` : ''}
                 </div>
               </li>`;
             }).join('')}
@@ -392,9 +476,22 @@ function render(d) {
     });
   }
 
-  html.push('<p class="pie">Si tiene dudas, comuníquese directamente con el maestro.<br>Información confidencial para la familia del alumno.</p>');
+  $('#contenido').innerHTML = `
+    <div class="tablero">
+      <div class="col col-a">${A.join('')}</div>
+      <div class="col col-b">${B.join('')}</div>
+      <p class="pie">Si tiene dudas, comuníquese directamente con el maestro.<br>Información confidencial para la familia del alumno.</p>
+    </div>`;
 
-  $('#contenido').innerHTML = html.join('');
+  const ir = $('#ir-obs');
+  if (ir) ir.addEventListener('click', () => {
+    const o = document.querySelector('.obs');
+    if (!o) return;
+    const det = o.closest('details'); if (det) det.open = true;
+    o.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+    o.classList.remove('destello'); void o.offsetWidth; o.classList.add('destello');
+  });
+
   $('#acceso').hidden = true;
   $('#panel').hidden = false;
   window.scrollTo(0, 0);
