@@ -13,7 +13,7 @@ import sys
 ORIGEN, DESTINO = sys.argv[1], sys.argv[2]
 # Versión de la edición para tablet: súbela en cada entrega. Con ella se genera también sw.js,
 # así la tablet sabe que hay versión nueva.
-TABLET_VERSION = '1.12'
+TABLET_VERSION = '1.13'
 html = open(ORIGEN, encoding='utf-8').read()
 
 
@@ -109,6 +109,26 @@ cambia("frac:done===r.criteria.length&&wsum>0?acc/wsum:null}", "frac:(done===r.c
 cambia("function cellText(a,sid,long){",
        "function cellText(a,sid,long){if(EXPORT_CEROS&&countsInAverage(a)&&!hasEvaluation(a,sid))return '0';return cellTextBase(a,sid,long)}\n"
        "function cellTextBase(a,sid,long){")
+
+# ---------------------------------------------------------------- actividades agrupadas por rubro
+# Se muestran en el orden de los rubros (Opciones del cuaderno) y, dentro de cada rubro, en el orden en que se
+# crearon. Solo cambia cómo se ven (Calificar, Actividades, Cuaderno y Excel); los datos guardados no se mueven.
+cambia("function scopedActivities(g,scope=scopeId(g),period=currentPeriod){return liveActivities().filter(a=>a.groupId===g?.id&&a.scopeId===scope&&String(a.period||'1')===period)}",
+       "function scopedActivities(g,scope=scopeId(g),period=currentPeriod){return ordenPorRubro(g,scope,liveActivities().filter(a=>a.groupId===g?.id&&a.scopeId===scope&&String(a.period||'1')===period))}\n"
+       "function ordenPorRubro(g,sc,arr){\n"
+       "  if(!g||arr.length<2)return arr;\n"
+       "  const pos=new Map(rubrosOf(g,sc).items.map((it,i)=>[it.id,i])),ix=new Map(arr.map((a,i)=>[a.id,i])),p=a=>pos.has(a.rubro)?pos.get(a.rubro):1e6;\n"
+       "  return arr.slice().sort((a,b)=>p(a)-p(b)||ix.get(a.id)-ix.get(b.id));\n"
+       "}")
+# Calificar: franja con el nombre de cada rubro sobre sus columnas y una línea entre grupos
+cambia('<table class="sheet gradegrid" id="gradeGrid"><thead><tr><th class="rn corner">#</th>',
+       '<table class="sheet gradegrid" id="gradeGrid"><thead>${rubroBandRow(g,sc.id,arr)}<tr><th class="rn corner">#</th>')
+cambia('${arr.map(a=>`<th class="gh mode-${modeOf(a)}" data-a="${a.id}"',
+       '${arr.map(a=>`<th class="gh mode-${modeOf(a)}${rbStart(a)}" data-a="${a.id}"')
+cambia('${arr.map(a=>`<td class="gc">${cellHTML(a,st)}</td>`).join(\'\')}',
+       '${arr.map(a=>`<td class="gc${rbStart(a)}">${cellHTML(a,st)}</td>`).join(\'\')}')
+cambia('${arr.map(a=>`<td id="col_${a.id}" class="colavg">${colAverage(a,ros)}</td>`).join(\'\')}',
+       '${arr.map(a=>`<td id="col_${a.id}" class="colavg${rbStart(a)}">${colAverage(a,ros)}</td>`).join(\'\')}')
 
 # ---------------------------------------------------------------- PDA ocultos por ahora (los datos NO se borran)
 # Se ocultan la pestaña «Avance por PDA», las casillas de PDA al crear actividades, la columna PDA de las
@@ -268,6 +288,18 @@ body.themed:not(.theme-dark) .side{background:linear-gradient(118deg,var(--accen
 /* Con una ventana abierta, los avisos salen arriba para no tapar sus botones */
 body:has(#modal) #toasts{bottom:auto;top:calc(16px + env(safe-area-inset-top))}
 .tg-open{white-space:nowrap}
+/* Calificar: franja de rubros (dos filas fijas arriba) */
+.gradegrid thead tr.rb-row th{top:0;height:34px;box-sizing:border-box;padding:4px 10px;font-size:12.5px;text-transform:none;vertical-align:middle;z-index:4}
+.gradegrid thead tr.rb-row+tr th{top:34px}
+.gradegrid thead tr.rb-row th.rb-corner{z-index:6}
+.gradegrid thead tr.rb-row th.rb-corner small{font-weight:600;color:#56708F}
+.gradegrid th.rb-band{text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:0;color:#1B3560;font-weight:800;
+  border-top:4px solid var(--rbc)!important;background:color-mix(in srgb,var(--rbc) 15%,#fff)!important}
+.gradegrid th.rb-band small{margin-left:6px;font-weight:600;color:#56708F}
+.gradegrid .rb-start{border-left:3px solid #8FA6C6!important}
+body.theme-dark .gradegrid th.rb-band{background:color-mix(in srgb,var(--rbc) 32%,#17202d)!important;color:#EAF0F8}
+body.theme-dark .gradegrid th.rb-band small,body.theme-dark .gradegrid thead tr.rb-row th.rb-corner small{color:#B9C8DD}
+body.theme-dark .gradegrid .rb-start{border-left-color:#4F6584!important}
 /* v14.2: cuaderno */
 .nb-print-summary{display:none}
 @media print{.nb-print-summary{display:block!important}.filter-fold,.nb-sum-btn{display:none!important}}
@@ -608,6 +640,19 @@ function conCeros(fn){return function(){EXPORT_CEROS=true;try{return fn.apply(th
 exportRealXLSX=conCeros(exportRealXLSX);exportFullCSV=conCeros(exportFullCSV);
 {const _b=buildNotebookSheets;buildNotebookSheets=function(g){const sh=_b(g);if(EXPORT_CEROS&&sh&&sh[0])sh[0].rows.push([],[{v:'Nota: '+NOTA_CEROS}]);return sh}}
 {const _n=notebookRows;notebookRows=function(g){const rows=_n(g);if(EXPORT_CEROS&&Array.isArray(rows))rows.push([],['Nota: '+NOTA_CEROS]);return rows}}
+/* ===== 99_rubros_en_calificar.js — franja de rubros sobre las columnas de Calificar ===== */
+var RB_COLORES=['#2F5FA7','#D8A45A','#3F8F6B','#8A6BBE','#C2665A','#3C8DAE','#9A7B3C','#5B6B85','#B5577F','#4D7A2E','#7C5CB8','#2E7D8C'];
+var RB_INICIO=new Set();
+function rbStart(a){return RB_INICIO.has(a.id)?' rb-start':''}
+function rubroBandRow(g,sc,arr){
+  RB_INICIO=new Set();if(!arr.length)return '';
+  const R=rubrosOf(g,sc),idx=new Map(R.items.map((it,i)=>[it.id,i])),grupos=[];
+  arr.forEach(a=>{const last=grupos[grupos.length-1];if(last&&last.rubro===a.rubro)last.n++;else grupos.push({rubro:a.rubro,n:1,first:a.id})});
+  grupos.forEach((x,i)=>{if(i>0)RB_INICIO.add(x.first)});
+  return `<tr class="rb-row"><th class="rn corner rb-corner"></th><th class="stickycol corner rb-corner"><small>Rubro</small></th>${grupos.map((x,i)=>{
+    const k=idx.has(x.rubro)?idx.get(x.rubro):-1,it=k>=0?R.items[k]:null,col=RB_COLORES[(k>=0?k:RB_COLORES.length-1)%RB_COLORES.length];
+    return `<th colspan="${x.n}" class="rb-band${i>0?' rb-start':''}" style="--rbc:${col}" title="${esc(it?it.name:'Sin rubro')}"><span>${esc(it?it.name:'Sin rubro')}</span>${it&&R.pct?`<small>${numfmt(it.w)} %</small>`:''}<small>· ${x.n}</small></th>`}).join('')}<th class="avgh rb-corner"></th></tr>`;
+}
 /* Botón «Buscar actualización» (Más): pide la versión más nueva y recarga. Tus datos no se tocan. */
 async function buscarActualizacion(){
   if(!/^https?:$/.test(location.protocol))return notify('Esta copia se abrió como archivo: para actualizarla, abre la dirección de internet de '+APP_NAME+'.','info',{ms:8000});

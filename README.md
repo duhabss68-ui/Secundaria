@@ -39,6 +39,7 @@ Versión de **Mi Bitácora Secundaria v0.13.0** adaptada para usarse con el dedo
 - **Exportar el cuaderno con ceros**: en el Excel y el CSV las casillas vacías de actividades que cuentan valen 0 y los promedios se calculan con esos ceros. En la app nada cambia (lo pendiente no cuenta).
 - **Formato oficial de asistencias (SEPEN Nayarit)** en Asistencia › Historial: Excel oficio horizontal con fechas giradas, marcas «.» «/» «J», totales con fórmulas, % de asistencia, **rasgos** (tus rubros) y **calificación**. La herramienta está en `herramientas/formato_oficial.js`.
 - **Mis datos**: Clave del C.C.T., Sector y Zona escolar.
+- **Actividades agrupadas por rubro**: en Calificar, Actividades, Cuaderno y Excel se acomodan en el orden de tus rubros (y dentro de cada rubro, en el orden en que las creaste). En Calificar, una franja arriba muestra el nombre y el % de cada rubro. Los datos guardados no se mueven.
 - Al calificar, el teclado muestra «Siguiente» y baja al siguiente alumno.
 - **Copia automática**: una vez al día, al primer toque después de cambiar algo, se guarda sola `MiBitacora_Secundaria_auto_AAAA-MM-DD.json` en **Descargas**. Se puede apagar en Más → Copias de seguridad.
 - **Puntos de regreso**: cada día, al abrir la app, se guarda dentro de la tablet cómo estaba tu información (últimos 7 días), con botón «Volver a como estaba».
