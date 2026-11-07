@@ -53,6 +53,10 @@ Versión de **Mi Bitácora Secundaria v0.13.0** adaptada para usarse con el dedo
 - Cada familia entra a **https://duhabss68-ui.github.io/Secundaria/familias.html** con el código de su hijo (tarjeta con QR, que se imprime desde la misma pantalla, o mensaje por WhatsApp con «Enviar»).
 - La dirección del script y la clave se guardan solo en la tablet y no van en las copias de seguridad. En `familias.html` se pega la dirección del script en `API_URL`.
 
+## Logo
+
+El logo está en la carpeta `logo/` (con nombre, sin nombre, PNG de 16 a 1024 px, .ico y perfil de Facebook). La app usa la versión sin nombre en la franja de arriba y en la pestaña; los íconos de la app instalada salen de `logo/icono-*.png`.
+
 ## Para actualizar con una versión nueva de laptop
 
 ```

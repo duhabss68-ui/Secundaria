@@ -13,7 +13,7 @@ import sys
 ORIGEN, DESTINO = sys.argv[1], sys.argv[2]
 # Versión de la edición para tablet: súbela en cada entrega. Con ella se genera también sw.js,
 # así la tablet sabe que hay versión nueva.
-TABLET_VERSION = '1.13'
+TABLET_VERSION = '1.14'
 html = open(ORIGEN, encoding='utf-8').read()
 
 
@@ -147,6 +147,21 @@ if not PDA_VISIBLES:
            "if(pdaEnabled()){const valid=new Set(pdaList(group(),a.scopeId).map(x=>x.id));r.criteria.forEach(c=>{if(!valid.has(c.pda))c.pda=''})}"
            "else{const old=new Map(((a.rubric&&a.rubric.criteria)||[]).map(c=>[c.id,c.pda||'']));r.criteria.forEach(c=>{c.pda=old.get(c.id)||''})}")
 
+# ---------------------------------------------------------------- logo nuevo (logo/mi-bitacora-icono-sin-nombre.svg)
+# En la franja de arriba y en la pestaña del navegador va la versión sin nombre (el nombre ya va escrito al lado).
+import os as _os_logo, re as _re_logo, urllib.parse as _up_logo
+LOGO_SVG = open(_os_logo.path.join(_os_logo.path.dirname(_os_logo.path.abspath(__file__)), '..', 'logo',
+                'mi-bitacora-icono-sin-nombre.svg'), encoding='utf-8').read().strip()
+_ini = '<span class="brand-ico" aria-hidden="true">'
+if html.count(_ini) != 1:
+    sys.exit('ERROR: no encontré el logo de la franja')
+_a = html.index(_ini); _b = html.index('</svg></span>', _a) + len('</svg></span>')
+html = html[:_a] + _ini + LOGO_SVG.replace('<svg ', '<svg width="40" height="40" ', 1) + '</span>' + html[_b:]
+_fav = _re_logo.findall(r'<link rel="icon" href="data:image/svg\+xml,[^"]*">', html)
+if len(_fav) != 1:
+    sys.exit('ERROR: no encontré el ícono de la pestaña')
+html = html.replace(_fav[0], '<link rel="icon" href="data:image/svg+xml,' + _up_logo.quote(LOGO_SVG, safe='/:=') + '">')
+
 # ---------------------------------------------------------------- cabecera (instalable)
 cambia('<meta name="viewport" content="width=device-width,initial-scale=1">',
        '<meta name="viewport" content="width=device-width,initial-scale=1,interactive-widget=resizes-content">'
@@ -234,7 +249,7 @@ body.secondary-edition .side,body.theme-dark .side{background:linear-gradient(11
 body.themed:not(.theme-dark) .side{background:linear-gradient(118deg,var(--accent-dark,#1E3F78),var(--accent,#2F5FA7))!important}
 .side .brand,.side .brand-name,.side .brand-mi,.side .brand small,body.secondary-edition .side .brand small,body.secondary-edition .brand-mi{color:#fff!important}
 .side .brand small{opacity:.85}
-.side .brand-ico svg{border-radius:12px;box-shadow:0 0 0 2px rgba(255,255,255,.55)}
+.side .brand-ico svg{border-radius:9.4px;box-shadow:0 0 0 2px rgba(255,255,255,.55)}
 .side .tool-btn{background:rgba(255,255,255,.14)!important;border:1px solid rgba(255,255,255,.4)!important;color:#fff!important}
 .side .tool-btn:active,.side .tool-btn[aria-pressed=true]{background:rgba(255,255,255,.3)!important}
 .side .hq-t,body.theme-dark .side .hq-t{color:#fff}
