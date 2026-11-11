@@ -13,7 +13,7 @@ import sys
 ORIGEN, DESTINO = sys.argv[1], sys.argv[2]
 # Versión de la edición para tablet: súbela en cada entrega. Con ella se genera también sw.js,
 # así la tablet sabe que hay versión nueva.
-TABLET_VERSION = '1.14'
+TABLET_VERSION = '1.15'
 html = open(ORIGEN, encoding='utf-8').read()
 
 
@@ -129,6 +129,13 @@ cambia('${arr.map(a=>`<td class="gc">${cellHTML(a,st)}</td>`).join(\'\')}',
        '${arr.map(a=>`<td class="gc${rbStart(a)}">${cellHTML(a,st)}</td>`).join(\'\')}')
 cambia('${arr.map(a=>`<td id="col_${a.id}" class="colavg">${colAverage(a,ros)}</td>`).join(\'\')}',
        '${arr.map(a=>`<td id="col_${a.id}" class="colavg${rbStart(a)}">${colAverage(a,ros)}</td>`).join(\'\')}')
+
+# ---------------------------------------------------------------- días «sin clases» (se conservan al cargar y en los respaldos)
+cambia("  s.lastBackup=typeof raw.lastBackup==='string'&&!Number.isNaN(Date.parse(raw.lastBackup))?raw.lastBackup:'';\n  return s;",
+       "  s.noClasses=scNormalize(raw.noClasses,gOk,s.attendance);   /* tablet: días sin clases por grupo */\n"
+       "  s.lastBackup=typeof raw.lastBackup==='string'&&!Number.isNaN(Date.parse(raw.lastBackup))?raw.lastBackup:'';\n  return s;")
+# El ZIP de la app acepta archivos binarios (logo del formato oficial)
+cambia("data=enc.encode(raw)", "data=raw instanceof Uint8Array?raw:enc.encode(raw)")
 
 # ---------------------------------------------------------------- PDA ocultos por ahora (los datos NO se borran)
 # Se ocultan la pestaña «Avance por PDA», las casillas de PDA al crear actividades, la columna PDA de las
@@ -303,6 +310,28 @@ body.themed:not(.theme-dark) .side{background:linear-gradient(118deg,var(--accen
 /* Con una ventana abierta, los avisos salen arriba para no tapar sus botones */
 body:has(#modal) #toasts{bottom:auto;top:calc(16px + env(safe-area-inset-top))}
 .tg-open{white-space:nowrap}
+/* «No hubo clases» */
+.sc-btn{white-space:nowrap}
+.sc-chip{background:#EDE7F6!important;color:#4A2E8A!important}
+.sc-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin:12px 0}
+.sc-opt{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-height:92px;padding:16px;border-radius:18px;border:1px solid #d6e0e8;background:#F6F9FD;color:#1B3560;text-align:left;font-size:16px}
+button.sc-opt:active{transform:scale(.98);background:#EAF0F8}
+.sc-opt .sc-ico{font-size:30px;line-height:1}
+.sc-otro{grid-column:1/-1}
+.sc-otro .field{width:100%}
+.sc-card{display:flex;gap:18px;align-items:flex-start;margin:16px 0;padding:20px 22px;border-radius:20px;background:linear-gradient(120deg,#EEF3FA,#F7F2E7);border:1px solid #D6E0EE}
+.sc-card-ico{font-size:46px;line-height:1}
+.sc-card h3{margin:0 0 6px;font-size:20px;color:#1E3F78}
+.sc-hist{margin-top:18px;padding-top:14px;border-top:1px solid #DCE4EE}
+.sc-hist h3{margin:0 0 8px}
+.sc-hist ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.sc-hist li .mini{margin-left:8px}
+body.theme-dark .sc-opt{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.12);color:var(--ink)}
+body.theme-dark .sc-card{background:linear-gradient(120deg,#16243A,#231f17);border-color:#2C3B52}
+body.theme-dark .sc-card h3{color:#C9D8F0}
+body.theme-dark .sc-chip{background:#2A2340!important;color:#D5C8F5!important}
+body.theme-dark .sc-hist{border-top-color:#2C3B52}
+
 /* Calificar: franja de rubros (dos filas fijas arriba) */
 .gradegrid thead tr.rb-row th{top:0;height:34px;box-sizing:border-box;padding:4px 10px;font-size:12.5px;text-transform:none;vertical-align:middle;z-index:4}
 .gradegrid thead tr.rb-row+tr th{top:34px}
@@ -706,7 +735,16 @@ FO_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'format
 # Portal de familias (Más › Portal de familias) y generador de códigos QR para las tarjetas (MIT, sin internet)
 QR_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'qrcode.min.js'), encoding='utf-8').read()
 PF_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'portal_familias.js'), encoding='utf-8').read()
-html = html[:i] + JS_TABLET + FO_JS + '\n' + QR_JS + '\n' + PF_JS + html[i:]
+SC_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'sin_clases.js'), encoding='utf-8').read()
+# Logo de SEPEN Nayarit para el formato oficial: el PNG va tal cual, en base64, dentro de la app (sin internet)
+import base64 as _b64, struct as _struct
+_LOGO = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'recursos', 'logo_sepen_nayarit_alta.png'), 'rb').read()
+if _LOGO[:8] != b'\x89PNG\r\n\x1a\n':
+    sys.exit('ERROR: recursos/logo_sepen_nayarit_alta.png no es PNG')
+_LW, _LH = _struct.unpack('>II', _LOGO[16:24])
+LOGO_JS = (f"\n/* Logo SEPEN Nayarit ({_LW}×{_LH} px, {len(_LOGO)} bytes, sin cambios) */\n"
+           f"var FO_LOGO_SEPEN_W={_LW},FO_LOGO_SEPEN_H={_LH},FO_LOGO_SEPEN_B64='{_b64.b64encode(_LOGO).decode()}';\n")
+html = html[:i] + JS_TABLET + FO_JS + LOGO_JS + SC_JS + '\n' + QR_JS + '\n' + PF_JS + html[i:]
 
 open(DESTINO, 'w', encoding='utf-8').write(html)
 
