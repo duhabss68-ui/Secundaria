@@ -13,7 +13,7 @@ import sys
 ORIGEN, DESTINO = sys.argv[1], sys.argv[2]
 # Versión de la edición para tablet: súbela en cada entrega. Con ella se genera también sw.js,
 # así la tablet sabe que hay versión nueva.
-TABLET_VERSION = '1.16'
+TABLET_VERSION = '1.17'
 html = open(ORIGEN, encoding='utf-8').read()
 
 
@@ -118,7 +118,7 @@ cambia("function scopedActivities(g,scope=scopeId(g),period=currentPeriod){retur
        "function scopedActivities(g,scope=scopeId(g),period=currentPeriod){return ordenPorRubro(g,scope,liveActivities().filter(a=>a.groupId===g?.id&&a.scopeId===scope&&String(a.period||'1')===period))}\n"
        "function ordenPorRubro(g,sc,arr){\n"
        "  if(!g||arr.length<2)return arr;\n"
-       "  const pos=new Map(rubrosOf(g,sc).items.map((it,i)=>[it.id,i])),ix=new Map(arr.map((a,i)=>[a.id,i])),p=a=>pos.has(a.rubro)?pos.get(a.rubro):1e6;\n"
+       "  const pos=new Map(rubrosOf(g,sc,arr[0].period).items.map((it,i)=>[it.id,i])),ix=new Map(arr.map((a,i)=>[a.id,i])),p=a=>pos.has(a.rubro)?pos.get(a.rubro):1e6;\n"
        "  return arr.slice().sort((a,b)=>p(a)-p(b)||ix.get(a.id)-ix.get(b.id));\n"
        "}")
 # Calificar: franja con el nombre de cada rubro sobre sus columnas y una línea entre grupos
@@ -404,6 +404,12 @@ button.sc-opt:active{transform:scale(.98);background:#EAF0F8}
 .sc-hist ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
 .sc-hist li .mini{margin-left:8px}
 body.theme-dark .sc-opt{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.12);color:var(--ink)}
+.rub-trim{margin:14px 0 12px;padding:14px 16px;border-radius:16px;background:#F4F7FB;border:1px solid #D6E0EE}
+.rub-trim.own{background:#FBF5EA;border-color:#E6D3AE}
+.rub-trim p{margin:10px 0 0}.rub-trim .actions{margin-top:10px;flex-wrap:wrap;align-items:center}
+.rub-trim-tabs{flex-wrap:wrap}.rub-trim-tabs .seg-b{min-height:44px;padding:8px 16px;font-size:15px}
+.rt-tag{display:inline-block;margin-left:4px;padding:1px 7px;border-radius:999px;background:#D8A45A;color:#fff;font-size:11px;vertical-align:middle}
+body.theme-dark .rub-trim{background:#16243A;border-color:#2C3B52}body.theme-dark .rub-trim.own{background:#2a2316;border-color:#5a4a2c}
 body.theme-dark .sc-card{background:linear-gradient(120deg,#16243A,#231f17);border-color:#2C3B52}
 body.theme-dark .sc-card h3{color:#C9D8F0}
 body.theme-dark .sc-chip{background:#2A2340!important;color:#D5C8F5!important}
@@ -726,7 +732,7 @@ function pickTeamActivity(){
   if(!teamSetsOf(g).length)return openModal(`<h2>Calificar por equipo</h2><p>Primero forma y guarda tus equipos en <b>Equipos</b> (barra de abajo) con el botón «Guardar esta organización». Después vuelve aquí.</p><div class="actions" style="justify-content:center"><button class="primary" data-autofocus onclick="closeModal();switchTo('equipos')">Ir a formar equipos</button><button class="secondary" onclick="closeModal()">Ahora no</button></div>`,{label:'Calificar por equipo'});
   const ros=roster(g),scopes=scopesForGroup(g),cur=scopeId(g);
   const acts=state.activities.filter(a=>a.groupId===g.id&&!a.archived&&a.period===currentPeriod&&scopes.some(s=>s.id===a.scopeId));
-  if(!acts.length)return openModal(`<h2>Calificar por equipo</h2><p>Todavía no hay actividades en ${esc(g.name)} (${esc(periodLabel(g))} ${currentPeriod}). Créala primero con el botón <b>＋</b> de la barra.</p><div class="actions" style="justify-content:center"><button class="primary" data-autofocus onclick="closeModal();switchTo('actividades')">＋ Crear actividad</button><button class="secondary" onclick="closeModal()">Cancelar</button></div>`,{label:'Calificar por equipo'});
+  if(!acts.length)return openModal(`<h2>Calificar por equipo</h2><p>Todavía no hay actividades en ${esc(g.name)} (${esc(periodName(g,currentPeriod))}). Créala primero con el botón <b>＋</b> de la barra.</p><div class="actions" style="justify-content:center"><button class="primary" data-autofocus onclick="closeModal();switchTo('actividades')">＋ Crear actividad</button><button class="secondary" onclick="closeModal()">Cancelar</button></div>`,{label:'Calificar por equipo'});
   const order=[...scopes].sort((x,y)=>(y.id===cur)-(x.id===cur));
   const blocks=order.map(sc=>{const list=acts.filter(a=>a.scopeId===sc.id).reverse();if(!list.length)return '';
     return `<div class="tg-disc"><h3 style="border-left:6px solid ${scopeColor(sc.id)}">${esc(sc.name)}</h3>${list.map(a=>{const n=ros.filter(st=>hasEvaluation(a,st.id)).length;
@@ -743,7 +749,7 @@ function tgOpenFor(aid){
 /* Cuaderno: el resumen general de alumnos se abre en una ventana (y sí sale al imprimir) */
 function openNbSummary(){
   const box=document.getElementById('nbSummary'),g=group();if(!box||!g)return warn('Elige al menos una disciplina para ver el resumen.');
-  openModal(`<h2>📊 Resumen de alumnos</h2><p class="helper">${esc(g.name)} · ${esc(periodLabel(g))} ${currentPeriod} · promedios provisionales por disciplina (lo pendiente no cuenta).</p><div class="nb-sum-modal">${box.querySelector('.book-block').outerHTML}</div><div class="actions"><button class="secondary" data-autofocus onclick="closeModal()">Cerrar</button></div>`,{label:'Resumen de alumnos',wide:true});
+  openModal(`<h2>📊 Resumen de alumnos</h2><p class="helper">${esc(g.name)} · ${esc(periodName(g,currentPeriod))} · promedios provisionales por disciplina (lo pendiente no cuenta).</p><div class="nb-sum-modal">${box.querySelector('.book-block').outerHTML}</div><div class="actions"><button class="secondary" data-autofocus onclick="closeModal()">Cerrar</button></div>`,{label:'Resumen de alumnos',wide:true});
 }
 /* Inicio: tarjeta chica a la derecha del saludo (solo en Inicio) */
 function welcomeMini(){
@@ -804,6 +810,41 @@ async function buscarActualizacion(){
   try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persisted().then(p=>p||navigator.storage.persist()).catch(()=>{})}catch(e){}
 })();
 """
+# ---------------------------------------------------------------- rubros propios por trimestre (Tablet 1.17)
+# Por omisión: los mismos rubros todo el ciclo. Opcional: el Segundo o Tercer Trimestre con sus propios rubros
+# (state.rubros['grupo|disciplina|T2']). rubroKey/rubrosOf viven en herramientas/rubros_trimestre.js.
+# Los periodos se llaman «Primer / Segundo / Tercer Trimestre» (el formato oficial SEPEN sigue diciendo «PRIMER PERIODO»).
+cambia("function rubroKey(g,sc){return g.id+'|'+sc}\nfunction rubrosOf(g,sc){return state.rubros[rubroKey(g,sc)]||defaultRubros()}",
+       "/* rubroKey y rubrosOf: ver 99_rubros_trimestre.js (rubros propios por trimestre) */")
+cambia("const [g,sc,...r]=k.split('|');if(r.length||!gOk(g)||!scopeOk(sc))continue;const n=normR(v)",
+       "const [g,sc,...r]=k.split('|');if((r.length&&!(r.length===1&&/^T[23]$/.test(r[0])))||!gOk(g)||!scopeOk(sc))continue;const n=normR(v)")
+cambia("const rubroListOf=(g,sc)=>(s.rubros[g+'|'+sc]||defaultRubros()).items;",
+       "const rubroListOf=(g,sc,p)=>((p&&p!=='1'&&s.rubros[g+'|'+sc+'|T'+p])||s.rubros[g+'|'+sc]||defaultRubros()).items;")
+cambia("const list=rubroListOf(a.groupId,scope);", "const list=rubroListOf(a.groupId,scope,na.period);")
+cambia("    const R=rubrosOf(g,scope.id);\n    if(!R.pct)", "    const R=rubrosOf(g,scope.id,graded[0].period);\n    if(!R.pct)")
+cambia("const it=g&&rubrosOf(g,a.scopeId).items.find(x=>x.id===a.rubro)", "const it=g&&rubrosOf(g,a.scopeId,a.period).items.find(x=>x.id===a.rubro)")
+cambia("{const L=rubrosOf(g,choice).items;", "{const L=rubrosOf(g,choice,a.period).items;")
+cambia("const R=rubrosOf(g,sc),cur=a?a.rubro:", "const R=rubrosOf(g,sc,a&&a.period),cur=a?a.rubro:")
+cambia("    const R=rubrosOf(g,sc);rubro=v('Type')?.value||'';", "    const R=rubrosOf(g,sc,a&&a.period);rubro=v('Type')?.value||'';")
+cambia("function rubUsage(g,sc,rid){return state.activities.filter(a=>a.groupId===g.id&&a.scopeId===sc&&a.rubro===rid).length}",
+       "function rubUsage(g,sc,rid){const k=rubroKey(g,sc);return state.activities.filter(a=>rubActEn(a,g,sc,k)&&a.rubro===rid).length}")
+cambia("state.activities.forEach(a=>{if(a.groupId===x.g.id&&a.scopeId===x.sc&&moves[a.rubro])a.rubro=moves[a.rubro]});",
+       "state.activities.forEach(a=>{if(rubActEn(a,x.g,x.sc,k)&&moves[a.rubro])a.rubro=moves[a.rubro]});")
+cambia("const k=rubroKey(t.g,t.sc),old=rubrosOf(t.g,t.sc).items,items=copy(src.items);",
+       "const k=rubKeyDestino(x,t),old=rubrosOf(t.g,t.sc).items,items=copy(src.items);")
+cambia("state.activities.forEach(a=>{if(a.groupId!==t.g.id||a.scopeId!==t.sc)return;const was=",
+       "state.activities.forEach(a=>{if(!rubActEn(a,t.g,t.sc,k))return;const was=")
+# nombres de los trimestres
+cambia("function periodLabel(g){return (g?.level||EDITION)==='Primaria'?'Trimestre':'Periodo'}", "function periodLabel(g){return 'Trimestre'}")
+cambia("${periodLabel(g)} ${n}</option>", "${periodName(g,n)}</option>")
+cambia("${esc(periodLabel(g))} ${currentPeriod}", "${esc(periodName(g,currentPeriod))}", 4)
+cambia("${esc(pl)} ${currentPeriod}", "${esc(periodName(g,currentPeriod))}")
+cambia("[periodLabel(g),currentPeriod]", "[periodLabel(g),periodName(g,currentPeriod)]", 2)
+cambia("periodLabel(g)+' '+currentPeriod", "periodName(g,currentPeriod)")
+cambia("pl=EDITION==='Primaria'?'Trimestre':'Periodo'", "pl='Trimestre'")
+cambia("${pl} ${n}</option>", "${periodName(null,n)}</option>")
+cambia("campo o disciplina y periodo.</div>", "campo o disciplina y trimestre.</div>")
+
 i = html.rfind('</script>')
 if html.count('</script>') != 1:
     sys.exit('ERROR: se esperaba un solo </script>')
@@ -813,6 +854,7 @@ FO_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'format
 QR_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'qrcode.min.js'), encoding='utf-8').read()
 PF_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'portal_familias.js'), encoding='utf-8').read()
 CONC_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'concentrado.js'), encoding='utf-8').read()
+RT_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'rubros_trimestre.js'), encoding='utf-8').read()
 SC_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'sin_clases.js'), encoding='utf-8').read()
 # Logo de SEPEN Nayarit para el formato oficial: el PNG va tal cual, en base64, dentro de la app (sin internet)
 import base64 as _b64, struct as _struct
@@ -822,7 +864,7 @@ if _LOGO[:8] != b'\x89PNG\r\n\x1a\n':
 _LW, _LH = _struct.unpack('>II', _LOGO[16:24])
 LOGO_JS = (f"\n/* Logo SEPEN Nayarit ({_LW}×{_LH} px, {len(_LOGO)} bytes, sin cambios) */\n"
            f"var FO_LOGO_SEPEN_W={_LW},FO_LOGO_SEPEN_H={_LH},FO_LOGO_SEPEN_B64='{_b64.b64encode(_LOGO).decode()}';\n")
-html = html[:i] + JS_TABLET + FO_JS + LOGO_JS + SC_JS + CONC_JS + '\n' + QR_JS + '\n' + PF_JS + html[i:]
+html = html[:i] + JS_TABLET + FO_JS + LOGO_JS + SC_JS + CONC_JS + '\n' + RT_JS + '\n' + QR_JS + '\n' + PF_JS + html[i:]
 
 open(DESTINO, 'w', encoding='utf-8').write(html)
 

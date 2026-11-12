@@ -685,6 +685,12 @@ button.sc-opt:active{transform:scale(.98);background:#EAF0F8}
 .sc-hist ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
 .sc-hist li .mini{margin-left:8px}
 body.theme-dark .sc-opt{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.12);color:var(--ink)}
+.rub-trim{margin:14px 0 12px;padding:14px 16px;border-radius:16px;background:#F4F7FB;border:1px solid #D6E0EE}
+.rub-trim.own{background:#FBF5EA;border-color:#E6D3AE}
+.rub-trim p{margin:10px 0 0}.rub-trim .actions{margin-top:10px;flex-wrap:wrap;align-items:center}
+.rub-trim-tabs{flex-wrap:wrap}.rub-trim-tabs .seg-b{min-height:44px;padding:8px 16px;font-size:15px}
+.rt-tag{display:inline-block;margin-left:4px;padding:1px 7px;border-radius:999px;background:#D8A45A;color:#fff;font-size:11px;vertical-align:middle}
+body.theme-dark .rub-trim{background:#16243A;border-color:#2C3B52}body.theme-dark .rub-trim.own{background:#2a2316;border-color:#5a4a2c}
 body.theme-dark .sc-card{background:linear-gradient(120deg,#16243A,#231f17);border-color:#2C3B52}
 body.theme-dark .sc-card h3{color:#C9D8F0}
 body.theme-dark .sc-chip{background:#2A2340!important;color:#D5C8F5!important}
@@ -821,7 +827,7 @@ label:has(>input[type=checkbox]),label:has(>input[type=radio]){min-height:40px}
 .snap-row small{display:block;color:#56708F;font-weight:500;margin-top:2px}
 body.theme-dark .snap-row{background:rgba(255,255,255,.05)}
 body.theme-dark .snap-row small{color:#9FB2CB}
-</style></head><body class="secondary-edition"><div class="layout"><aside class="side"><div class="brand"><span class="brand-ico" aria-hidden="true"><svg width="40" height="40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" rx="28" fill="#FFC93C"/><path d="M30 24 L32 30 L38 32 L32 34 L30 40 L28 34 L22 32 L28 30 Z" fill="#FFFFFF"/><circle cx="46" cy="28" r="3" fill="#FF6F61"/><rect x="18" y="93" width="84" height="5" rx="2.5" fill="#33284D"/><g stroke="#33284D" stroke-width="2.5" stroke-linejoin="round"><rect x="23" y="66" width="14" height="26" rx="3" fill="#2F6FC0"/><path d="M23 80 V69 A3 3 0 0 1 26 66 H34 A3 3 0 0 1 37 69 V80 Z" fill="#FF9F43"/><rect x="43" y="62" width="14" height="30" rx="2" fill="#F5A300"/><rect x="48.5" y="63" width="3" height="19" fill="#FFE08A" stroke="none"/><rect x="43" y="82" width="14" height="6" fill="#C9D1D6"/><rect x="43" y="88" width="14" height="4" rx="2" fill="#FF8FA3"/><path d="M43 62 L57 62 L50 50 Z" fill="#FFF8E7"/><rect x="63" y="46" width="14" height="46" rx="5" fill="#A29BFE"/><rect x="63" y="46" width="14" height="11" fill="#FFFFFF"/><path d="M63 46 L77 46 L70 36 Z" fill="#FFFFFF"/><rect x="83" y="30" width="14" height="62" rx="5" fill="#2EC4B6"/><rect x="83" y="72" width="14" height="8" fill="#FFFFFF"/><path d="M84.5 30 L95.5 30 L93 24 L87 24 Z" fill="#FFFFFF"/><path d="M87 24 L93 24 L93 19 L87 21.5 Z" fill="#2EC4B6"/></g><path d="M47.67 54 L52.33 54 L50 50 Z" fill="#33284D"/><path d="M67.9 39 L72.1 39 L70 36 Z" fill="#33284D"/><rect x="77" y="70" width="3" height="16" rx="1.5" fill="#33284D"/></svg></span><span class="brand-txt"><span class="brand-name"><span class="brand-mi">Mi</span> Bitácora</span><small>SECUNDARIA</small></span></div><div class="hdr-quote" id="hdrQuote" role="button" tabindex="0" title="Toca para ver otra frase" aria-label="Frase del día. Toca para ver otra" onclick="nextQuote()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();nextQuote()}"></div><div class="hdr-tools"><button class="tool-btn" id="textBtn" aria-pressed="false" title="Letra grande" onclick="toggleBigText()">A+</button><button class="tool-btn" id="helpBtn" title="Ayuda" aria-label="Ayuda" onclick="showHelp()">?</button></div><div class="bottom">Mi Bitácora Secundaria · v0.13.0 · Tablet 1.16<br>Datos guardados en esta tablet<br>No usar con datos reales de menores.</div></aside><main class="main"><header class="top"><div><div class="eyebrow" id="eyebrow">MI ESPACIO DE TRABAJO</div><h1 class="title" id="page-title">Buenos días, docente</h1><p class="sub" id="page-sub">Todo lo importante, sin complicaciones.</p></div><span class="tag">● Funciona sin internet</span></header><div id="topbar" class="topbar" role="status"></div><div id="content"></div></main></div><nav class="dock" id="dock" aria-label="Menú principal"><span class="dock-pill" aria-hidden="true"></span><button class="nav on" data-view="inicio"><span class="ic" data-ico="home"></span><span class="lbl">Inicio</span></button><button class="nav" data-view="alumnos"><span class="ic" data-ico="users"></span><span class="lbl">Mi grupo</span></button><button class="nav" data-view="asistencia"><span class="ic" data-ico="attendance"></span><span class="lbl">Asistencia</span></button><button class="nav dock-fab" data-view="actividades" aria-label="Actividades: crear o corregir"><span class="fab-c" aria-hidden="true"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><span class="lbl">Actividades</span></button><button class="nav" data-view="cuadricula"><span class="ic" data-ico="grades"></span><span class="lbl">Calificaciones</span></button><button class="nav" data-view="equipos"><span class="ic" data-ico="ruleta"></span><span class="lbl">Equipos</span></button><div class="more-wrap"><button class="nav" id="moreBtn" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()"><span class="ic" data-ico="more"></span><span class="lbl">Más</span></button><div class="more-menu" id="moreMenu" hidden><button data-view="horario"><span class="ic" data-ico="calendar"></span> &nbsp;Mi horario</button><button data-view="familias"><span class="ic" data-ico="users"></span> &nbsp;Portal de familias</button><button data-view="datos"><span class="ic" data-ico="save"></span> &nbsp;Copias de seguridad</button><button data-view="perfil"><span class="ic" data-ico="settings"></span> &nbsp;Mis datos y colores</button><div class="menu-ver"><span>Mi Bitácora · Tablet 1.16</span><button class="linkbtn" onclick="setMenu(false);buscarActualizacion()">↻ Buscar actualización</button></div></div></div></nav><script>
+</style></head><body class="secondary-edition"><div class="layout"><aside class="side"><div class="brand"><span class="brand-ico" aria-hidden="true"><svg width="40" height="40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" rx="28" fill="#FFC93C"/><path d="M30 24 L32 30 L38 32 L32 34 L30 40 L28 34 L22 32 L28 30 Z" fill="#FFFFFF"/><circle cx="46" cy="28" r="3" fill="#FF6F61"/><rect x="18" y="93" width="84" height="5" rx="2.5" fill="#33284D"/><g stroke="#33284D" stroke-width="2.5" stroke-linejoin="round"><rect x="23" y="66" width="14" height="26" rx="3" fill="#2F6FC0"/><path d="M23 80 V69 A3 3 0 0 1 26 66 H34 A3 3 0 0 1 37 69 V80 Z" fill="#FF9F43"/><rect x="43" y="62" width="14" height="30" rx="2" fill="#F5A300"/><rect x="48.5" y="63" width="3" height="19" fill="#FFE08A" stroke="none"/><rect x="43" y="82" width="14" height="6" fill="#C9D1D6"/><rect x="43" y="88" width="14" height="4" rx="2" fill="#FF8FA3"/><path d="M43 62 L57 62 L50 50 Z" fill="#FFF8E7"/><rect x="63" y="46" width="14" height="46" rx="5" fill="#A29BFE"/><rect x="63" y="46" width="14" height="11" fill="#FFFFFF"/><path d="M63 46 L77 46 L70 36 Z" fill="#FFFFFF"/><rect x="83" y="30" width="14" height="62" rx="5" fill="#2EC4B6"/><rect x="83" y="72" width="14" height="8" fill="#FFFFFF"/><path d="M84.5 30 L95.5 30 L93 24 L87 24 Z" fill="#FFFFFF"/><path d="M87 24 L93 24 L93 19 L87 21.5 Z" fill="#2EC4B6"/></g><path d="M47.67 54 L52.33 54 L50 50 Z" fill="#33284D"/><path d="M67.9 39 L72.1 39 L70 36 Z" fill="#33284D"/><rect x="77" y="70" width="3" height="16" rx="1.5" fill="#33284D"/></svg></span><span class="brand-txt"><span class="brand-name"><span class="brand-mi">Mi</span> Bitácora</span><small>SECUNDARIA</small></span></div><div class="hdr-quote" id="hdrQuote" role="button" tabindex="0" title="Toca para ver otra frase" aria-label="Frase del día. Toca para ver otra" onclick="nextQuote()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();nextQuote()}"></div><div class="hdr-tools"><button class="tool-btn" id="textBtn" aria-pressed="false" title="Letra grande" onclick="toggleBigText()">A+</button><button class="tool-btn" id="helpBtn" title="Ayuda" aria-label="Ayuda" onclick="showHelp()">?</button></div><div class="bottom">Mi Bitácora Secundaria · v0.13.0 · Tablet 1.17<br>Datos guardados en esta tablet<br>No usar con datos reales de menores.</div></aside><main class="main"><header class="top"><div><div class="eyebrow" id="eyebrow">MI ESPACIO DE TRABAJO</div><h1 class="title" id="page-title">Buenos días, docente</h1><p class="sub" id="page-sub">Todo lo importante, sin complicaciones.</p></div><span class="tag">● Funciona sin internet</span></header><div id="topbar" class="topbar" role="status"></div><div id="content"></div></main></div><nav class="dock" id="dock" aria-label="Menú principal"><span class="dock-pill" aria-hidden="true"></span><button class="nav on" data-view="inicio"><span class="ic" data-ico="home"></span><span class="lbl">Inicio</span></button><button class="nav" data-view="alumnos"><span class="ic" data-ico="users"></span><span class="lbl">Mi grupo</span></button><button class="nav" data-view="asistencia"><span class="ic" data-ico="attendance"></span><span class="lbl">Asistencia</span></button><button class="nav dock-fab" data-view="actividades" aria-label="Actividades: crear o corregir"><span class="fab-c" aria-hidden="true"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><span class="lbl">Actividades</span></button><button class="nav" data-view="cuadricula"><span class="ic" data-ico="grades"></span><span class="lbl">Calificaciones</span></button><button class="nav" data-view="equipos"><span class="ic" data-ico="ruleta"></span><span class="lbl">Equipos</span></button><div class="more-wrap"><button class="nav" id="moreBtn" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()"><span class="ic" data-ico="more"></span><span class="lbl">Más</span></button><div class="more-menu" id="moreMenu" hidden><button data-view="horario"><span class="ic" data-ico="calendar"></span> &nbsp;Mi horario</button><button data-view="familias"><span class="ic" data-ico="users"></span> &nbsp;Portal de familias</button><button data-view="datos"><span class="ic" data-ico="save"></span> &nbsp;Copias de seguridad</button><button data-view="perfil"><span class="ic" data-ico="settings"></span> &nbsp;Mis datos y colores</button><div class="menu-ver"><span>Mi Bitácora · Tablet 1.17</span><button class="linkbtn" onclick="setMenu(false);buscarActualizacion()">↻ Buscar actualización</button></div></div></div></nav><script>
 'use strict';
 /* ===== configuración de la edición (generada por build.py) ===== */
 const APP_NAME='Mi Bitácora';const EDITION="Secundaria";const KEY="aulagestion_v09_secundaria";const APP_VERSION="0.13.0";
@@ -1122,11 +1128,11 @@ function normalizeState(raw,opt={}){
       if(!items.length)return null;
       const sum=items.reduce((a,x)=>a+x.w,0);return {pct:v.pct===true&&Math.abs(sum-100)<0.01,items};
     };
-    if(isObj(raw.rubros))for(const [k,v] of Object.entries(raw.rubros)){const [g,sc,...r]=k.split('|');if(r.length||!gOk(g)||!scopeOk(sc))continue;const n=normR(v);if(n)s.rubros[k]=n}
+    if(isObj(raw.rubros))for(const [k,v] of Object.entries(raw.rubros)){const [g,sc,...r]=k.split('|');if((r.length&&!(r.length===1&&/^T[23]$/.test(r[0])))||!gOk(g)||!scopeOk(sc))continue;const n=normR(v);if(n)s.rubros[k]=n}
     if(isObj(raw.weights))for(const [k,v] of Object.entries(raw.weights)){const [g,sc,...r]=k.split('|');if(r.length||!gOk(g)||!scopeOk(sc)||s.rubros[k]||!isObj(v))continue;
       const d=defaultRubros();d.items.forEach(it=>{const n=Number(v[RUBRO_FROM_TIPO_NAME[it.id]]);it.w=Number.isFinite(n)&&n>=0&&n<=100?n:0});d.pct=Math.abs(d.items.reduce((a,x)=>a+x.w,0)-100)<0.01;s.rubros[k]=d}
   }
-  const rubroListOf=(g,sc)=>(s.rubros[g+'|'+sc]||defaultRubros()).items;
+  const rubroListOf=(g,sc,p)=>((p&&p!=='1'&&s.rubros[g+'|'+sc+'|T'+p])||s.rubros[g+'|'+sc]||defaultRubros()).items;
   /* Actividades (las antiguas sin campo/disciplina se conservan para reasignarlas) */
   const actIds=new Set();
   s.activities=(Array.isArray(raw.activities)?raw.activities:[]).filter(a=>isObj(a)&&okId(a.id)&&okId(a.groupId)&&gOk(a.groupId)&&!actIds.has(a.id)&&Number.isFinite(Number(a.max))&&Number(a.max)>0).map(a=>{
@@ -1138,7 +1144,7 @@ function normalizeState(raw,opt={}){
       mode:MODE_IDS.includes(a.mode)?a.mode:'num',counts:a.counts!==false,
       pdas:[...new Set((Array.isArray(a.pdas)?a.pdas:[]).filter(id=>okId(id)&&pdaOk(a.groupId,scope,id)))]};
     {   /* cada actividad pertenece a un rubro de su campo o disciplina */
-      const list=rubroListOf(a.groupId,scope);let rid=typeof a.rubro==='string'&&list.some(x=>x.id===a.rubro)?a.rubro:'';
+      const list=rubroListOf(a.groupId,scope,na.period);let rid=typeof a.rubro==='string'&&list.some(x=>x.id===a.rubro)?a.rubro:'';
       if(!rid){const byName=list.find(x=>normName(x.name)===normName(na.type));rid=(byName||list.find(x=>x.id===TIPO_TO_RUBRO[na.type])||list[0]).id}
       na.rubro=rid;
     }
@@ -1249,11 +1255,11 @@ function scopesForGroup(g){if(!g)return[];return g.level==='Primaria'?CAMPOS:DIS
 function scopeId(g){const list=scopesForGroup(g);let id=scopeByGroup[g?.id];if(!list.some(x=>x.id===id)){id=list[0]?.id||'';if(g)scopeByGroup[g.id]=id}return id}
 function scopeName(g,id){return scopesForGroup(g).find(x=>x.id===id)?.name||'Sin clasificar'}
 function scopeArea(g,id){if(!g)return'';return g.level==='Primaria'?'':CAMPOS.find(c=>c.id===DISCIPLINAS.find(d=>d.id===id)?.campo)?.name||''}
-function periodLabel(g){return (g?.level||EDITION)==='Primaria'?'Trimestre':'Periodo'}
+function periodLabel(g){return 'Trimestre'}
 function scopedActivities(g,scope=scopeId(g),period=currentPeriod){return ordenPorRubro(g,scope,liveActivities().filter(a=>a.groupId===g?.id&&a.scopeId===scope&&String(a.period||'1')===period))}
 function ordenPorRubro(g,sc,arr){
   if(!g||arr.length<2)return arr;
-  const pos=new Map(rubrosOf(g,sc).items.map((it,i)=>[it.id,i])),ix=new Map(arr.map((a,i)=>[a.id,i])),p=a=>pos.has(a.rubro)?pos.get(a.rubro):1e6;
+  const pos=new Map(rubrosOf(g,sc,arr[0].period).items.map((it,i)=>[it.id,i])),ix=new Map(arr.map((a,i)=>[a.id,i])),p=a=>pos.has(a.rubro)?pos.get(a.rubro):1e6;
   return arr.slice().sort((a,b)=>p(a)-p(b)||ix.get(a.id)-ix.get(b.id));
 }
 function pendingActivities(g){return state.activities.filter(a=>a.groupId===g?.id&&!a.scopeId&&!a.archived)}
@@ -1303,7 +1309,7 @@ function averageInScope(g,scope,student,activities){
   const graded=activities.filter(a=>countsInAverage(a)&&scoreOf(a,student.id)!==undefined);
   if(!graded.length)return null;
   {   /* v0.12/v0.13: rubros del campo o disciplina, con o sin porcentaje */
-    const R=rubrosOf(g,scope.id);
+    const R=rubrosOf(g,scope.id,graded[0].period);
     if(!R.pct)return graded.reduce((x,a)=>x+gradeOnTen(a,student.id),0)/graded.length;
     let total=0,den=0;
     for(const it of R.items){
@@ -1351,9 +1357,8 @@ function pdaProgress(g,scope,acts){
 }
 
 /* ---------- v0.12: rubros (Primaria; en Secundaria desde la v0.13) ---------- */
-function rubroKey(g,sc){return g.id+'|'+sc}
-function rubrosOf(g,sc){return state.rubros[rubroKey(g,sc)]||defaultRubros()}
-function rubroName(a){const g=state.groups.find(x=>x.id===a.groupId);const it=g&&rubrosOf(g,a.scopeId).items.find(x=>x.id===a.rubro);return it?it.name:(a.type||'Actividad')}
+/* rubroKey y rubrosOf: ver 99_rubros_trimestre.js (rubros propios por trimestre) */
+function rubroName(a){const g=state.groups.find(x=>x.id===a.groupId);const it=g&&rubrosOf(g,a.scopeId,a.period).items.find(x=>x.id===a.rubro);return it?it.name:(a.type||'Actividad')}
 /* Nombre del tipo de trabajo que se muestra: el rubro (en las dos ediciones desde la v0.13) */
 function kindName(a){return rubroName(a)}
 
@@ -1965,7 +1970,7 @@ function scopeSelect(g){
   return `<label class="label-inline">${g.level==='Primaria'?'Campo formativo':'Disciplina'} <select class="field" id="scopePicker" aria-label="${g.level==='Primaria'?'Seleccionar campo formativo':'Seleccionar disciplina'}" onchange="scopeByGroup[selectedGroup]=this.value;gradeActivityId='';editingActivity='';render()">${options.map(x=>`<option value="${esc(x.id)}" ${scopeId(g)===x.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select></label>`;
 }
 function setPeriod(v){if(!['1','2','3'].includes(v))return;currentPeriod=v;state.profile.period=v;save();gradeActivityId='';editingActivity='';render()}
-function periodSelect(g){return `<label class="label-inline">${periodLabel(g)} <select class="field" id="periodPicker" onchange="setPeriod(this.value)">${[1,2,3].map(n=>`<option value="${n}" ${currentPeriod==n?'selected':''}>${periodLabel(g)} ${n}</option>`).join('')}</select></label>`}
+function periodSelect(g){return `<label class="label-inline">${periodLabel(g)} <select class="field" id="periodPicker" onchange="setPeriod(this.value)">${[1,2,3].map(n=>`<option value="${n}" ${currentPeriod==n?'selected':''}>${periodName(g,n)}</option>`).join('')}</select></label>`}
 function scopeHeader(g){
   return `<div class="scope-controls"><div class="flex">${groupSelect()}${g?scopeSelect(g):''}${g?periodSelect(g):''}</div>${g&&g.level==='Secundaria'&&scopesForGroup(g).length?`<p class="helper">Campo asociado: ${esc(scopeArea(g,scopeId(g)))}. Cada disciplina tiene sus propias actividades y calificaciones.</p>`:''}</div>`;
 }
@@ -1999,7 +2004,7 @@ function activityFormHTML(p,g,a){
 /* Muestra solo los campos que aplican a la forma de calificar elegida */
 /* v0.12: el tipo de trabajo es un rubro del campo o disciplina; se puede crear uno nuevo desde aquí */
 function rubroFieldHTML(p,g,sc,a){
-  const R=rubrosOf(g,sc),cur=a?a.rubro:(rubroLast[rubroKey(g,sc)]||R.items[0].id);
+  const R=rubrosOf(g,sc,a&&a.period),cur=a?a.rubro:(rubroLast[rubroKey(g,sc)]||R.items[0].id);
   return `<div data-af="type"><label class="helper" for="${p}Type">Rubro</label><select id="${p}Type" class="field" onchange="afRubro('${p}')">${R.items.map(it=>`<option value="${esc(it.id)}" ${it.id===cur?'selected':''}>${esc(it.name)}${R.pct?' ('+numfmt(it.w)+' %)':''}</option>`).join('')}<option value="__new">＋ Nuevo rubro…</option></select></div>
   <div class="af-newrub" id="${p}NewRubBox" hidden><label class="helper" for="${p}NewRub">Nombre del nuevo rubro</label><input id="${p}NewRub" class="field" maxlength="40" placeholder="Ej. Participación" list="rubroIdeas"><datalist id="rubroIdeas">${RUBRO_IDEAS.filter(n=>!R.items.some(it=>normName(it.name)===normName(n))).map(n=>`<option value="${esc(n)}">`).join('')}</datalist></div>`;
 }
@@ -2032,7 +2037,7 @@ function readActivityForm(p,g,a){
   const pdas=mode==='text'?[]:[...document.querySelectorAll(`#${p}Form input[name="${p}Pda"]:checked`)].map(x=>x.value).filter(x=>valid.has(x));
   let rubro='',newRubro='';
   {
-    const R=rubrosOf(g,sc);rubro=v('Type')?.value||'';
+    const R=rubrosOf(g,sc,a&&a.period);rubro=v('Type')?.value||'';
     if(mode==='text')rubro=a?a.rubro:R.items[0].id;
     else if(rubro==='__new'){newRubro=(v('NewRub')?.value||'').replace(/\s+/g,' ').trim();if(!newRubro)return {ok:false,msg:'Escribe el nombre del nuevo rubro.'};rubro=''}
     else if(!R.items.some(it=>it.id===rubro))return {ok:false,msg:'Elige el rubro de la actividad.'};
@@ -2053,10 +2058,10 @@ VIEWS.actividades=function(c,g){
   if(!selected&&arr.length){selected=arr[0];gradeActivityId=selected.id}
   const pending=g?pendingActivities(g):[],archived=g?state.activities.filter(a=>a.groupId===g.id&&a.archived):[],ros=roster(g);
   const editing=selected&&editingActivity===selected.id,sm=selected?modeOf(selected):'num';
-  c.innerHTML=`<section class="panel">${scopeHeader(g)}${g&&scopesForGroup(g).length?`${activityFormHTML('act',g)}<p class="helper">Se guardará en: <b>${esc(scopeName(g,scopeId(g)))}</b> · ${esc(periodLabel(g))} ${currentPeriod}</p>`:''}</section>
+  c.innerHTML=`<section class="panel">${scopeHeader(g)}${g&&scopesForGroup(g).length?`${activityFormHTML('act',g)}<p class="helper">Se guardará en: <b>${esc(scopeName(g,scopeId(g)))}</b> · ${esc(periodName(g,currentPeriod))}</p>`:''}</section>
   ${pending.length?`<section class="section panel"><h3>Revisar actividades anteriores (${pending.length})</h3><p class="hint">Estas actividades provienen de una versión previa y no tenían campo o disciplina. Asígnalas para que aparezcan en su cuaderno correcto; las calificaciones se conservarán.</p>${pending.map(a=>`<div class="flex review-item"><b>${esc(a.name)}</b><span class="helper">${esc(a.date)}</span><select class="field" id="migrate_${a.id}"><option value="">Selecciona destino</option>${scopesForGroup(g).map(sc=>`<option value="${esc(sc.id)}">${esc(sc.name)}</option>`).join('')}</select><button class="secondary" onclick="classifyActivity('${a.id}')">Asignar</button></div>`).join('')}</section>`:''}
   <section class="section panel"><div class="flex" style="justify-content:space-between"><h3>Actividades de ${g?esc(scopeName(g,scopeId(g))):'tu grupo'} (${arr.length})</h3><button class="secondary" onclick="switchTo('libreta')">Ver cuaderno digital →</button></div>
-  ${!arr.length?'<div class="empty">Aún no hay actividades en este campo o disciplina y periodo.</div>':`<div class="flex activity-tabs">${arr.map(a=>`<button class="${a.id===gradeActivityId?'primary':'secondary'}" onclick="gradeActivityId='${a.id}';editingActivity='';render()">${esc(a.name)}</button>`).join('')}</div>
+  ${!arr.length?'<div class="empty">Aún no hay actividades en este campo o disciplina y trimestre.</div>':`<div class="flex activity-tabs">${arr.map(a=>`<button class="${a.id===gradeActivityId?'primary':'secondary'}" onclick="gradeActivityId='${a.id}';editingActivity='';render()">${esc(a.name)}</button>`).join('')}</div>
   ${selected?(editing?`<div class="scope-controls"><h3>Editar actividad</h3>${activityFormHTML('e',g,selected)}<div style="margin-top:12px"><label class="helper" for="eNotes">Observaciones (opcional)</label><br><textarea id="eNotes" class="field" rows="2" style="width:100%;max-width:640px" maxlength="500">${esc(selected.notes||'')}</textarea></div><div class="actions"><button class="primary" onclick="saveActivityEdit('${selected.id}')">Guardar cambios</button><button class="secondary" onclick="editingActivity='';render()">Cancelar</button></div><p class="helper">Las calificaciones ya capturadas se conservan. El puntaje máximo no puede ser menor que una nota ya registrada. Si la actividad ya tiene calificaciones, no se puede cambiar cómo se califica.</p></div>`
   :`<div class="flex"><b>${esc(selected.name)}</b><span class="chip">${esc(kindName(selected))}</span><span class="chip">${esc(modeName(sm))}</span><span class="helper">${esc(fmtIso(selected.date))}${sm==='num'?' · Máx. '+selected.max:''}${(sm==='icon'||sm==='level')&&selected.counts===false?' · no cuenta en el promedio':''}</span>${sm==='rubric'?`<button class="primary" onclick="openRubricEval('${selected.id}','')">Evaluar con la rúbrica</button><button class="secondary" onclick="editActivityRubric('${selected.id}')">Ver o cambiar la rúbrica</button>`:''}<button class="secondary" onclick="openTeamGrade('${selected.id}')">${sm==='rubric'?'Evaluar por equipos':'Calificar por equipos'}</button><button class="secondary" onclick="downloadGrades()">↓ Exportar CSV</button><button class="secondary" onclick="editingActivity='${selected.id}';render()">✎ Editar</button><button class="secondary" onclick="archiveActivity('${selected.id}',true)">Ocultar</button><button class="danger" onclick="deleteActivity('${selected.id}')">Eliminar</button></div>${selected.notes?`<p class="hint">📝 ${esc(selected.notes)}</p>`:''}${pdaChips(g,selected)}`)+`
   <p class="hint">${sm==='num'?'Deja la casilla vacía si el alumno todavía no ha sido evaluado. Una calificación de cero debe escribirse expresamente. Con <b>Enter</b> pasas al siguiente alumno.':esc(MODES.find(x=>x.id===sm).hint)}</p>
@@ -2101,7 +2106,7 @@ function archiveActivity(id,on){
 function classifyActivity(id){
   const g=group(),a=state.activities.find(a=>a.id===id&&a.groupId===selectedGroup),choice=document.getElementById('migrate_'+id)?.value;
   if(!a||!choice||!scopesForGroup(g).some(x=>x.id===choice))return warn('Selecciona un campo o disciplina.');
-  a.scopeId=choice;a.period=String(a.period||'1');a.type=a.type||'Actividad';{const L=rubrosOf(g,choice).items;if(!L.some(x=>x.id===a.rubro))a.rubro=(L.find(x=>x.id===TIPO_TO_RUBRO[a.type])||L[0]).id}scopeByGroup[g.id]=choice;currentPeriod=String(a.period);gradeActivityId=a.id;save();render();
+  a.scopeId=choice;a.period=String(a.period||'1');a.type=a.type||'Actividad';{const L=rubrosOf(g,choice,a.period).items;if(!L.some(x=>x.id===a.rubro))a.rubro=(L.find(x=>x.id===TIPO_TO_RUBRO[a.type])||L[0]).id}scopeByGroup[g.id]=choice;currentPeriod=String(a.period);gradeActivityId=a.id;save();render();
 }
 /* Captura de notas: se actualiza sólo la fila (sin volver a dibujar la tabla) para no perder el foco al pulsar Tab/Enter */
 function setGrade(aid,sid,input){
@@ -2126,7 +2131,7 @@ function deleteActivity(id){
 }
 function downloadGrades(){
   const g=group();if(!g)return;const arr=scopedActivities(g),sc={id:scopeId(g)};
-  csvDownload('cuaderno_'+safeName(g.name)+'_'+sc.id+'_P'+currentPeriod+'.csv',[['Grupo',g.name],['Nivel',g.level],[g.level==='Primaria'?'Campo formativo':'Disciplina',scopeName(g,sc.id)],[periodLabel(g),currentPeriod],[],
+  csvDownload('cuaderno_'+safeName(g.name)+'_'+sc.id+'_P'+currentPeriod+'.csv',[['Grupo',g.name],['Nivel',g.level],[g.level==='Primaria'?'Campo formativo':'Disciplina',scopeName(g,sc.id)],[periodLabel(g),periodName(g,currentPeriod)],[],
     ['Alumno',...arr.map(a=>a.name+' ('+kindName(a)+', '+(modeOf(a)==='num'?'máx '+a.max:modeName(modeOf(a)))+')'),'Promedio provisional (0–10)'],
     ...roster(g).map(st=>{const v=averageInScope(g,sc,st,arr);return [st.name,...arr.map(a=>modeOf(a)==='num'?(state.grades[a.id+'|'+st.id]??''):cellText(a,st.id,true)),v===null?'':round2(v)]})]);
 }
@@ -2282,7 +2287,7 @@ VIEWS.cuadricula=function(c,g){
   <tbody>${ros.map((st,i)=>`<tr data-sid="${st.id}"><td class="rn">${i+1}</td><td class="stickycol" title="${esc(st.name)}">${esc(st.name)}</td>${arr.map(a=>`<td class="gc${rbStart(a)}">${cellHTML(a,st)}</td>`).join('')}<td class="avgcell" id="avg_${st.id}">${avgHTML(averageInScope(g,sc,st,arr))}</td></tr>`).join('')}</tbody>
   <tfoot><tr><td class="rn"></td><td class="stickycol">Promedio del grupo</td>${arr.map(a=>`<td id="col_${a.id}" class="colavg${rbStart(a)}">${colAverage(a,ros)}</td>`).join('')}<td></td></tr></tfoot></table></div>
   <p class="helper">Toca el encabezado de una actividad para rellenar la columna o editarla. En las columnas ✓ ½ ✗ y de nivel, cada toque cambia la marca. En las de rúbrica, toca la casilla para evaluar. Los promedios son <b>provisionales</b>.</p>`
-  :arr.length?'<div class="empty">Este grupo todavía no tiene alumnos. Agrégalos en «Mi grupo».</div>':`<div class="empty-state">${mascot(84)}<div class="empty">Aún no hay actividades en <b>${esc(scopeName(g,sc.id))}</b> (${esc(periodLabel(g))} ${currentPeriod}).<br>Créala en la pestaña «Actividades».</div></div>`}
+  :arr.length?'<div class="empty">Este grupo todavía no tiene alumnos. Agrégalos en «Mi grupo».</div>':`<div class="empty-state">${mascot(84)}<div class="empty">Aún no hay actividades en <b>${esc(scopeName(g,sc.id))}</b> (${esc(periodName(g,currentPeriod))}).<br>Créala en la pestaña «Actividades».</div></div>`}
   ${quick}</section>`;
 };
 function setDensity(d){if(!['compact','normal','wide'].includes(d))return;state.settings.sheetDensity=d;save();render()}
@@ -2683,7 +2688,7 @@ function copyPdasFrom(){
 /* ---------- Personalización ---------- */
 VIEWS.perfil=function(c){
   title('TU ESPACIO','Mis datos','Tu nombre, escuela y preferencias, una sola vez.');
-  const p=state.profile,groups=activeGroups(),pl=EDITION==='Primaria'?'Trimestre':'Periodo';
+  const p=state.profile,groups=activeGroups(),pl='Trimestre';
   const subjects=groups.flatMap(g=>scopesForGroup(g).map(s=>({group:g,scope:s})));
   c.innerHTML=`<section class="panel"><h3>Datos del docente</h3><div class="settings-grid"><label class="discipline-choice"><input type="checkbox" id="bigTextChk" ${state.settings.bigText?'checked':''} onchange="toggleBigText()"><span><b>Letra grande</b> (también con el botón A+ de arriba)</span></label></div><p class="muted">Se guardan al presionar «Guardar mis datos» y aparecen automáticamente en los encabezados de tus cuadernos, reportes y documentos imprimibles.</p>
   <div class="hint">Puedes actualizar estos datos cuando cambies de escuela, ciclo o grupo: tus actividades, calificaciones y asistencias no se pierden.</div>
@@ -2693,7 +2698,7 @@ VIEWS.perfil=function(c){
   <label>Turno<select class="field" id="shiftProfile"><option value="">Sin indicar</option>${SHIFTS.map(s=>`<option ${p.shift===s?'selected':''}>${s}</option>`).join('')}</select></label><label>Clave del C.C.T.<input class="field" id="cctProfile" value="${esc(p.cct||'')}" placeholder="Ej. 18DES0000X" maxlength="20" style="text-transform:uppercase"></label><label>Sector<input class="field" id="sectorProfile" value="${esc(p.sector||'')}" placeholder="Ej. 02" maxlength="20"></label><label>Zona escolar<input class="field" id="zonaProfile" value="${esc(p.zona||'')}" placeholder="Ej. 015" maxlength="20"></label>
   ${EDITION==='Primaria'?`<label>Grado<select class="field" id="gradeProfile"><option value="">Sin indicar</option>${['1°','2°','3°','4°','5°','6°'].map(x=>`<option ${p.grade===x?'selected':''}>${x}</option>`).join('')}</select></label>
   <label>Grupo que atiende<select class="field" id="groupProfile"><option value="">Selecciona el grupo</option>${groups.map(gr=>`<option value="${esc(gr.id)}" ${p.group===gr.id?'selected':''}>${esc(gr.name)}</option>`).join('')}</select></label>`:''}
-  <label>${pl} de evaluación actual<select class="field" id="periodProfile">${['1','2','3'].map(n=>`<option value="${n}" ${p.period===n?'selected':''}>${pl} ${n}</option>`).join('')}</select></label></div>
+  <label>${pl} de evaluación actual<select class="field" id="periodProfile">${['1','2','3'].map(n=>`<option value="${n}" ${p.period===n?'selected':''}>${periodName(null,n)}</option>`).join('')}</select></label></div>
   <div class="actions"><button class="primary" onclick="saveProfile()">Guardar mis datos</button></div></section>
   ${themePanelHTML()}
   ${EDITION==='Secundaria'?`<section class="panel section"><h3>Mis disciplinas</h3><p class="muted">Puedes impartir varias disciplinas y asignarlas a cada grupo.</p><div class="flex">${groupSelect()}<button class="secondary" onclick="switchTo('disciplinas')">Configurar disciplinas del grupo →</button><button class="secondary" onclick="switchTo('horario')">Ver mi horario semanal →</button></div><div class="discipline-tags">${subjects.map(x=>`<span class="chip ok">${esc(x.group.name)} · ${esc(x.scope.name)}</span>`).join('')||'<span class="muted">Selecciona disciplinas desde la configuración de cada grupo.</span>'}</div></section>`:''}`;
@@ -2825,7 +2830,7 @@ function fichaHTML(g,st,opt){
   const note=state.studentNotes[noteKey(g,st.id)]||'';
   const valCell=(a)=>{const t=cellText(a,st.id,true);if(!t)return '<span class="muted">Pendiente</span>';const v=scoreOf(a,st.id);return modeOf(a)==='num'||(modeOf(a)==='rubric'&&v!==undefined)?`${esc(t)} <span class="muted">/ ${a.max}</span>`:esc(t)};
   return `<article class="ficha ${opt.print?'print-page':''}">
-  <header class="ficha-head"><div><div class="eyebrow">Ficha del alumno · ${esc(pl)} ${currentPeriod}</div><h2>${esc(st.name)}</h2><div class="helper">${esc(g.name)}${p.cycle?' · Ciclo '+esc(p.cycle):''}${p.shift?' · '+esc(p.shift):''}</div></div>
+  <header class="ficha-head"><div><div class="eyebrow">Ficha del alumno · ${esc(periodName(g,currentPeriod))}</div><h2>${esc(st.name)}</h2><div class="helper">${esc(g.name)}${p.cycle?' · Ciclo '+esc(p.cycle):''}${p.shift?' · '+esc(p.shift):''}</div></div>
   <div class="ficha-meta">${p.school?`<b>${esc(p.school)}</b><br>`:''}${p.teacher?esc(p.teacher)+'<br>':''}${esc(fmtDateLong(new Date()))}</div></header>
   <section class="ficha-sec"><h3>Calificaciones provisionales</h3>
   ${withActs.length?`<table class="ficha-sum"><thead><tr><th>${g.level==='Primaria'?'Campo formativo':'Disciplina'}</th><th>Promedio /10</th><th>Nivel</th></tr></thead><tbody>${withActs.map(b=>`<tr><td>${esc(b.sc.name)}</td><td class="num"><b>${averageLabel(b.avg)}</b></td><td>${levelChip(b.avg)}</td></tr>`).join('')}${over!==null?`<tr class="tot"><td>Promedio general (orientativo)</td><td class="num"><b>${numfmt(round2(over))}</b></td><td>${levelChip(over)}</td></tr>`:''}</tbody></table>
@@ -3116,9 +3121,9 @@ function actividadesPrimaria(c,g){
   };
   c.innerHTML=`<section class="panel">${scopeHeader(g)}
   ${flash?`<div class="done-card" role="status">${mascot(56,'cheer')}<div><b>${EDITION==='Primaria'?'¡Listo, profe!':'Listo'}</b><div>Creaste «${esc(flash.name)}».</div></div><span class="spacer"></span><button class="primary" onclick="goGrade('${flash.id}')">Calificar ahora →</button><button class="secondary" onclick="tgOpenFor('${flash.id}')">👥 Por equipos</button></div>`:''}
-  <h3>Nueva actividad</h3>${activityFormHTML('act',g)}<p class="helper">Se guardará en <b>${esc(scopeName(g,sc))}</b> · ${esc(periodLabel(g))} ${currentPeriod}. Los rubros se configuran en <button class="linkbtn" onclick="switchTo('rubros')">Opciones del cuaderno › Rubros y porcentajes</button>.</p></section>
+  <h3>Nueva actividad</h3>${activityFormHTML('act',g)}<p class="helper">Se guardará en <b>${esc(scopeName(g,sc))}</b> · ${esc(periodName(g,currentPeriod))}. Los rubros se configuran en <button class="linkbtn" onclick="switchTo('rubros')">Opciones del cuaderno › Rubros y porcentajes</button>.</p></section>
   ${pending.length?`<section class="section panel"><h3>Revisar actividades anteriores (${pending.length})</h3><p class="hint">Estas actividades vienen de una versión anterior y no tenían ${SCOPE_W.one}. Asígnalas; sus notas se conservan.</p>${pending.map(a=>`<div class="flex review-item"><b>${esc(a.name)}</b><span class="helper">${esc(a.date)}</span><select class="field" id="migrate_${a.id}"><option value="">Selecciona destino</option>${scopesForGroup(g).map(x=>`<option value="${esc(x.id)}">${esc(x.name)}</option>`).join('')}</select><button class="secondary" onclick="classifyActivity('${a.id}')">Asignar</button></div>`).join('')}</section>`:''}
-  <section class="section panel"><h3>Actividades de ${esc(scopeName(g,sc))} · ${esc(periodLabel(g))} ${currentPeriod} (${arr.length})</h3>
+  <section class="section panel"><h3>Actividades de ${esc(scopeName(g,sc))} · ${esc(periodName(g,currentPeriod))} (${arr.length})</h3>
   ${arr.length?`<div class="table-wrap"><table class="rows act-list"><thead><tr><th>Actividad</th><th>Rubro</th><th>Cómo se califica</th><th>Fecha</th><th>Calificados</th><th></th></tr></thead><tbody>${arr.map(row).join('')}</tbody></table></div>`:`<div class="empty">Aún no hay actividades en ${SCOPE_W.this} y ${esc(periodLabel(g).toLowerCase())}. Crea la primera arriba.</div>`}</section>
   ${archived.length?`<section class="section panel"><h3>Actividades ocultas (${archived.length})</h3><p class="helper">No cuentan en el cuaderno ni en los promedios, pero conservan sus notas.</p>${archived.map(a=>`<div class="flex review-item"><b>${esc(a.name)}</b><span class="helper">${esc(scopeName(g,a.scopeId))} · ${esc(periodLabel(g))} ${esc(a.period)}</span><button class="secondary" onclick="archiveActivity('${a.id}',false)">Volver a mostrar</button><button class="danger" onclick="deleteActivity('${a.id}')">Eliminar</button></div>`).join('')}</section>`:''}`;
   ['act','e'].forEach(afMode);
@@ -3163,7 +3168,7 @@ function rubDraft(g,sc){
   if(!rubDrafts[k]){const R=rubrosOf(g,sc);rubDrafts[k]={pct:R.pct,items:copy(R.items),moves:{},dirty:false}}
   return rubDrafts[k];
 }
-function rubUsage(g,sc,rid){return state.activities.filter(a=>a.groupId===g.id&&a.scopeId===sc&&a.rubro===rid).length}
+function rubUsage(g,sc,rid){const k=rubroKey(g,sc);return state.activities.filter(a=>rubActEn(a,g,sc,k)&&a.rubro===rid).length}
 VIEWS.rubros=function(c,g){
   title('CALIFICACIONES','Rubros y porcentajes',`Los rubros son los tipos de trabajo que calificas. ${SCOPE_W.each} de cada grupo tiene los suyos.`);
   if(!g){c.innerHTML=backToOptions()+emptyPanel('Primero crea un grupo.');return}
@@ -3222,7 +3227,7 @@ function rubSave(){
   const moves={...d.moves};delete rubDrafts[k];
   withUndo(`Rubros de ${scopeName(x.g,x.sc)} guardados${d.pct?' con sus porcentajes':''}. Los promedios ya se recalcularon.`,()=>{
     state.rubros[k]={pct:d.pct,items};
-    state.activities.forEach(a=>{if(a.groupId===x.g.id&&a.scopeId===x.sc&&moves[a.rubro])a.rubro=moves[a.rubro]});
+    state.activities.forEach(a=>{if(rubActEn(a,x.g,x.sc,k)&&moves[a.rubro])a.rubro=moves[a.rubro]});
   });
 }
 function rubCopyOthers(){
@@ -3236,10 +3241,10 @@ function rubCopyTo(x,targets){
   const src=rubrosOf(x.g,x.sc),label=targets.map(t=>EDITION==='Primaria'?scopeName(t.g,t.sc):t.g.name+' · '+scopeName(t.g,t.sc)).join(', ');
   withUndo(`Rubros copiados a ${label}.`,()=>{
     for(const t of targets){
-      const k=rubroKey(t.g,t.sc),old=rubrosOf(t.g,t.sc).items,items=copy(src.items);
+      const k=rubKeyDestino(x,t),old=rubrosOf(t.g,t.sc).items,items=copy(src.items);
       state.rubros[k]={pct:src.pct,items};delete rubDrafts[k];
       /* cada actividad de ahí pasa al rubro con el mismo nombre; si no hay, al primero */
-      state.activities.forEach(a=>{if(a.groupId!==t.g.id||a.scopeId!==t.sc)return;const was=old.find(it=>it.id===a.rubro);
+      state.activities.forEach(a=>{if(!rubActEn(a,t.g,t.sc,k))return;const was=old.find(it=>it.id===a.rubro);
         const hit=(was&&items.find(it=>normName(it.name)===normName(was.name)))||items.find(it=>it.id===a.rubro)||items[0];a.rubro=hit.id});
     }
   });
@@ -3356,7 +3361,7 @@ function exportMeta(g){
   if(EDITION==='Primaria'&&p.grade)rows.push(['Grado',p.grade]);
   rows.push(['Grupo',g.name]);
   if(p.shift)rows.push(['Turno',p.shift]);
-  rows.push([periodLabel(g),currentPeriod]);
+  rows.push([periodLabel(g),periodName(g,currentPeriod)]);
   rows.push(['Fecha de exportación',fmtDateLong(new Date())]);
   return rows;
 }
@@ -3546,7 +3551,7 @@ function buildNotebookSheets(g){
 }
 function exportRealXLSX(){
   const g=group();if(!g)return;if(!selectedScopeData(g).length)return noScopeSelected();
-  const sheets=buildNotebookSheets(g),sb=new StyleBook(),files=xlsxFiles(sheets,sb,'Cuaderno '+g.name+' — '+periodLabel(g)+' '+currentPeriod);
+  const sheets=buildNotebookSheets(g),sb=new StyleBook(),files=xlsxFiles(sheets,sb,'Cuaderno '+g.name+' — '+periodName(g,currentPeriod));
   download('MiBitacora_'+EDITION+'_'+safeName(g.name)+'_P'+currentPeriod+'.xlsx',zipBlob(files));
 }
 
@@ -3690,7 +3695,7 @@ function pickTeamActivity(){
   if(!teamSetsOf(g).length)return openModal(`<h2>Calificar por equipo</h2><p>Primero forma y guarda tus equipos en <b>Equipos</b> (barra de abajo) con el botón «Guardar esta organización». Después vuelve aquí.</p><div class="actions" style="justify-content:center"><button class="primary" data-autofocus onclick="closeModal();switchTo('equipos')">Ir a formar equipos</button><button class="secondary" onclick="closeModal()">Ahora no</button></div>`,{label:'Calificar por equipo'});
   const ros=roster(g),scopes=scopesForGroup(g),cur=scopeId(g);
   const acts=state.activities.filter(a=>a.groupId===g.id&&!a.archived&&a.period===currentPeriod&&scopes.some(s=>s.id===a.scopeId));
-  if(!acts.length)return openModal(`<h2>Calificar por equipo</h2><p>Todavía no hay actividades en ${esc(g.name)} (${esc(periodLabel(g))} ${currentPeriod}). Créala primero con el botón <b>＋</b> de la barra.</p><div class="actions" style="justify-content:center"><button class="primary" data-autofocus onclick="closeModal();switchTo('actividades')">＋ Crear actividad</button><button class="secondary" onclick="closeModal()">Cancelar</button></div>`,{label:'Calificar por equipo'});
+  if(!acts.length)return openModal(`<h2>Calificar por equipo</h2><p>Todavía no hay actividades en ${esc(g.name)} (${esc(periodName(g,currentPeriod))}). Créala primero con el botón <b>＋</b> de la barra.</p><div class="actions" style="justify-content:center"><button class="primary" data-autofocus onclick="closeModal();switchTo('actividades')">＋ Crear actividad</button><button class="secondary" onclick="closeModal()">Cancelar</button></div>`,{label:'Calificar por equipo'});
   const order=[...scopes].sort((x,y)=>(y.id===cur)-(x.id===cur));
   const blocks=order.map(sc=>{const list=acts.filter(a=>a.scopeId===sc.id).reverse();if(!list.length)return '';
     return `<div class="tg-disc"><h3 style="border-left:6px solid ${scopeColor(sc.id)}">${esc(sc.name)}</h3>${list.map(a=>{const n=ros.filter(st=>hasEvaluation(a,st.id)).length;
@@ -3707,7 +3712,7 @@ function tgOpenFor(aid){
 /* Cuaderno: el resumen general de alumnos se abre en una ventana (y sí sale al imprimir) */
 function openNbSummary(){
   const box=document.getElementById('nbSummary'),g=group();if(!box||!g)return warn('Elige al menos una disciplina para ver el resumen.');
-  openModal(`<h2>📊 Resumen de alumnos</h2><p class="helper">${esc(g.name)} · ${esc(periodLabel(g))} ${currentPeriod} · promedios provisionales por disciplina (lo pendiente no cuenta).</p><div class="nb-sum-modal">${box.querySelector('.book-block').outerHTML}</div><div class="actions"><button class="secondary" data-autofocus onclick="closeModal()">Cerrar</button></div>`,{label:'Resumen de alumnos',wide:true});
+  openModal(`<h2>📊 Resumen de alumnos</h2><p class="helper">${esc(g.name)} · ${esc(periodName(g,currentPeriod))} · promedios provisionales por disciplina (lo pendiente no cuenta).</p><div class="nb-sum-modal">${box.querySelector('.book-block').outerHTML}</div><div class="actions"><button class="secondary" data-autofocus onclick="closeModal()">Cerrar</button></div>`,{label:'Resumen de alumnos',wide:true});
 }
 /* Inicio: tarjeta chica a la derecha del saludo (solo en Inicio) */
 function welcomeMini(){
@@ -3866,7 +3871,7 @@ function foProgramadas(g,d,days){
 }
 /* ---------- cálculo de rasgos y calificación (con ceros, periodo elegido) ---------- */
 function foRasgos(g,sc,momento){
-  const R=rubrosOf(g,sc),acts=scopedActivities(g,sc,momento).filter(countsInAverage);
+  const R=rubrosOf(g,sc,momento),acts=scopedActivities(g,sc,momento).filter(countsInAverage);
   return {R,acts,items:R.items.map(it=>({it,acts:acts.filter(a=>a.rubro===it.id)}))};
 }
 function foRasgoValue(st,x){if(!x.acts.length)return null;const v=x.acts.map(a=>gradeOnTen(a,st.id)).filter(n=>n!==null);return v.length?round2(v.reduce((a,b)=>a+b,0)/v.length):null}
@@ -4179,7 +4184,7 @@ function otrosRefresh(){
 }
 function otrosMarcados(){return [...document.querySelectorAll('#ogBox .og-item input:checked:not(:disabled)')].map(i=>i.value)}
 function copiarActividadA(a,gids){
-  const g=state.groups.find(x=>x.id===a.groupId),R=rubrosOf(g,a.scopeId),it=R.items.find(x=>x.id===a.rubro),hechos=[],faltan=[];
+  const g=state.groups.find(x=>x.id===a.groupId),R=rubrosOf(g,a.scopeId,a.period),it=R.items.find(x=>x.id===a.rubro),hechos=[],faltan=[];
   const pdaTxt=new Map(pdaList(g,a.scopeId).map(p=>[p.id,normName(p.t)]));
   for(const id of gids){
     const x=state.groups.find(y=>y.id===id);if(!x)continue;
@@ -4258,7 +4263,7 @@ function irAColores(){switchTo('niveles');setTimeout(()=>{const el=document.getE
 
 /* ---------- 3 · Concentrado por periodo ---------- */
 var CONC_COLORES=['#2F5FA7','#B07A2A','#3F8F6B','#8A6BBE','#C2665A','#3C8DAE','#7A6A3C','#5B6B85'];
-function concTabs(g){return [['1',periodLabel(g)+' 1'],['2',periodLabel(g)+' 2'],['3',periodLabel(g)+' 3'],['final','Final']]}
+function concTabs(g){return [['1',periodName(g,'1')],['2',periodName(g,'2')],['3',periodName(g,'3')],['final','Final']]}
 function concScopes(g){const all=scopesForGroup(g),f=window.concDisc||'todas';return f==='todas'?all:all.filter(s=>s.id===f)}
 function concRubroAvg(g,sc,period,st,itemId){
   const acts=scopedActivities(g,sc,period).filter(a=>countsInAverage(a)&&a.rubro===itemId);if(!acts.length)return null;
@@ -4268,8 +4273,8 @@ function concPeriodAvg(g,sc,period,st){const acts=scopedActivities(g,sc,period);
 function concFinal(g,sc,st){const p=['1','2','3'].map(n=>concPeriodAvg(g,sc,n,st));return {p,gen:meanOf(p)}}
 /* Columnas de un bloque (disciplina) para la pestaña elegida */
 function concColumns(g,sc,tab){
-  if(tab==='final')return [...['1','2','3'].map(n=>({label:periodLabel(g)+' '+n,avg:false,val:st=>concPeriodAvg(g,sc,n,st)})),{label:'Promedio general',avg:true,val:st=>concFinal(g,sc,st).gen}];
-  const R=rubrosOf(g,sc);
+  if(tab==='final')return [...['1','2','3'].map(n=>({label:periodName(g,n),avg:false,val:st=>concPeriodAvg(g,sc,n,st)})),{label:'Promedio general',avg:true,val:st=>concFinal(g,sc,st).gen}];
+  const R=rubrosOf(g,sc,tab);
   return [...R.items.map(it=>({label:it.name+(R.pct?` (${numfmt(it.w)} %)`:''),avg:false,val:st=>concRubroAvg(g,sc,tab,st,it.id)})),{label:'Promedio',avg:true,val:st=>concPeriodAvg(g,sc,tab,st)}];
 }
 function concPill(v){return v===null||v===undefined?'<span class="cc-none">—</span>':`<span class="cc-pill ${gradeClass(v,10)}">${numfmt(round2(v))}</span>`}
@@ -4339,6 +4344,85 @@ function rubroAvgOf(st,x){const v=meanOf(x.acts.map(a=>gradeOnTen(a,st.id)));ret
 {const _vact=VIEWS.actividades;VIEWS.actividades=function(c,g){_vact(c,g);try{otrosRefresh()}catch(e){}}}
 /* Excel del cuaderno con ceros: la casilla vacía de una actividad que cuenta también se ve como 0 (no solo en los promedios) */
 {const _ev=exportValue;exportValue=function(a,sid){const v=_ev(a,sid);return EXPORT_CEROS&&countsInAverage(a)&&!hasEvaluation(a,sid)&&(v===null||v===undefined||v==='')?0:v}}
+
+/* ===== 99_rubros_trimestre.js — rubros propios por trimestre (opcional) =====
+   · Por omisión cada grupo y disciplina usa los mismos rubros todo el ciclo: state.rubros['idGrupo|idDisciplina'].
+   · Si el docente lo pide, el Segundo o el Tercer Trimestre tienen los suyos: state.rubros['idGrupo|idDisciplina|T2'] (o |T3).
+     Empiezan como copia del trimestre anterior (mismos ids, así cada actividad conserva su rubro).
+   · rubroKey(g,sc,p) devuelve la lista que usa ese trimestre (si no se dice, el trimestre actual), así que guardar,
+     agregar un rubro desde Nueva actividad o copiar a otros grupos trabajan sobre la lista de ese trimestre.
+   · Todo son declaraciones de función: el resto del programa las usa desde que arranca. */
+function periodName(g,n){return ({'1':'Primer','2':'Segundo','3':'Tercer'}[String(n)]||'Primer')+' Trimestre'}
+function rubBaseKey(g,sc){return g.id+'|'+sc}
+function rubOwnKey(g,sc,p){return rubBaseKey(g,sc)+'|T'+String(p)}
+function rubTienePropios(g,sc,p){p=String(p||currentPeriod);return p!=='1'&&!!(state.rubros&&state.rubros[rubOwnKey(g,sc,p)])}
+function rubroKey(g,sc,p){p=String(p||currentPeriod);return rubTienePropios(g,sc,p)?rubOwnKey(g,sc,p):rubBaseKey(g,sc)}
+function rubrosOf(g,sc,p){return state.rubros[rubroKey(g,sc,p)]||defaultRubros()}
+/* ¿La actividad usa la lista guardada en la clave k? */
+function rubActEn(a,g,sc,k){return a.groupId===g.id&&a.scopeId===sc&&rubroKey(g,sc,a.period)===k}
+/* Cada actividad del trimestre p cuyo rubro ya no está pasa al rubro con el mismo nombre (o al primero). Devuelve cuántas cambiaron. */
+function rubReasignar(g,sc,p,oldItems,newItems){
+  let n=0;
+  state.activities.forEach(a=>{if(a.groupId!==g.id||a.scopeId!==sc||String(a.period||'1')!==String(p))return;if(newItems.some(it=>it.id===a.rubro))return;
+    const was=oldItems.find(it=>it.id===a.rubro),hit=(was&&newItems.find(it=>normName(it.name)===normName(was.name)))||newItems[0];a.rubro=hit.id;n++});
+  return n;
+}
+function rubPropiosOn(){
+  const g=group();if(!g)return;const sc=scopeId(g),p=String(currentPeriod);
+  if(p==='1'||rubTienePropios(g,sc,p))return;
+  const d=rubDrafts[rubroKey(g,sc)];if(d&&d.dirty)return warn('Primero guarda o descarta los cambios de los rubros.');
+  const prev=String(Number(p)-1),src=rubrosOf(g,sc,prev),old=rubrosOf(g,sc,p).items;
+  withUndo(`El ${periodName(g,p)} de ${g.name} · ${scopeName(g,sc)} ya tiene sus propios rubros (copiados del ${periodName(g,prev)}). Cámbialos aquí sin afectar los otros trimestres.`,()=>{
+    state.rubros[rubOwnKey(g,sc,p)]=copy(src);delete rubDrafts[rubBaseKey(g,sc)];
+    rubReasignar(g,sc,p,old,src.items);
+  });
+}
+function rubPropiosOff(){
+  const g=group();if(!g)return;const sc=scopeId(g),p=String(currentPeriod),k=rubOwnKey(g,sc,p);
+  if(!rubTienePropios(g,sc,p))return;
+  const own=state.rubros[k].items,base=(state.rubros[rubBaseKey(g,sc)]||defaultRubros()).items;
+  const mover=state.activities.filter(a=>a.groupId===g.id&&a.scopeId===sc&&String(a.period||'1')===p&&!base.some(it=>it.id===a.rubro)).length;
+  openModal(`<h2>Usar los rubros de todo el ciclo</h2><p>El <b>${esc(periodName(g,p))}</b> de ${esc(g.name)} · ${esc(scopeName(g,sc))} dejará de tener rubros propios y usará los de todo el ciclo: ${base.map(it=>'<b>'+esc(it.name)+'</b>').join(', ')}.</p>
+  ${mover?`<p>${mover===1?'Hay <b>1</b> actividad':'Hay <b>'+mover+'</b> actividades'} en un rubro que no existe en esa lista; ${mover===1?'pasa':'pasan'} al rubro con el mismo nombre o, si no hay, al primero. Sus calificaciones no cambian.</p>`:'<p>Las actividades de este trimestre conservan su rubro y sus calificaciones.</p>'}
+  <div class="actions"><button class="primary" data-autofocus onclick="rubPropiosOffConfirm()">Usar los de todo el ciclo</button><button class="secondary" onclick="closeModal()">Cancelar</button></div>`,{label:'Usar los rubros de todo el ciclo'});
+}
+function rubPropiosOffConfirm(){
+  const g=group();if(!g)return closeModal();const sc=scopeId(g),p=String(currentPeriod),k=rubOwnKey(g,sc,p);if(!state.rubros[k])return closeModal();
+  closeModal();
+  withUndo(`El ${periodName(g,p)} de ${g.name} · ${scopeName(g,sc)} vuelve a usar los rubros de todo el ciclo.`,()=>{
+    const own=state.rubros[k].items;delete state.rubros[k];delete rubDrafts[k];delete rubDrafts[rubBaseKey(g,sc)];
+    rubReasignar(g,sc,p,own,(state.rubros[rubBaseKey(g,sc)]||defaultRubros()).items);
+  });
+}
+function rubTrimSet(n){setPeriod(String(n))}
+/* ¿Qué trimestres usan la lista de todo el ciclo? */
+function rubUsanCiclo(g,sc){return ['1','2','3'].filter(p=>!rubTienePropios(g,sc,p))}
+function rubTrimCardHTML(g,sc){
+  const p=String(currentPeriod),own=rubTienePropios(g,sc,p),usan=rubUsanCiclo(g,sc),propios=['2','3'].filter(x=>rubTienePropios(g,sc,x));
+  const tabs=`<div class="seg rub-trim-tabs" role="tablist" aria-label="Trimestre">${['1','2','3'].map(n=>`<button class="seg-b ${p===n?'on':''}" role="tab" aria-selected="${p===n}" onclick="rubTrimSet('${n}')">${esc(periodName(g,n))}${rubTienePropios(g,sc,n)?' <span class="rt-tag">propios</span>':''}</button>`).join('')}</div>`;
+  let txt,btn='';
+  if(own){txt=`El <b>${esc(periodName(g,p))}</b> tiene <b>sus propios rubros</b>. Lo que cambies aquí solo afecta a este trimestre.`;
+    btn=`<button class="secondary" onclick="rubPropiosOff()">↩ Usar los rubros de todo el ciclo</button>`}
+  else{const lista=usan.map(n=>periodName(g,n));
+    txt=`Estos son los rubros <b>de todo el ciclo</b>${propios.length?` (los usan: ${esc(lista.join(', '))})`:''}. Lo que cambies aquí aplica a ${usan.length===3?'los tres trimestres':esc(lista.join(' y '))}.`;
+    if(p!=='1')btn=`<button class="secondary" onclick="rubPropiosOn()">✏️ Que el ${esc(periodName(g,p))} tenga sus propios rubros</button>`;
+    else txt+=` <span class="helper">Si un trimestre necesita otros rubros, elígelo arriba.</span>`}
+  return `<div class="rub-trim${own?' own':''}">${tabs}<p>${txt}</p>${btn?`<div class="actions">${btn}${p!=='1'&&!own?`<span class="helper">Empieza como copia del ${esc(periodName(g,String(Number(p)-1)))}; después agregas, quitas o cambias porcentajes. Es opcional.</span>`:''}</div>`:''}</div>`;
+}
+{const _vr=VIEWS.rubros;VIEWS.rubros=function(c,g){_vr(c,g);try{
+  if(!g)return;const sc=scopeId(g),ctl=c.querySelector('section.panel .scope-controls');if(!ctl)return;
+  ctl.insertAdjacentHTML('afterend',rubTrimCardHTML(g,sc));
+  const own=rubTienePropios(g,sc),b=c.querySelector('section.panel .actions button.primary[onclick="rubSave()"]');
+  if(b)b.textContent=`Guardar rubros de ${scopeName(g,sc)} · ${own?periodName(g,currentPeriod):'todo el ciclo'}`;
+  const cp=c.querySelector('.copy-targets');if(cp&&String(currentPeriod)!=='1'&&own){const h=cp.previousElementSibling;if(h&&h.classList.contains('helper'))h.insertAdjacentHTML('beforeend',` <b>Se copian como rubros propios del ${esc(periodName(g,currentPeriod))}</b> en cada grupo marcado; sus otros trimestres no cambian.`)}
+}catch(e){}}}
+/* Opciones del cuaderno: el resumen dice si el trimestre actual tiene rubros propios */
+{const _vo=VIEWS.opciones;VIEWS.opciones=function(c,g){_vo(c,g);try{
+  if(!g)return;const ul=c.querySelector('.opt-sum');if(!ul)return;const n=scopesForGroup(g).filter(sc=>rubTienePropios(g,sc.id)).length;
+  if(n)ul.insertAdjacentHTML('beforeend',`<li>${esc(periodName(g,currentPeriod))}: ${n===1?'1 disciplina con rubros propios':n+' disciplinas con rubros propios'}</li>`);
+}catch(e){}}}
+/* Copiar a otros grupos: si la lista de origen es propia del trimestre, se copia como propia del mismo trimestre */
+function rubKeyDestino(x,t){const p=String(currentPeriod);return rubTienePropios(x.g,x.sc,p)?rubOwnKey(t.g,t.sc,p):rubroKey(t.g,t.sc,p)}
 
 // Copyright (c) 2009 Kazuhiko Arase
 // Licensed under the MIT license:

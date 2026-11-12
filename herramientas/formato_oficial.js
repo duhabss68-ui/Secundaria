@@ -97,7 +97,7 @@ function foProgramadas(g,d,days){
 }
 /* ---------- cálculo de rasgos y calificación (con ceros, periodo elegido) ---------- */
 function foRasgos(g,sc,momento){
-  const R=rubrosOf(g,sc),acts=scopedActivities(g,sc,momento).filter(countsInAverage);
+  const R=rubrosOf(g,sc,momento),acts=scopedActivities(g,sc,momento).filter(countsInAverage);
   return {R,acts,items:R.items.map(it=>({it,acts:acts.filter(a=>a.rubro===it.id)}))};
 }
 function foRasgoValue(st,x){if(!x.acts.length)return null;const v=x.acts.map(a=>gradeOnTen(a,st.id)).filter(n=>n!==null);return v.length?round2(v.reduce((a,b)=>a+b,0)/v.length):null}

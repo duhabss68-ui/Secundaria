@@ -26,7 +26,7 @@ function otrosRefresh(){
 }
 function otrosMarcados(){return [...document.querySelectorAll('#ogBox .og-item input:checked:not(:disabled)')].map(i=>i.value)}
 function copiarActividadA(a,gids){
-  const g=state.groups.find(x=>x.id===a.groupId),R=rubrosOf(g,a.scopeId),it=R.items.find(x=>x.id===a.rubro),hechos=[],faltan=[];
+  const g=state.groups.find(x=>x.id===a.groupId),R=rubrosOf(g,a.scopeId,a.period),it=R.items.find(x=>x.id===a.rubro),hechos=[],faltan=[];
   const pdaTxt=new Map(pdaList(g,a.scopeId).map(p=>[p.id,normName(p.t)]));
   for(const id of gids){
     const x=state.groups.find(y=>y.id===id);if(!x)continue;
@@ -105,7 +105,7 @@ function irAColores(){switchTo('niveles');setTimeout(()=>{const el=document.getE
 
 /* ---------- 3 · Concentrado por periodo ---------- */
 var CONC_COLORES=['#2F5FA7','#B07A2A','#3F8F6B','#8A6BBE','#C2665A','#3C8DAE','#7A6A3C','#5B6B85'];
-function concTabs(g){return [['1',periodLabel(g)+' 1'],['2',periodLabel(g)+' 2'],['3',periodLabel(g)+' 3'],['final','Final']]}
+function concTabs(g){return [['1',periodName(g,'1')],['2',periodName(g,'2')],['3',periodName(g,'3')],['final','Final']]}
 function concScopes(g){const all=scopesForGroup(g),f=window.concDisc||'todas';return f==='todas'?all:all.filter(s=>s.id===f)}
 function concRubroAvg(g,sc,period,st,itemId){
   const acts=scopedActivities(g,sc,period).filter(a=>countsInAverage(a)&&a.rubro===itemId);if(!acts.length)return null;
@@ -115,8 +115,8 @@ function concPeriodAvg(g,sc,period,st){const acts=scopedActivities(g,sc,period);
 function concFinal(g,sc,st){const p=['1','2','3'].map(n=>concPeriodAvg(g,sc,n,st));return {p,gen:meanOf(p)}}
 /* Columnas de un bloque (disciplina) para la pestaña elegida */
 function concColumns(g,sc,tab){
-  if(tab==='final')return [...['1','2','3'].map(n=>({label:periodLabel(g)+' '+n,avg:false,val:st=>concPeriodAvg(g,sc,n,st)})),{label:'Promedio general',avg:true,val:st=>concFinal(g,sc,st).gen}];
-  const R=rubrosOf(g,sc);
+  if(tab==='final')return [...['1','2','3'].map(n=>({label:periodName(g,n),avg:false,val:st=>concPeriodAvg(g,sc,n,st)})),{label:'Promedio general',avg:true,val:st=>concFinal(g,sc,st).gen}];
+  const R=rubrosOf(g,sc,tab);
   return [...R.items.map(it=>({label:it.name+(R.pct?` (${numfmt(it.w)} %)`:''),avg:false,val:st=>concRubroAvg(g,sc,tab,st,it.id)})),{label:'Promedio',avg:true,val:st=>concPeriodAvg(g,sc,tab,st)}];
 }
 function concPill(v){return v===null||v===undefined?'<span class="cc-none">—</span>':`<span class="cc-pill ${gradeClass(v,10)}">${numfmt(round2(v))}</span>`}
