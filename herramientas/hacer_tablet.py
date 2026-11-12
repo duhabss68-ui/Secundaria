@@ -13,7 +13,7 @@ import sys
 ORIGEN, DESTINO = sys.argv[1], sys.argv[2]
 # Versión de la edición para tablet: súbela en cada entrega. Con ella se genera también sw.js,
 # así la tablet sabe que hay versión nueva.
-TABLET_VERSION = '1.15'
+TABLET_VERSION = '1.16'
 html = open(ORIGEN, encoding='utf-8').read()
 
 
@@ -57,6 +57,7 @@ cambia(':`<h3>Resumen general de estudiantes</h3><div class="book-block">',
 cambia('</tbody></table></div></div>${blockHTML}`}`;', '</tbody></table></div></div></div>${blockHTML}`}`;')
 cambia('<div class="book-actions"><button class="primary" ${none?\'disabled\':\'\'} onclick="exportRealXLSX()">',
        '<div class="book-actions"><button class="secondary nb-sum-btn" ${none?\'disabled\':\'\'} onclick="openNbSummary()">📊 Resumen de alumnos</button>'
+       '<button class="secondary nb-sum-btn" onclick="switchTo(\'concentrado\')">📈 Concentrado por trimestre</button>'
        '<button class="primary" ${none?\'disabled\':\'\'} onclick="exportRealXLSX()">')
 # Filtro de disciplinas plegado en un renglón; se abre solo si no hay ninguna elegida
 cambia('<div class="filter-panel"><div class="flex"><b>${lbl}</b>',
@@ -136,6 +137,39 @@ cambia("  s.lastBackup=typeof raw.lastBackup==='string'&&!Number.isNaN(Date.pars
        "  s.lastBackup=typeof raw.lastBackup==='string'&&!Number.isNaN(Date.parse(raw.lastBackup))?raw.lastBackup:'';\n  return s;")
 # El ZIP de la app acepta archivos binarios (logo del formato oficial)
 cambia("data=enc.encode(raw)", "data=raw instanceof Uint8Array?raw:enc.encode(raw)")
+
+# ---------------------------------------------------------------- colores editables (verde/amarillo desde…)
+cambia("function gradeClass(v,max){const t=Number(v)/Number(max)*10;return t>=8?'g-ok':t>=6?'g-mid':'g-low'}",
+       "function gradeClass(v,max){const t=Number(v)/Number(max)*10;return t>=colorVerde()?'g-ok':t>=colorAmarillo()?'g-mid':'g-low'}")
+cambia("function levelOfTen(v){return v===null||v===undefined?null:v>=8?LEVEL_MARKS[2]:v>=6?LEVEL_MARKS[1]:LEVEL_MARKS[0]}",
+       "function levelOfTen(v){return v===null||v===undefined?null:v>=colorVerde()?LEVEL_MARKS[2]:v>=colorAmarillo()?LEVEL_MARKS[1]:LEVEL_MARKS[0]}")
+cambia("    /* v0.10: tema de colores (la validación usa literales: este código corre antes de cargar 47_theme.js) */",
+       "    colorRanges:normColorRanges(st.colorRanges),   /* tablet: rangos de color editables (por omisión 8 y 6) */\n"
+       "    /* v0.10: tema de colores (la validación usa literales: este código corre antes de cargar 47_theme.js) */")
+cambia('<span class="lg g-ok">8 a 10</span><span class="lg g-mid">6 a 7.9</span><span class="lg g-low">Menos de 6</span>',
+       '${colorLegendSpans()}<button class="mini cr-go" onclick="irAColores()">🎨 Cambiar colores</button>')
+cambia('<span class="lg g-ok">NE · Nivel esperado (8 a 10)</span><span class="lg g-mid">EP · En proceso (6 a 7.9)</span><span class="lg g-low">RA · Requiere apoyo (menos de 6)</span>',
+       '${colorLegendSpans([\'NE · Nivel esperado (\',\'EP · En proceso (\',\'RA · Requiere apoyo (\']).replace(/<\\/span>/g,\')</span>\')}')
+cambia("'Verde: 8 a 10 · Amarillo: 6 a 7.9 · Rojo: menos de 6.'",
+       "'Verde, amarillo y rojo según tus rangos de color (Opciones del cuaderno › Nivel de logro y colores).'")
+cambia('<b>Cuánto vale cada nivel de logro</b><small>La equivalencia de Requiere apoyo, En proceso y Nivel esperado.</small><ul class="opt-sum"><li>RA = ${numfmt(lv.RA)} · EP = ${numfmt(lv.EP)} · NE = ${numfmt(lv.NE)}</li></ul>',
+       '<b>Nivel de logro y colores</b><small>Cuánto vale Requiere apoyo, En proceso y Nivel esperado, y desde qué calificación se pinta cada color.</small><ul class="opt-sum"><li>RA = ${numfmt(lv.RA)} · EP = ${numfmt(lv.EP)} · NE = ${numfmt(lv.NE)}</li><li>Colores: ${colorLegendText()}</li></ul>')
+
+# ---------------------------------------------------------------- crear la actividad también en otros grupos
+cambia('  ${pd.length?`<fieldset class="af-pda" data-af="pda">',
+       '  ${p===\'act\'?otrosGruposHTML(g,sc):\'\'}${pd.length?`<fieldset class="af-pda" data-af="pda">')
+
+# ---------------------------------------------------------------- concentrado: pestaña junto al Cuaderno
+cambia("['libreta','📒 Cuaderno'],['pda','🎯 Avance por PDA']", "['libreta','📒 Cuaderno'],['concentrado','📊 Concentrado'],['pda','🎯 Avance por PDA']")
+
+# ---------------------------------------------------------------- Excel del cuaderno: promedio por rubro antes del promedio final
+cambia("const acts=b.activities,w=acts.length+2,", "const acts=b.activities,RC=rubroCols(g,b.scope,acts),w=acts.length+2+RC.length,")
+cambia(",{v:'Promedio provisional /10',s:S.head}]);", ",...RC.map(x=>({v:x.label,s:S.head})),{v:'Promedio provisional /10',s:S.head}]);")
+cambia("}),v===null?{v:'Sin calificaciones',s:S.avgNone}:{v:round2(v),s:S.avg}]);",
+       "}),...RC.map(x=>{const r=rubroAvgOf(st,x);return r===null?{v:'—',s:S.avgNone}:{v:r,s:S.avg}}),v===null?{v:'Sin calificaciones',s:S.avgNone}:{v:round2(v),s:S.avg}]);")
+cambia("...acts.map(a=>({v:colAvg(a),s:S.grp})),{v:gm===null?null:round2(gm),s:S.grp}]);",
+       "...acts.map(a=>({v:colAvg(a),s:S.grp})),...RC.map(x=>{const m=meanOf(ros.map(st=>rubroAvgOf(st,x)));return {v:m===null?null:round2(m),s:S.grp}}),{v:gm===null?null:round2(gm),s:S.grp}]);")
+cambia("Math.max(2,b.activities.length+1)", "Math.max(2,b.activities.length+1+rubroCols(g,b.scope,b.activities).length)")
 
 # ---------------------------------------------------------------- PDA ocultos por ahora (los datos NO se borran)
 # Se ocultan la pestaña «Avance por PDA», las casillas de PDA al crear actividades, la columna PDA de las
@@ -310,6 +344,49 @@ body.themed:not(.theme-dark) .side{background:linear-gradient(118deg,var(--accen
 /* Con una ventana abierta, los avisos salen arriba para no tapar sus botones */
 body:has(#modal) #toasts{bottom:auto;top:calc(16px + env(safe-area-inset-top))}
 .tg-open{white-space:nowrap}
+/* Crear también en otros grupos */
+.og-box{margin:14px 0 4px;padding:12px 14px;border:1px solid #D6E0EE;border-radius:16px;background:#F6F9FD}
+.og-box legend{font-weight:800;padding:0 6px;color:#1E3F78}
+.og-list{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0}
+.og-item{display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 14px;border-radius:14px;border:1px solid #CBD7E6;background:#fff;cursor:pointer}
+.og-item input{width:26px;height:26px}
+.og-item small{display:block;font-size:12px;color:#8A6A2A}
+.og-item.off{opacity:.55;background:#EEF1F5;cursor:not-allowed}
+body.theme-dark .og-box{background:rgba(255,255,255,.03);border-color:#2C3B52}
+body.theme-dark .og-item{background:rgba(255,255,255,.04);border-color:#2C3B52}
+body.theme-dark .og-box legend{color:#C9D8F0}
+/* Colores de las calificaciones */
+.cr-box{margin-top:16px}
+.cr-rows{display:flex;flex-direction:column;gap:10px;margin:10px 0}
+.cr-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;border-radius:14px;min-height:56px}
+.cr-row span{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cr-in{width:96px;text-align:center;font-size:18px;font-weight:700}
+.cr-go{margin-left:6px}
+/* Concentrado */
+.cc-top{gap:10px;flex-wrap:wrap;align-items:center}
+.cc-tabs{display:flex;flex-wrap:wrap;margin:12px 0 6px}
+.cc-tabs .seg-b{min-width:120px}
+.cc-wrap{overflow:auto;max-height:68vh;border:1px solid #DCE4EE;border-radius:14px;-webkit-overflow-scrolling:touch}
+.cc-table{border-collapse:separate;border-spacing:0;min-width:100%;font-size:14.5px}
+.cc-table th,.cc-table td{padding:8px 10px;border-bottom:1px solid #E6ECF3;text-align:center;white-space:nowrap;background:#fff}
+.cc-table thead th{position:sticky;top:0;z-index:2}
+.cc-table thead tr:nth-child(2) th{top:38px}
+.cc-table th.cc-disc{height:38px;box-sizing:border-box;color:#fff;background:var(--dc)!important;font-size:15px;border-left:3px solid #fff}
+.cc-table th.cc-h{font-size:12.5px;color:#3E5373;background:#F4F6F9;white-space:normal;min-width:84px;max-width:140px}
+.cc-table .cc-avg{background:#EAF0F8!important;font-weight:800}
+.cc-table .cc-start{border-left:3px solid #C9D6E8}
+.cc-table .cc-name{position:sticky;left:0;z-index:3;text-align:left;font-weight:700;min-width:210px;max-width:260px;white-space:normal;background:#fff;border-right:2px solid #DCE4EE}
+.cc-table thead .cc-name{z-index:4;background:#F4F6F9}
+.cc-n{display:inline-block;width:26px;color:#7A8794;font-weight:600}
+.cc-table tr.cc-group th,.cc-table tr.cc-group td{background:#EEF2F5;font-style:italic;font-weight:800;border-top:2px solid #C9D6E8}
+.cc-pill{display:inline-block;min-width:52px;padding:4px 10px;border-radius:999px;font-weight:800}
+.cc-none{color:#9AA7B6}
+body.theme-dark .cc-wrap{border-color:#2C3B52}
+body.theme-dark .cc-table th,body.theme-dark .cc-table td{background:#151E2B;border-bottom-color:#243246}
+body.theme-dark .cc-table th.cc-h,body.theme-dark .cc-table thead .cc-name{background:#1B2738;color:#C9D8F0}
+body.theme-dark .cc-table .cc-avg{background:#1D2A3D!important}
+body.theme-dark .cc-table tr.cc-group th,body.theme-dark .cc-table tr.cc-group td{background:#1B2738}
+
 /* «No hubo clases» */
 .sc-btn{white-space:nowrap}
 .sc-chip{background:#EDE7F6!important;color:#4A2E8A!important}
@@ -735,6 +812,7 @@ FO_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'format
 # Portal de familias (Más › Portal de familias) y generador de códigos QR para las tarjetas (MIT, sin internet)
 QR_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'qrcode.min.js'), encoding='utf-8').read()
 PF_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'portal_familias.js'), encoding='utf-8').read()
+CONC_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'concentrado.js'), encoding='utf-8').read()
 SC_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'sin_clases.js'), encoding='utf-8').read()
 # Logo de SEPEN Nayarit para el formato oficial: el PNG va tal cual, en base64, dentro de la app (sin internet)
 import base64 as _b64, struct as _struct
@@ -744,7 +822,7 @@ if _LOGO[:8] != b'\x89PNG\r\n\x1a\n':
 _LW, _LH = _struct.unpack('>II', _LOGO[16:24])
 LOGO_JS = (f"\n/* Logo SEPEN Nayarit ({_LW}×{_LH} px, {len(_LOGO)} bytes, sin cambios) */\n"
            f"var FO_LOGO_SEPEN_W={_LW},FO_LOGO_SEPEN_H={_LH},FO_LOGO_SEPEN_B64='{_b64.b64encode(_LOGO).decode()}';\n")
-html = html[:i] + JS_TABLET + FO_JS + LOGO_JS + SC_JS + '\n' + QR_JS + '\n' + PF_JS + html[i:]
+html = html[:i] + JS_TABLET + FO_JS + LOGO_JS + SC_JS + CONC_JS + '\n' + QR_JS + '\n' + PF_JS + html[i:]
 
 open(DESTINO, 'w', encoding='utf-8').write(html)
 

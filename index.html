@@ -625,6 +625,49 @@ body.themed:not(.theme-dark) .side{background:linear-gradient(118deg,var(--accen
 /* Con una ventana abierta, los avisos salen arriba para no tapar sus botones */
 body:has(#modal) #toasts{bottom:auto;top:calc(16px + env(safe-area-inset-top))}
 .tg-open{white-space:nowrap}
+/* Crear también en otros grupos */
+.og-box{margin:14px 0 4px;padding:12px 14px;border:1px solid #D6E0EE;border-radius:16px;background:#F6F9FD}
+.og-box legend{font-weight:800;padding:0 6px;color:#1E3F78}
+.og-list{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0}
+.og-item{display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 14px;border-radius:14px;border:1px solid #CBD7E6;background:#fff;cursor:pointer}
+.og-item input{width:26px;height:26px}
+.og-item small{display:block;font-size:12px;color:#8A6A2A}
+.og-item.off{opacity:.55;background:#EEF1F5;cursor:not-allowed}
+body.theme-dark .og-box{background:rgba(255,255,255,.03);border-color:#2C3B52}
+body.theme-dark .og-item{background:rgba(255,255,255,.04);border-color:#2C3B52}
+body.theme-dark .og-box legend{color:#C9D8F0}
+/* Colores de las calificaciones */
+.cr-box{margin-top:16px}
+.cr-rows{display:flex;flex-direction:column;gap:10px;margin:10px 0}
+.cr-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;border-radius:14px;min-height:56px}
+.cr-row span{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cr-in{width:96px;text-align:center;font-size:18px;font-weight:700}
+.cr-go{margin-left:6px}
+/* Concentrado */
+.cc-top{gap:10px;flex-wrap:wrap;align-items:center}
+.cc-tabs{display:flex;flex-wrap:wrap;margin:12px 0 6px}
+.cc-tabs .seg-b{min-width:120px}
+.cc-wrap{overflow:auto;max-height:68vh;border:1px solid #DCE4EE;border-radius:14px;-webkit-overflow-scrolling:touch}
+.cc-table{border-collapse:separate;border-spacing:0;min-width:100%;font-size:14.5px}
+.cc-table th,.cc-table td{padding:8px 10px;border-bottom:1px solid #E6ECF3;text-align:center;white-space:nowrap;background:#fff}
+.cc-table thead th{position:sticky;top:0;z-index:2}
+.cc-table thead tr:nth-child(2) th{top:38px}
+.cc-table th.cc-disc{height:38px;box-sizing:border-box;color:#fff;background:var(--dc)!important;font-size:15px;border-left:3px solid #fff}
+.cc-table th.cc-h{font-size:12.5px;color:#3E5373;background:#F4F6F9;white-space:normal;min-width:84px;max-width:140px}
+.cc-table .cc-avg{background:#EAF0F8!important;font-weight:800}
+.cc-table .cc-start{border-left:3px solid #C9D6E8}
+.cc-table .cc-name{position:sticky;left:0;z-index:3;text-align:left;font-weight:700;min-width:210px;max-width:260px;white-space:normal;background:#fff;border-right:2px solid #DCE4EE}
+.cc-table thead .cc-name{z-index:4;background:#F4F6F9}
+.cc-n{display:inline-block;width:26px;color:#7A8794;font-weight:600}
+.cc-table tr.cc-group th,.cc-table tr.cc-group td{background:#EEF2F5;font-style:italic;font-weight:800;border-top:2px solid #C9D6E8}
+.cc-pill{display:inline-block;min-width:52px;padding:4px 10px;border-radius:999px;font-weight:800}
+.cc-none{color:#9AA7B6}
+body.theme-dark .cc-wrap{border-color:#2C3B52}
+body.theme-dark .cc-table th,body.theme-dark .cc-table td{background:#151E2B;border-bottom-color:#243246}
+body.theme-dark .cc-table th.cc-h,body.theme-dark .cc-table thead .cc-name{background:#1B2738;color:#C9D8F0}
+body.theme-dark .cc-table .cc-avg{background:#1D2A3D!important}
+body.theme-dark .cc-table tr.cc-group th,body.theme-dark .cc-table tr.cc-group td{background:#1B2738}
+
 /* «No hubo clases» */
 .sc-btn{white-space:nowrap}
 .sc-chip{background:#EDE7F6!important;color:#4A2E8A!important}
@@ -778,7 +821,7 @@ label:has(>input[type=checkbox]),label:has(>input[type=radio]){min-height:40px}
 .snap-row small{display:block;color:#56708F;font-weight:500;margin-top:2px}
 body.theme-dark .snap-row{background:rgba(255,255,255,.05)}
 body.theme-dark .snap-row small{color:#9FB2CB}
-</style></head><body class="secondary-edition"><div class="layout"><aside class="side"><div class="brand"><span class="brand-ico" aria-hidden="true"><svg width="40" height="40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" rx="28" fill="#FFC93C"/><path d="M30 24 L32 30 L38 32 L32 34 L30 40 L28 34 L22 32 L28 30 Z" fill="#FFFFFF"/><circle cx="46" cy="28" r="3" fill="#FF6F61"/><rect x="18" y="93" width="84" height="5" rx="2.5" fill="#33284D"/><g stroke="#33284D" stroke-width="2.5" stroke-linejoin="round"><rect x="23" y="66" width="14" height="26" rx="3" fill="#2F6FC0"/><path d="M23 80 V69 A3 3 0 0 1 26 66 H34 A3 3 0 0 1 37 69 V80 Z" fill="#FF9F43"/><rect x="43" y="62" width="14" height="30" rx="2" fill="#F5A300"/><rect x="48.5" y="63" width="3" height="19" fill="#FFE08A" stroke="none"/><rect x="43" y="82" width="14" height="6" fill="#C9D1D6"/><rect x="43" y="88" width="14" height="4" rx="2" fill="#FF8FA3"/><path d="M43 62 L57 62 L50 50 Z" fill="#FFF8E7"/><rect x="63" y="46" width="14" height="46" rx="5" fill="#A29BFE"/><rect x="63" y="46" width="14" height="11" fill="#FFFFFF"/><path d="M63 46 L77 46 L70 36 Z" fill="#FFFFFF"/><rect x="83" y="30" width="14" height="62" rx="5" fill="#2EC4B6"/><rect x="83" y="72" width="14" height="8" fill="#FFFFFF"/><path d="M84.5 30 L95.5 30 L93 24 L87 24 Z" fill="#FFFFFF"/><path d="M87 24 L93 24 L93 19 L87 21.5 Z" fill="#2EC4B6"/></g><path d="M47.67 54 L52.33 54 L50 50 Z" fill="#33284D"/><path d="M67.9 39 L72.1 39 L70 36 Z" fill="#33284D"/><rect x="77" y="70" width="3" height="16" rx="1.5" fill="#33284D"/></svg></span><span class="brand-txt"><span class="brand-name"><span class="brand-mi">Mi</span> Bitácora</span><small>SECUNDARIA</small></span></div><div class="hdr-quote" id="hdrQuote" role="button" tabindex="0" title="Toca para ver otra frase" aria-label="Frase del día. Toca para ver otra" onclick="nextQuote()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();nextQuote()}"></div><div class="hdr-tools"><button class="tool-btn" id="textBtn" aria-pressed="false" title="Letra grande" onclick="toggleBigText()">A+</button><button class="tool-btn" id="helpBtn" title="Ayuda" aria-label="Ayuda" onclick="showHelp()">?</button></div><div class="bottom">Mi Bitácora Secundaria · v0.13.0 · Tablet 1.15<br>Datos guardados en esta tablet<br>No usar con datos reales de menores.</div></aside><main class="main"><header class="top"><div><div class="eyebrow" id="eyebrow">MI ESPACIO DE TRABAJO</div><h1 class="title" id="page-title">Buenos días, docente</h1><p class="sub" id="page-sub">Todo lo importante, sin complicaciones.</p></div><span class="tag">● Funciona sin internet</span></header><div id="topbar" class="topbar" role="status"></div><div id="content"></div></main></div><nav class="dock" id="dock" aria-label="Menú principal"><span class="dock-pill" aria-hidden="true"></span><button class="nav on" data-view="inicio"><span class="ic" data-ico="home"></span><span class="lbl">Inicio</span></button><button class="nav" data-view="alumnos"><span class="ic" data-ico="users"></span><span class="lbl">Mi grupo</span></button><button class="nav" data-view="asistencia"><span class="ic" data-ico="attendance"></span><span class="lbl">Asistencia</span></button><button class="nav dock-fab" data-view="actividades" aria-label="Actividades: crear o corregir"><span class="fab-c" aria-hidden="true"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><span class="lbl">Actividades</span></button><button class="nav" data-view="cuadricula"><span class="ic" data-ico="grades"></span><span class="lbl">Calificaciones</span></button><button class="nav" data-view="equipos"><span class="ic" data-ico="ruleta"></span><span class="lbl">Equipos</span></button><div class="more-wrap"><button class="nav" id="moreBtn" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()"><span class="ic" data-ico="more"></span><span class="lbl">Más</span></button><div class="more-menu" id="moreMenu" hidden><button data-view="horario"><span class="ic" data-ico="calendar"></span> &nbsp;Mi horario</button><button data-view="familias"><span class="ic" data-ico="users"></span> &nbsp;Portal de familias</button><button data-view="datos"><span class="ic" data-ico="save"></span> &nbsp;Copias de seguridad</button><button data-view="perfil"><span class="ic" data-ico="settings"></span> &nbsp;Mis datos y colores</button><div class="menu-ver"><span>Mi Bitácora · Tablet 1.15</span><button class="linkbtn" onclick="setMenu(false);buscarActualizacion()">↻ Buscar actualización</button></div></div></div></nav><script>
+</style></head><body class="secondary-edition"><div class="layout"><aside class="side"><div class="brand"><span class="brand-ico" aria-hidden="true"><svg width="40" height="40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" rx="28" fill="#FFC93C"/><path d="M30 24 L32 30 L38 32 L32 34 L30 40 L28 34 L22 32 L28 30 Z" fill="#FFFFFF"/><circle cx="46" cy="28" r="3" fill="#FF6F61"/><rect x="18" y="93" width="84" height="5" rx="2.5" fill="#33284D"/><g stroke="#33284D" stroke-width="2.5" stroke-linejoin="round"><rect x="23" y="66" width="14" height="26" rx="3" fill="#2F6FC0"/><path d="M23 80 V69 A3 3 0 0 1 26 66 H34 A3 3 0 0 1 37 69 V80 Z" fill="#FF9F43"/><rect x="43" y="62" width="14" height="30" rx="2" fill="#F5A300"/><rect x="48.5" y="63" width="3" height="19" fill="#FFE08A" stroke="none"/><rect x="43" y="82" width="14" height="6" fill="#C9D1D6"/><rect x="43" y="88" width="14" height="4" rx="2" fill="#FF8FA3"/><path d="M43 62 L57 62 L50 50 Z" fill="#FFF8E7"/><rect x="63" y="46" width="14" height="46" rx="5" fill="#A29BFE"/><rect x="63" y="46" width="14" height="11" fill="#FFFFFF"/><path d="M63 46 L77 46 L70 36 Z" fill="#FFFFFF"/><rect x="83" y="30" width="14" height="62" rx="5" fill="#2EC4B6"/><rect x="83" y="72" width="14" height="8" fill="#FFFFFF"/><path d="M84.5 30 L95.5 30 L93 24 L87 24 Z" fill="#FFFFFF"/><path d="M87 24 L93 24 L93 19 L87 21.5 Z" fill="#2EC4B6"/></g><path d="M47.67 54 L52.33 54 L50 50 Z" fill="#33284D"/><path d="M67.9 39 L72.1 39 L70 36 Z" fill="#33284D"/><rect x="77" y="70" width="3" height="16" rx="1.5" fill="#33284D"/></svg></span><span class="brand-txt"><span class="brand-name"><span class="brand-mi">Mi</span> Bitácora</span><small>SECUNDARIA</small></span></div><div class="hdr-quote" id="hdrQuote" role="button" tabindex="0" title="Toca para ver otra frase" aria-label="Frase del día. Toca para ver otra" onclick="nextQuote()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();nextQuote()}"></div><div class="hdr-tools"><button class="tool-btn" id="textBtn" aria-pressed="false" title="Letra grande" onclick="toggleBigText()">A+</button><button class="tool-btn" id="helpBtn" title="Ayuda" aria-label="Ayuda" onclick="showHelp()">?</button></div><div class="bottom">Mi Bitácora Secundaria · v0.13.0 · Tablet 1.16<br>Datos guardados en esta tablet<br>No usar con datos reales de menores.</div></aside><main class="main"><header class="top"><div><div class="eyebrow" id="eyebrow">MI ESPACIO DE TRABAJO</div><h1 class="title" id="page-title">Buenos días, docente</h1><p class="sub" id="page-sub">Todo lo importante, sin complicaciones.</p></div><span class="tag">● Funciona sin internet</span></header><div id="topbar" class="topbar" role="status"></div><div id="content"></div></main></div><nav class="dock" id="dock" aria-label="Menú principal"><span class="dock-pill" aria-hidden="true"></span><button class="nav on" data-view="inicio"><span class="ic" data-ico="home"></span><span class="lbl">Inicio</span></button><button class="nav" data-view="alumnos"><span class="ic" data-ico="users"></span><span class="lbl">Mi grupo</span></button><button class="nav" data-view="asistencia"><span class="ic" data-ico="attendance"></span><span class="lbl">Asistencia</span></button><button class="nav dock-fab" data-view="actividades" aria-label="Actividades: crear o corregir"><span class="fab-c" aria-hidden="true"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><span class="lbl">Actividades</span></button><button class="nav" data-view="cuadricula"><span class="ic" data-ico="grades"></span><span class="lbl">Calificaciones</span></button><button class="nav" data-view="equipos"><span class="ic" data-ico="ruleta"></span><span class="lbl">Equipos</span></button><div class="more-wrap"><button class="nav" id="moreBtn" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()"><span class="ic" data-ico="more"></span><span class="lbl">Más</span></button><div class="more-menu" id="moreMenu" hidden><button data-view="horario"><span class="ic" data-ico="calendar"></span> &nbsp;Mi horario</button><button data-view="familias"><span class="ic" data-ico="users"></span> &nbsp;Portal de familias</button><button data-view="datos"><span class="ic" data-ico="save"></span> &nbsp;Copias de seguridad</button><button data-view="perfil"><span class="ic" data-ico="settings"></span> &nbsp;Mis datos y colores</button><div class="menu-ver"><span>Mi Bitácora · Tablet 1.16</span><button class="linkbtn" onclick="setMenu(false);buscarActualizacion()">↻ Buscar actualización</button></div></div></div></nav><script>
 'use strict';
 /* ===== configuración de la edición (generada por build.py) ===== */
 const APP_NAME='Mi Bitácora';const EDITION="Secundaria";const KEY="aulagestion_v09_secundaria";const APP_VERSION="0.13.0";
@@ -928,7 +971,7 @@ const ICON_MARKS=[{c:'OK',sym:'✓',name:'Completo',pct:1,cls:'g-ok'},{c:'MID',s
 const LEVEL_MARKS=[{c:'RA',sym:'RA',name:'Requiere apoyo',cls:'g-low'},{c:'EP',sym:'EP',name:'En proceso',cls:'g-mid'},{c:'NE',sym:'NE',name:'Nivel esperado',cls:'g-ok'}];
 const LEVEL_DEFAULTS={RA:5,EP:7,NE:10};
 /* Nivel de logro a partir de un promedio 0–10 (mismos cortes que el semáforo) */
-function levelOfTen(v){return v===null||v===undefined?null:v>=8?LEVEL_MARKS[2]:v>=6?LEVEL_MARKS[1]:LEVEL_MARKS[0]}
+function levelOfTen(v){return v===null||v===undefined?null:v>=colorVerde()?LEVEL_MARKS[2]:v>=colorAmarillo()?LEVEL_MARKS[1]:LEVEL_MARKS[0]}
 
 /* ---------- Banco de rúbricas y listas de cotejo (textos originales, editables al copiarlos) ---------- */
 const RUB_LEVELS=[{n:'Destacado',p:10},{n:'Satisfactorio',p:8},{n:'Suficiente',p:6},{n:'Requiere apoyo',p:5}];
@@ -1146,6 +1189,7 @@ function normalizeState(raw,opt={}){
   const st=isObj(raw.settings)?raw.settings:{};
   s.settings={bigText:st.bigText===true,sheetDensity:['compact','normal','wide'].includes(st.sheetDensity)?st.sheetDensity:'compact',attRule:st.attRule==='withJustified'?'withJustified':'strict',alertPct:Number.isFinite(Number(st.alertPct))&&Number(st.alertPct)>=1&&Number(st.alertPct)<=100?Math.round(Number(st.alertPct)):80,
     levelValues:Object.fromEntries(LEVEL_MARKS.map(m=>{const n=Number(isObj(st.levelValues)?st.levelValues[m.c]:NaN);return [m.c,Number.isFinite(n)&&n>=0&&n<=10?round2(n):LEVEL_DEFAULTS[m.c]]})),
+    colorRanges:normColorRanges(st.colorRanges),   /* tablet: rangos de color editables (por omisión 8 y 6) */
     /* v0.10: tema de colores (la validación usa literales: este código corre antes de cargar 47_theme.js) */
     theme:['default','alegre','oscuro','custom'].includes(st.theme)?st.theme:'default',
     custom:(()=>{const c=isObj(st.custom)?st.custom:{},d=defaultCustom(),hx=v=>typeof v==='string'&&/^#[0-9A-Fa-f]{6}$/.test(v)?v.toUpperCase():null;return {accent:hx(c.accent)||d.accent,bg:hx(c.bg)||d.bg,base:c.base==='dark'?'dark':'light'}})()};
@@ -1359,7 +1403,7 @@ const HELP={
   disciplinas:{icon:'🎓',title:'Disciplinas',steps:['Marca las materias que das a este grupo.','Cada materia tiene su propio cuaderno y sus propias calificaciones.','No puedes quitar una materia que ya tiene actividades.']},
   asistencia:{icon:'✅',title:'Pasar lista',steps:['Todos aparecen presentes.','Toca a quien faltó: su tarjeta se pone roja.','Si quieres, indica si la falta fue justificada.','Toca «Guardar lista» al terminar.']},
   historial:{icon:'📊',title:'Historial de asistencia',steps:['Elige las fechas que quieres revisar.','Verás las faltas de cada alumno y su porcentaje.','Abajo está el registro de los cambios que hiciste.']},
-  cuadricula:{icon:'🧮',title:'Cuadrícula de notas',steps:['Toca una casilla y escribe la nota. La tecla «Siguiente» del teclado baja al siguiente alumno.','Casilla vacía = todavía sin calificar (no cuenta como cero).','Verde: 8 a 10 · Amarillo: 6 a 7.9 · Rojo: menos de 6.','En columnas ✓ ½ ✗ o de nivel, toca la casilla (o usa 1, 2 y 3). En las de rúbrica, toca la casilla para evaluar.','Si te equivocas, toca «Deshacer».']},
+  cuadricula:{icon:'🧮',title:'Cuadrícula de notas',steps:['Toca una casilla y escribe la nota. La tecla «Siguiente» del teclado baja al siguiente alumno.','Casilla vacía = todavía sin calificar (no cuenta como cero).','Verde, amarillo y rojo según tus rangos de color (Opciones del cuaderno › Nivel de logro y colores).','En columnas ✓ ½ ✗ o de nivel, toca la casilla (o usa 1, 2 y 3). En las de rúbrica, toca la casilla para evaluar.','Si te equivocas, toca «Deshacer».']},
   actividades:{icon:'📝',title:'Actividades',steps:['Crea una actividad con nombre, tipo de trabajo y puntaje máximo.','Puedes editarla, ocultarla o eliminarla.','Las notas ya capturadas se conservan al editar.']},
   libreta:{icon:'📒',title:'Cuaderno completo',steps:['Aquí ves todo junto, separado por campo formativo o disciplina.','Marca u oculta bloques con las casillas de arriba.','Toca «Exportar Excel» para sacar tu cuaderno completo.']},
   detallelibreta:{icon:'⚖️',title:'Cuánto vale cada tipo de trabajo',steps:['Cada escuela decide cuánto vale cada tipo de trabajo.','Escribe los porcentajes; deben sumar 100.','Si no los configuras, todas las actividades valen lo mismo.']},
@@ -1531,7 +1575,7 @@ const HUBS=[
    v0.13: igual en Secundaria, que además conserva «Avance por PDA» como pestaña. */
 const HUB_ALIAS=EDITION==='Primaria'?{rubricas:'opciones',rubros:'opciones',niveles:'opciones',pda:'opciones',detallelibreta:'opciones',evaluar:'cuadricula'}:{rubricas:'opciones',rubros:'opciones',niveles:'opciones',detallelibreta:'opciones',evaluar:'cuadricula'};
 HUBS[3]={tabs:EDITION==='Primaria'?[['cuadricula','🧮 Calificar'],['actividades','📝 Actividades'],['libreta','📒 Cuaderno'],['opciones','⚙️ Opciones del cuaderno']]
-  :[['cuadricula','🧮 Calificar'],['actividades','📝 Actividades'],['libreta','📒 Cuaderno'],['opciones','⚙️ Opciones del cuaderno']]};
+  :[['cuadricula','🧮 Calificar'],['actividades','📝 Actividades'],['libreta','📒 Cuaderno'],['concentrado','📊 Concentrado'],['opciones','⚙️ Opciones del cuaderno']]};
 function hubFor(v){return HUBS.find(h=>h.tabs.some(t=>t[0]===v||t[0]===HUB_ALIAS[v]))}
 function subtabsHTML(hub){
   return `<nav class="subtabs" aria-label="Secciones">${hub.tabs.filter(t=>!t[2]||t[2]===EDITION).map(([v,l])=>{const on=v===active||HUB_ALIAS[active]===v;return `<button class="subtab ${on?'on':''}" onclick="switchTo('${v}')" ${on?'aria-current="page"':''}>${ico(ICON_FOR_VIEW[v])} ${l.replace(/^\S+\s/,'')}</button>`}).join('')}</nav>`;
@@ -1949,7 +1993,7 @@ function activityFormHTML(p,g,a){
   <div data-af="counts"><label class="check-inline"><input type="checkbox" id="${p}Counts" ${!a||a.counts!==false?'checked':''}> Cuenta en el promedio</label></div>
   ${p==='act'?'<button class="primary" onclick="addActivity()">+ Crear actividad</button>':p==='q'?'<button class="primary" onclick="quickAddActivity()">Crear actividad</button>':''}
   </div>
-  ${pd.length?`<fieldset class="af-pda" data-af="pda"><legend>¿Qué PDA evalúa? <span class="helper">(opcional)</span></legend>${pd.map(x=>`<label class="pda-pick"><input type="checkbox" name="${p}Pda" value="${esc(x.id)}" ${a&&(a.pdas||[]).includes(x.id)?'checked':''}><span>${esc(x.t)}</span></label>`).join('')}</fieldset>`:''}
+  ${p==='act'?otrosGruposHTML(g,sc):''}${pd.length?`<fieldset class="af-pda" data-af="pda"><legend>¿Qué PDA evalúa? <span class="helper">(opcional)</span></legend>${pd.map(x=>`<label class="pda-pick"><input type="checkbox" name="${p}Pda" value="${esc(x.id)}" ${a&&(a.pdas||[]).includes(x.id)?'checked':''}><span>${esc(x.t)}</span></label>`).join('')}</fieldset>`:''}
   <p class="helper af-hint" id="${p}Hint"></p></div>`;
 }
 /* Muestra solo los campos que aplican a la forma de calificar elegida */
@@ -2102,7 +2146,7 @@ VIEWS.libreta=function(c,g){
   <details class="filter-panel filter-fold" ${(none||window.nbFilterOpen)?'open':''} ontoggle="window.nbFilterOpen=this.open"><summary><b>${lbl}:</b> ${data.length} de ${scopes.length} <span class="ff-hint">· toca para elegir</span></summary><div class="flex"><button class="mini" onclick="notebookSelectAll(true)">Mostrar todos</button><button class="mini" onclick="notebookSelectAll(false)">Ocultar todos</button></div><div class="filter-options">${scopes.map(sc=>`<label class="filter-option" style="border-left:6px solid ${scopeColor(sc.id)}"><input type="checkbox" ${(f===null||f.has(sc.id))?'checked':''} onchange="toggleNotebookScope('${sc.id}',this.checked)"><span>${esc(sc.name)}</span></label>`).join('')}</div><p class="helper">Puedes visualizar y exportar uno, varios o todos. El resumen y los promedios se actualizan con tu selección, y la selección se conserva.</p></details>
   
   <p class="book-muted">Los pendientes no cuentan como cero. Cada bloque utiliza sus ponderaciones si están configuradas. ${showOverall?'El promedio general es sólo orientativo (promedia por igual los campos con notas) y':'Cada disciplina se evalúa por separado:'} no representa una calificación oficial.</p>
-  <div class="book-actions"><button class="secondary nb-sum-btn" ${none?'disabled':''} onclick="openNbSummary()">📊 Resumen de alumnos</button><button class="primary" ${none?'disabled':''} onclick="exportRealXLSX()">↓ Exportar Excel completo (.xlsx)</button><button class="secondary" ${none?'disabled':''} onclick="exportFullCSV()">↓ CSV</button><button class="secondary" ${none?'disabled':''} onclick="window.print()">Imprimir / Guardar PDF</button><button class="secondary" onclick="switchTo('actividades')">+ Crear actividad</button>${EDITION==='Primaria'?`<button class="secondary" onclick="switchTo('rubros')">Rubros y porcentajes</button>`:`<button class="secondary" onclick="switchTo('detallelibreta')">Cuánto vale cada tipo de trabajo por bloque</button>`}</div></div>
+  <div class="book-actions"><button class="secondary nb-sum-btn" ${none?'disabled':''} onclick="openNbSummary()">📊 Resumen de alumnos</button><button class="secondary nb-sum-btn" onclick="switchTo('concentrado')">📈 Concentrado por trimestre</button><button class="primary" ${none?'disabled':''} onclick="exportRealXLSX()">↓ Exportar Excel completo (.xlsx)</button><button class="secondary" ${none?'disabled':''} onclick="exportFullCSV()">↓ CSV</button><button class="secondary" ${none?'disabled':''} onclick="window.print()">Imprimir / Guardar PDF</button><button class="secondary" onclick="switchTo('actividades')">+ Crear actividad</button>${EDITION==='Primaria'?`<button class="secondary" onclick="switchTo('rubros')">Rubros y porcentajes</button>`:`<button class="secondary" onclick="switchTo('detallelibreta')">Cuánto vale cada tipo de trabajo por bloque</button>`}</div></div>
   ${none?`<div class="hint warn" id="nbNone">⚠ No hay ${EDITION==='Primaria'?'ningún campo formativo':'ninguna disciplina'} seleccionado. Marca al menos uno arriba para ver y exportar tu cuaderno.</div>`
   :`<div class="nb-print-summary" id="nbSummary"><h3>Resumen general de alumnos</h3><div class="book-block"><div class="table-wrap sheet-wrap dens-${state.settings.sheetDensity||'compact'}"><table class="rows sheet"><thead><tr><th class="stickycol">Alumno</th>${data.map(b=>`<th>${esc(b.scope.name)}</th>`).join('')}${showOverall?'<th>Promedio orientativo</th>':''}</tr></thead><tbody>${summary.map(x=>`<tr><td class="stickycol"><b>${esc(x.st.name)}</b></td>${x.values.map(v=>`<td>${averageLabel(v)}</td>`).join('')}${showOverall?`<td><b>${averageLabel(meanOf(x.values))}</b></td>`:''}</tr>`).join('')}</tbody></table></div></div></div>${blockHTML}`}`;
 };
@@ -2191,7 +2235,7 @@ function spinWheel(){
 
 /* ===== 57_grid.js — cuadrícula de notas (todos los alumnos × todas las actividades) ===== */
 /* Semáforo sobre escala 0–10: verde 8–10 · amarillo 6–7.9 · rojo < 6. Siempre se muestra también el número. */
-function gradeClass(v,max){const t=Number(v)/Number(max)*10;return t>=8?'g-ok':t>=6?'g-mid':'g-low'}
+function gradeClass(v,max){const t=Number(v)/Number(max)*10;return t>=colorVerde()?'g-ok':t>=colorAmarillo()?'g-mid':'g-low'}
 function avgHTML(v){return v===null?'<span class="muted">Sin calificaciones</span>':`<span class="avgpill ${gradeClass(v,10)}">${numfmt(v)}</span>`}
 const DENS=[['compact','Compacta'],['normal','Normal'],['wide','Amplia']];
 function modeOf(a){return a.mode||'num'}
@@ -2232,7 +2276,7 @@ VIEWS.cuadricula=function(c,g){
   const arr=scopedActivities(g),ros=roster(g),sc={id:scopeId(g)},dens=state.settings.sheetDensity||'compact';
   const quick=`<div class="actions"><button class="${arr.length?'secondary':'primary big'}" onclick="newActivityFromGrid()">＋ Nueva actividad en «${esc(scopeName(g,sc.id))}»</button></div>`;
   c.innerHTML=`<section class="panel">${scopeHeader(g)}
-  ${arr.length&&ros.length?`<div class="sheet-bar"><div class="legend"><span class="lg g-ok">8 a 10</span><span class="lg g-mid">6 a 7.9</span><span class="lg g-low">Menos de 6</span><span class="helper">Casilla vacía = sin calificar (no cuenta como cero).</span></div>
+  ${arr.length&&ros.length?`<div class="sheet-bar"><div class="legend">${colorLegendSpans()}<button class="mini cr-go" onclick="irAColores()">🎨 Cambiar colores</button><span class="helper">Casilla vacía = sin calificar (no cuenta como cero).</span></div>
   <button class="secondary tg-open" onclick="pickTeamActivity()">👥 Calificar por equipo</button><div class="seg" role="group" aria-label="Tamaño de la hoja"><span class="helper">Tamaño de la hoja:</span>${DENS.map(([k,l])=>`<button class="seg-b ${dens===k?'on':''}" aria-pressed="${dens===k}" onclick="setDensity('${k}')">${l}</button>`).join('')}</div></div>
   <div class="table-wrap sheet-wrap grid-wrap dens-${dens}"><table class="sheet gradegrid" id="gradeGrid"><thead>${rubroBandRow(g,sc.id,arr)}<tr><th class="rn corner">#</th><th class="stickycol corner">Alumno</th>${arr.map(a=>`<th class="gh mode-${modeOf(a)}${rbStart(a)}" data-a="${a.id}" title="${esc(a.name)} · ${esc(modeName(modeOf(a)))} · ${esc(kindName(a))}${modeOf(a)==='num'?' · máx '+a.max:''}"><button class="colbtn" onclick="openColMenu('${a.id}',this)" aria-haspopup="menu" aria-label="Opciones de ${esc(a.name)}"><span class="gh-name">${esc(a.name)}</span><small>${esc(colTag(a))} ▾</small></button></th>`).join('')}<th class="avgh">Promedio</th></tr></thead>
   <tbody>${ros.map((st,i)=>`<tr data-sid="${st.id}"><td class="rn">${i+1}</td><td class="stickycol" title="${esc(st.name)}">${esc(st.name)}</td>${arr.map(a=>`<td class="gc${rbStart(a)}">${cellHTML(a,st)}</td>`).join('')}<td class="avgcell" id="avg_${st.id}">${avgHTML(averageInScope(g,sc,st,arr))}</td></tr>`).join('')}</tbody>
@@ -2596,7 +2640,7 @@ VIEWS.pda=function(c,g){
   <details class="import-panel" ${list.length?'':'open'}><summary>＋ Agregar PDA</summary><p class="helper">Pega o escribe tus PDA, <b>uno por línea</b>. Puedes copiarlos de tu programa analítico.</p><textarea id="pdaPaste" class="field" rows="4" placeholder="Ej. Reconoce las necesidades de su comunidad para proponer soluciones técnicas.&#10;Ej. Usa herramientas y materiales de manera segura." aria-label="PDA, uno por línea"></textarea><div class="actions"><button class="primary" onclick="addPdas()">Agregar estos PDA</button></div></details>
   ${others.length?`<div class="flex pda-copy"><span class="helper">¿Das ${esc(scopeName(g,sc))} en otro grupo del mismo grado?</span><select class="field" id="pdaFrom" aria-label="Grupo del que se copian los PDA">${others.map(x=>`<option value="${x.id}">${esc(x.name)} (${pdaList(x,sc).length} PDA)</option>`).join('')}</select><button class="secondary" onclick="copyPdasFrom()">Copiar sus PDA aquí</button></div>`:''}</section>
   ${list.length?`<section class="section panel"><h3>Avance del grupo</h3>
-  ${anyLinked?`<div class="legend"><span class="lg g-ok">NE · Nivel esperado (8 a 10)</span><span class="lg g-mid">EP · En proceso (6 a 7.9)</span><span class="lg g-low">RA · Requiere apoyo (menos de 6)</span></div>
+  ${anyLinked?`<div class="legend">${colorLegendSpans(['NE · Nivel esperado (','EP · En proceso (','RA · Requiere apoyo (']).replace(/<\/span>/g,')</span>')}</div>
   <div class="table-wrap sheet-wrap dens-${state.settings.sheetDensity||'compact'}"><table class="rows sheet pda-table"><thead><tr><th class="stickycol">Alumno</th>${prog.map((p,i)=>`<th title="${esc(p.pda.t)}">P${i+1}</th>`).join('')}</tr></thead><tbody>
   ${ros.map(s=>`<tr><td class="stickycol"><button class="linkbtn" onclick="pdaStudent='${s.id}';render();document.getElementById('pdaCompare')?.scrollIntoView({block:'start'})">${esc(s.name)}</button></td>${prog.map(p=>`<td>${levelChip(p.per[s.id],true,true)}</td>`).join('')}</tr>`).join('')}</tbody>
   <tfoot><tr><td class="stickycol">Promedio del grupo</td>${prog.map(p=>`<td>${levelChip(p.group,true,true)}</td>`).join('')}</tr></tfoot></table></div>`
@@ -3103,7 +3147,7 @@ VIEWS.opciones=function(c,g){
   c.innerHTML=`<div class="opt-grid">
   <button class="home-card opt-card" onclick="switchTo('rubros')"><span class="hc-ico" aria-hidden="true">${ico('scale')}</span><b>Rubros y porcentajes</b><small>Los tipos de trabajo que calificas (tareas, participación, examen…) y cuánto vale cada uno.</small>${g?`<ul class="opt-sum">${sum}</ul>`:''}</button>
   <button class="home-card opt-card" onclick="switchTo('rubricas')"><span class="hc-ico" aria-hidden="true">${ico('rubric')}</span><b>Rúbricas y listas de cotejo</b><small>Banco listo para usar, tus propias rúbricas y compartirlas con otros docentes.</small><ul class="opt-sum"><li>${mine} ${mine===1?'propia':'propias'} · ${RUBRIC_BANK.length} en el banco</li></ul></button>
-  <button class="home-card opt-card" onclick="switchTo('niveles')"><span class="hc-ico" aria-hidden="true">${ico('grades')}</span><b>Cuánto vale cada nivel de logro</b><small>La equivalencia de Requiere apoyo, En proceso y Nivel esperado.</small><ul class="opt-sum"><li>RA = ${numfmt(lv.RA)} · EP = ${numfmt(lv.EP)} · NE = ${numfmt(lv.NE)}</li></ul></button>
+  <button class="home-card opt-card" onclick="switchTo('niveles')"><span class="hc-ico" aria-hidden="true">${ico('grades')}</span><b>Nivel de logro y colores</b><small>Cuánto vale Requiere apoyo, En proceso y Nivel esperado, y desde qué calificación se pinta cada color.</small><ul class="opt-sum"><li>RA = ${numfmt(lv.RA)} · EP = ${numfmt(lv.EP)} · NE = ${numfmt(lv.NE)}</li><li>Colores: ${colorLegendText()}</li></ul></button>
   </div>`;
 };
 VIEWS.niveles=function(c){
@@ -3460,20 +3504,20 @@ function buildNotebookSheets(g){
   };
   const stats=st=>{let ev=0,tot=0;for(const b of data)for(const a of b.activities){if(modeOf(a)==='text')continue;tot++;if(scoreOf(a,st.id)!==undefined)ev++}return {ev,pend:tot-ev}};
   const addBlock=(sh,b)=>{
-    const acts=b.activities,w=acts.length+2,col=b.color.slice(1),tc=textOn(b.color).slice(1),r0=sh.rows.length;
+    const acts=b.activities,RC=rubroCols(g,b.scope,acts),w=acts.length+2+RC.length,col=b.color.slice(1),tc=textOn(b.color).slice(1),r0=sh.rows.length;
     sh.rows.push(Array.from({length:w},(_,j)=>({v:j===0?(b.scope.name.toUpperCase()+'  ·  '+acts.length+(acts.length===1?' actividad':' actividades')):'',s:{b:1,sz:13,color:tc,fill:col}})));
     sh.merges.push(`A${r0+1}:${colName(w-1)}${r0+1}`);sh.heights[r0]=24;
     if(!acts.length){sh.rows.push([{v:'Todavía no hay actividades en este bloque.',s:S.note}]);sh.rows.push([]);return}
     const hr=sh.rows.length;sh.heights[hr]=48;
-    sh.rows.push([{v:'Alumno',s:S.headL},...acts.map(a=>({v:a.name+'\n'+kindName(a)+' · '+(modeOf(a)==='num'?'máx '+a.max:modeName(modeOf(a)))+(countsInAverage(a)?'':' · no cuenta'),s:S.head})),{v:'Promedio provisional /10',s:S.head}]);
+    sh.rows.push([{v:'Alumno',s:S.headL},...acts.map(a=>({v:a.name+'\n'+kindName(a)+' · '+(modeOf(a)==='num'?'máx '+a.max:modeName(modeOf(a)))+(countsInAverage(a)?'':' · no cuenta'),s:S.head})),...RC.map(x=>({v:x.label,s:S.head})),{v:'Promedio provisional /10',s:S.head}]);
     const avgs=[];
     for(const st of ros){
       const v=averageInScope(g,b.scope,st,acts);avgs.push(v);
-      sh.rows.push([{v:st.name,s:S.name},...acts.map(a=>{const x=exportValue(a,st.id);return {v:x,s:x===null?S.blank:modeOf(a)==='text'?S.txt:S.num}}),v===null?{v:'Sin calificaciones',s:S.avgNone}:{v:round2(v),s:S.avg}]);
+      sh.rows.push([{v:st.name,s:S.name},...acts.map(a=>{const x=exportValue(a,st.id);return {v:x,s:x===null?S.blank:modeOf(a)==='text'?S.txt:S.num}}),...RC.map(x=>{const r=rubroAvgOf(st,x);return r===null?{v:'—',s:S.avgNone}:{v:r,s:S.avg}}),v===null?{v:'Sin calificaciones',s:S.avgNone}:{v:round2(v),s:S.avg}]);
     }
     const colAvg=a=>{if(modeOf(a)==='text')return null;const xs=ros.map(st=>scoreOf(a,st.id)).filter(x=>x!==undefined).map(Number);return xs.length?round2(xs.reduce((p,q)=>p+q,0)/xs.length):null};
     const gm=meanOf(avgs);
-    sh.rows.push([{v:'Promedio del grupo',s:S.grpName},...acts.map(a=>({v:colAvg(a),s:S.grp})),{v:gm===null?null:round2(gm),s:S.grp}]);
+    sh.rows.push([{v:'Promedio del grupo',s:S.grpName},...acts.map(a=>({v:colAvg(a),s:S.grp})),...RC.map(x=>{const m=meanOf(ros.map(st=>rubroAvgOf(st,x)));return {v:m===null?null:round2(m),s:S.grp}}),{v:gm===null?null:round2(gm),s:S.grp}]);
     sh.rows.push([]);
   };
   /* Hoja 1 — Resumen general */
@@ -3497,7 +3541,7 @@ function buildNotebookSheets(g){
   data.forEach(b=>addBlock(full,b));
   const maxW=Math.max(3,...data.map(b=>b.activities.length+2));full.cols=[32,...Array.from({length:maxW-1},()=>16)];full.freeze={x:1,y:0};
   /* Hojas 3+ — una por campo/disciplina seleccionado */
-  const per=data.map(b=>{const sh=mk(scopeSheetName(b.scope));sh.tab=b.color.slice(1);head(sh,b.scope.name);addBlock(sh,b);sh.cols=[32,...Array.from({length:Math.max(2,b.activities.length+1)},()=>16)];sh.freeze={x:1,y:0};return sh});
+  const per=data.map(b=>{const sh=mk(scopeSheetName(b.scope));sh.tab=b.color.slice(1);head(sh,b.scope.name);addBlock(sh,b);sh.cols=[32,...Array.from({length:Math.max(2,b.activities.length+1+rubroCols(g,b.scope,b.activities).length)},()=>16)];sh.freeze={x:1,y:0};return sh});
   const used=new Set();return [res,full,...per].map(sh=>{sh.name=uniqueSheetName(sh.name,used);return sh});
 }
 function exportRealXLSX(){
@@ -4107,6 +4151,194 @@ function scDaysInRange(g,from,to){return Object.keys(state.noClasses||{}).filter
   const days=scDaysInRange(g,attRange.from,attRange.to),box=document.createElement('div');box.className='sc-hist';
   box.innerHTML=`<h3>🚫 Días sin clases: ${days.length}</h3>${days.length?`<ul>${days.map(d=>{const x=scGet(g,d);return `<li><b>${esc(fmtIso(d))}</b> — ${scIcon(x)} ${esc(scLabel(x))}${x.lista?' <small>(con lista guardada aparte)</small>':''} <button class="mini" onclick="currentDate='${d}';switchTo('asistencia')">Abrir</button></li>`}).join('')}</ul>`:'<p class="helper">No hay días marcados como «sin clases» en estas fechas. Se marcan en Pasar lista con «🚫 No hubo clases».</p>'}`;
   sec.appendChild(box)}catch(e){}}}
+/* ===== 99_concentrado.js — otros grupos, colores editables, concentrado por periodo y promedio por rubro ===== */
+
+/* ---------- 1 · Crear la actividad también en otros grupos ---------- */
+/* Solo grupos activos que llevan la misma disciplina; solo se pueden marcar si tienen un rubro con el mismo
+   nombre (sin importar mayúsculas ni acentos). Cada copia es independiente: no se copian notas ni calificaciones. */
+function otrosGruposDe(g,sc){return activeGroups().filter(x=>x.id!==g.id&&scopesForGroup(x).some(s=>s.id===sc))}
+function rubroIgualEn(x,sc,nombre){const n=normName(nombre);return rubrosOf(x,sc).items.find(it=>normName(it.name)===n)||null}
+function otrosGruposHTML(g,sc){
+  const otros=otrosGruposDe(g,sc);if(!otros.length)return '';
+  return `<fieldset class="og-box" id="ogBox"><legend>También crearla en <span class="helper">(copias independientes)</span></legend><div class="og-list">${otros.map(x=>
+    `<label class="og-item" data-g="${esc(x.id)}"><input type="checkbox" value="${esc(x.id)}" onchange="window.ogMarcados=otrosMarcados()"><span><b>${esc(x.name)}</b><small class="og-note"></small></span></label>`).join('')}</div>
+    <p class="helper">Se copia el nombre, cómo se califica, el puntaje, la rúbrica, «cuenta en el promedio», la fecha y el periodo. Las notas y calificaciones son de cada grupo.</p></fieldset>`;
+}
+function otrosRefresh(){
+  const box=document.getElementById('ogBox'),g=group();if(!box||!g)return;
+  const sc=scopeId(g),sel=document.getElementById('actType'),val=sel?sel.value:'',R=rubrosOf(g,sc),it=R.items.find(x=>x.id===val);
+  const prev=new Set(window.ogMarcados||[]);
+  box.querySelectorAll('.og-item').forEach(lab=>{
+    const x=state.groups.find(y=>y.id===lab.dataset.g),inp=lab.querySelector('input'),note=lab.querySelector('.og-note');
+    let ok=true,msg='';
+    if(val==='__new'){ok=false;msg='(el rubro nuevo solo se crea aquí)'}
+    else if(!it||!x||!rubroIgualEn(x,sc,it.name)){ok=false;msg='(no tiene ese rubro)'}
+    inp.disabled=!ok;inp.checked=ok&&prev.has(lab.dataset.g);lab.classList.toggle('off',!ok);note.textContent=msg;
+  });
+  window.ogMarcados=otrosMarcados();
+}
+function otrosMarcados(){return [...document.querySelectorAll('#ogBox .og-item input:checked:not(:disabled)')].map(i=>i.value)}
+function copiarActividadA(a,gids){
+  const g=state.groups.find(x=>x.id===a.groupId),R=rubrosOf(g,a.scopeId),it=R.items.find(x=>x.id===a.rubro),hechos=[],faltan=[];
+  const pdaTxt=new Map(pdaList(g,a.scopeId).map(p=>[p.id,normName(p.t)]));
+  for(const id of gids){
+    const x=state.groups.find(y=>y.id===id);if(!x)continue;
+    const rx=it&&rubroIgualEn(x,a.scopeId,it.name);if(!rx){faltan.push(x.name);continue}
+    const pdx=pdaList(x,a.scopeId),pdas=(a.pdas||[]).map(pid=>{const t=pdaTxt.get(pid);const m=t&&pdx.find(p=>normName(p.t)===t);return m?m.id:null}).filter(Boolean);
+    const c={id:gid(),groupId:x.id,name:a.name,date:a.date,max:a.max,type:a.type,scopeId:a.scopeId,period:a.period,archived:false,notes:'',mode:a.mode,counts:a.counts,pdas,rubro:rx.id};
+    if(a.rubric){c.rubric=copy(a.rubric);c.rubric.criteria.forEach(cr=>{cr.pda=''});c.rubricFrom=a.rubricFrom}
+    state.activities.push(c);hechos.push(x.name);
+  }
+  return {hechos,faltan};
+}
+function listaNombres(n){return n.length<2?n.join(''):n.slice(0,-1).join(', ')+' y '+n[n.length-1]}
+{const _add=addActivity;addActivity=function(){
+  const marcados=otrosMarcados(),antes=state.activities.length;_add();window.ogMarcados=[];
+  const a=state.activities.length>antes?state.activities[state.activities.length-1]:null;if(!a||!marcados.length)return;
+  const r=copiarActividadA(a,marcados);save();render();
+  if(r.hechos.length)notify(`«${a.name}» también quedó en ${listaNombres(r.hechos)}.`,'success',{ms:8000});
+  if(r.faltan.length)warn(`No se creó en ${listaNombres(r.faltan)}: ese grupo no tiene el rubro.`);
+}}
+{const _af=afRubro;afRubro=function(p){_af(p);if(p==='act')otrosRefresh()}}
+
+/* ---------- 2 · Colores de las calificaciones (rangos editables) ---------- */
+function normColorRanges(c){
+  const v=c&&typeof c==='object'?Number(c.verde):NaN,a=c&&typeof c==='object'?Number(c.amarillo):NaN;
+  if(Number.isFinite(v)&&Number.isFinite(a)&&v>=0&&v<=10&&a>=0&&a<=10&&a<=v)return {verde:round2(v),amarillo:round2(a)};
+  return {verde:8,amarillo:6};
+}
+function colorVerde(){const c=state&&state.settings&&state.settings.colorRanges;return c?c.verde:8}
+function colorAmarillo(){const c=state&&state.settings&&state.settings.colorRanges;return c?c.amarillo:6}
+function hastaDe(n){return numfmt(Math.max(0,Math.round((n-0.1)*10)/10))}
+function colorTextos(){const v=colorVerde(),a=colorAmarillo();
+  return {ok:`${numfmt(v)} a 10`,mid:a<v?`${numfmt(a)} a ${hastaDe(v)}`:'—',low:a>0?`Menos de ${numfmt(a)}`:'—'}}
+function colorLegendText(){const t=colorTextos();return `${t.ok} · ${t.mid} · ${t.low}`}
+function colorLegendSpans(pre){const t=colorTextos(),p=pre||['','',''];
+  return `<span class="lg g-ok">${p[0]}${t.ok}</span><span class="lg g-mid">${p[1]}${t.mid}</span><span class="lg g-low">${p[2]}${t.low}</span>`}
+function colorRangesHTML(){
+  const v=colorVerde(),a=colorAmarillo();
+  return `<section class="panel cr-box" id="colores"><h3>🎨 Colores de las calificaciones</h3>
+  <p class="helper">Así se pintan las calificaciones en la cuadrícula, los promedios, el cuaderno, el concentrado y las fichas (escala de 0 a 10). Ajústalos para que coincidan con tus niveles de logro.</p>
+  <div class="cr-rows">
+    <div class="cr-row g-ok"><b>Nivel esperado (verde)</b><span>desde <input class="field cr-in" id="crVerde" type="number" inputmode="decimal" min="0" max="10" step="0.1" value="${v}" oninput="crPreview()"> hasta 10</span></div>
+    <div class="cr-row g-mid"><b>En proceso (amarillo)</b><span>desde <input class="field cr-in" id="crAmarillo" type="number" inputmode="decimal" min="0" max="10" step="0.1" value="${a}" oninput="crPreview()"> hasta <b id="crHasta">${hastaDe(v)}</b></span></div>
+    <div class="cr-row g-low"><b>Requiere apoyo (rojo)</b><span>menos de <b id="crRojo">${numfmt(a)}</b></span></div>
+  </div>
+  <p class="helper" id="crMsg"></p>
+  <div class="actions"><button class="primary" onclick="guardarColores()">Guardar colores</button><button class="secondary" onclick="restaurarColores()">Volver a 8 y 6</button></div></section>`;
+}
+function crPreview(){
+  const v=Number(document.getElementById('crVerde').value),a=Number(document.getElementById('crAmarillo').value),m=document.getElementById('crMsg');
+  if(Number.isFinite(v))document.getElementById('crHasta').textContent=hastaDe(v);
+  if(Number.isFinite(a))document.getElementById('crRojo').textContent=numfmt(a);
+  m.textContent=crError(v,a)||'';m.classList.toggle('imp-flag',!!crError(v,a));
+}
+function crError(v,a){
+  if(!Number.isFinite(v)||!Number.isFinite(a))return 'Escribe los dos números.';
+  if(v<0||v>10||a<0||a>10)return 'Los números deben estar entre 0 y 10.';
+  if(a>v)return 'El amarillo no puede empezar más arriba que el verde.';
+  return '';
+}
+function guardarColores(){
+  const v=Number(document.getElementById('crVerde').value),a=Number(document.getElementById('crAmarillo').value),e=crError(v,a);
+  if(e)return warn(e+' No se guardaron los colores.');
+  const prev=copy(state.settings.colorRanges||{verde:8,amarillo:6});
+  state.settings.colorRanges={verde:round2(v),amarillo:round2(a)};save();render();
+  notify(`Colores guardados: ${colorLegendText()}. La cuadrícula ya se volvió a pintar.`,'success',{ms:8000,undo:()=>{state.settings.colorRanges=prev;save();render()}});
+}
+function restaurarColores(){
+  const prev=copy(state.settings.colorRanges||{verde:8,amarillo:6});
+  state.settings.colorRanges={verde:8,amarillo:6};save();render();
+  notify('Colores de vuelta a 8 y 6.','success',{undo:()=>{state.settings.colorRanges=prev;save();render()}});
+}
+function irAColores(){switchTo('niveles');setTimeout(()=>{const el=document.getElementById('colores');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})},60)}
+{const _vn=VIEWS.niveles;VIEWS.niveles=function(c,g){_vn(c,g);
+  title('CALIFICACIONES','Nivel de logro y colores','Cuánto vale cada nivel y desde qué calificación se pinta verde, amarillo o rojo.');
+  c.insertAdjacentHTML('beforeend',colorRangesHTML())}}
+
+/* ---------- 3 · Concentrado por periodo ---------- */
+var CONC_COLORES=['#2F5FA7','#B07A2A','#3F8F6B','#8A6BBE','#C2665A','#3C8DAE','#7A6A3C','#5B6B85'];
+function concTabs(g){return [['1',periodLabel(g)+' 1'],['2',periodLabel(g)+' 2'],['3',periodLabel(g)+' 3'],['final','Final']]}
+function concScopes(g){const all=scopesForGroup(g),f=window.concDisc||'todas';return f==='todas'?all:all.filter(s=>s.id===f)}
+function concRubroAvg(g,sc,period,st,itemId){
+  const acts=scopedActivities(g,sc,period).filter(a=>countsInAverage(a)&&a.rubro===itemId);if(!acts.length)return null;
+  return meanOf(acts.map(a=>gradeOnTen(a,st.id)));
+}
+function concPeriodAvg(g,sc,period,st){const acts=scopedActivities(g,sc,period);if(!acts.length)return null;const v=averageInScope(g,{id:sc},st,acts);return v===null||v===undefined?null:v}
+function concFinal(g,sc,st){const p=['1','2','3'].map(n=>concPeriodAvg(g,sc,n,st));return {p,gen:meanOf(p)}}
+/* Columnas de un bloque (disciplina) para la pestaña elegida */
+function concColumns(g,sc,tab){
+  if(tab==='final')return [...['1','2','3'].map(n=>({label:periodLabel(g)+' '+n,avg:false,val:st=>concPeriodAvg(g,sc,n,st)})),{label:'Promedio general',avg:true,val:st=>concFinal(g,sc,st).gen}];
+  const R=rubrosOf(g,sc);
+  return [...R.items.map(it=>({label:it.name+(R.pct?` (${numfmt(it.w)} %)`:''),avg:false,val:st=>concRubroAvg(g,sc,tab,st,it.id)})),{label:'Promedio',avg:true,val:st=>concPeriodAvg(g,sc,tab,st)}];
+}
+function concPill(v){return v===null||v===undefined?'<span class="cc-none">—</span>':`<span class="cc-pill ${gradeClass(v,10)}">${numfmt(round2(v))}</span>`}
+VIEWS.concentrado=function(c,g){
+  const tab=window.concTab||String(currentPeriod),tabs=g?concTabs(g):[];
+  title('CALIFICACIONES','Concentrado','Promedios por '+(g?periodLabel(g).toLowerCase():'periodo')+' y promedio general de cada disciplina. Lo pendiente no cuenta.');
+  if(!g){c.innerHTML='<section class="panel"><div class="empty">Elige un grupo para ver su concentrado.</div></section>';return}
+  const all=scopesForGroup(g);if(!all.length){c.innerHTML=`<section class="panel">${groupSelect()}<div class="empty">Este grupo todavía no tiene disciplinas.</div></section>`;return}
+  if(window.concDisc&&window.concDisc!=='todas'&&!all.some(s=>s.id===window.concDisc))window.concDisc='todas';
+  const scopes=concScopes(g),ros=roster(g),blocks=scopes.map((s,i)=>({s,col:CONC_COLORES[all.findIndex(x=>x.id===s.id)%CONC_COLORES.length],cols:concColumns(g,s.id,tab)}));
+  const head1=blocks.map(b=>`<th colspan="${b.cols.length}" class="cc-disc" style="--dc:${b.col}">${esc(b.s.name)}</th>`).join('');
+  const head2=blocks.map(b=>b.cols.map((x,j)=>`<th class="cc-h${x.avg?' cc-avg':''}${j===0?' cc-start':''}">${esc(x.label)}</th>`).join('')).join('');
+  const body=ros.map((st,i)=>`<tr><th class="cc-name"><span class="cc-n">${i+1}</span>${esc(st.name)}</th>${blocks.map(b=>b.cols.map((x,j)=>`<td class="${x.avg?'cc-avg':''}${j===0?' cc-start':''}">${concPill(x.val(st))}</td>`).join('')).join('')}</tr>`).join('');
+  const foot=`<tr class="cc-group"><th class="cc-name">Promedio del grupo</th>${blocks.map(b=>b.cols.map((x,j)=>`<td class="${x.avg?'cc-avg':''}${j===0?' cc-start':''}">${concPill(meanOf(ros.map(st=>x.val(st))))}</td>`).join('')).join('')}</tr>`;
+  c.innerHTML=`<section class="panel">
+    <div class="flex cc-top">${groupSelect()}
+      ${all.length>1?`<label class="label-inline">Disciplina <select class="field" onchange="window.concDisc=this.value;render()"><option value="todas">Todas</option>${all.map(s=>`<option value="${esc(s.id)}" ${window.concDisc===s.id?'selected':''}>${esc(s.name)}</option>`).join('')}</select></label>`:''}
+      <button class="primary" onclick="exportConcentrado()">⬇ Excel del concentrado</button><button class="secondary" onclick="switchTo('libreta')">📒 Cuaderno</button></div>
+    <div class="seg cc-tabs" role="tablist">${tabs.map(([k,l])=>`<button class="seg-b ${tab===k?'on':''}" role="tab" aria-selected="${tab===k}" onclick="window.concTab='${k}';render()">${esc(l)}</button>`).join('')}</div>
+    <p class="helper">${tab==='final'?`Promedio general = promedio de los ${esc(periodLabel(g).toLowerCase())}s que ya tienen calificación. Cada disciplina tiene el suyo; no se promedian disciplinas entre sí.`:`Cada rubro es el promedio del alumno en ese rubro; «Promedio» los combina con sus porcentajes, igual que el cuaderno. «—» = sin actividades calificadas.`} Colores: ${esc(colorLegendText())}.</p>
+    ${ros.length?`<div class="cc-wrap"><table class="cc-table"><thead><tr><th class="cc-name cc-corner" rowspan="2">Alumno</th>${head1}</tr><tr>${head2}</tr></thead><tbody>${body}${foot}</tbody></table></div>`:'<div class="empty">Este grupo todavía no tiene alumnos.</div>'}
+  </section>`;
+};
+/* Excel: 4 hojas (periodos y Final); las casillas vacías valen 0 (modo de exportación que siempre se apaga) */
+function buildConcentradoSheets(g){
+  const all=scopesForGroup(g),ros=roster(g),acc=EDITION_ACCENT[EDITION],DARK=acc.dark.slice(1);
+  const S={title:{b:1,sz:16,color:DARK},sub:{i:1,color:'5B6B7A'},note:{i:1,b:1,color:'8A4B12'},name:{b:1,border:1},corner:{b:1,border:1,fill:'EEF2F5',h:'left',v:'center'},
+    head:{b:1,border:1,h:'center',wrap:1,fill:'F4F6F9'},headAvg:{b:1,border:1,h:'center',wrap:1,fill:'E3E9F2'},val:{border:1,h:'center',num:'0.00'},avg:{b:1,border:1,h:'center',num:'0.00',fill:'E3E9F2'},
+    grpName:{b:1,i:1,border:1,fill:'EEF2F5'},grp:{b:1,i:1,border:1,h:'center',num:'0.00',fill:'EEF2F5'},grpAvg:{b:1,i:1,border:1,h:'center',num:'0.00',fill:'D6DFEC'}};
+  return concTabs(g).map(([k,l])=>{
+    const blocks=all.map((s,i)=>({s,col:CONC_COLORES[i%CONC_COLORES.length],cols:concColumns(g,s.id,k)}));
+    const sh={name:l.slice(0,31),rows:[],heights:{},merges:[],cols:[34],freeze:null,tab:acc.main.slice(1)};
+    sh.rows.push([{v:`Concentrado ${l} — ${g.name}`,s:S.title}]);sh.heights[0]=26;
+    sh.rows.push([{v:'Las casillas vacías se cuentan como 0. No son calificaciones oficiales.',s:S.note}]);
+    sh.rows.push([{v:k==='final'?'Promedio general = promedio de los periodos con calificación. No se promedian disciplinas entre sí.':'Promedio = combinación de los rubros con sus porcentajes, igual que el cuaderno.',s:S.sub}]);
+    sh.rows.push([]);
+    const r1=sh.rows.length,top=[{v:'Alumno',s:S.corner}],sub=[{v:'',s:S.corner}];let c0=1;
+    blocks.forEach(b=>{const fill=b.col.slice(1),tc=textOn(b.col).slice(1);
+      b.cols.forEach((x,j)=>{top.push({v:j===0?b.s.name:'',s:{b:1,sz:12,border:1,h:'center',color:tc,fill}});sub.push({v:x.label,s:x.avg?S.headAvg:S.head});sh.cols.push(x.avg?14:13)});
+      if(b.cols.length>1)sh.merges.push(`${colName(c0)}${r1+1}:${colName(c0+b.cols.length-1)}${r1+1}`);c0+=b.cols.length});
+    sh.rows.push(top);sh.rows.push(sub);sh.merges.push(`A${r1+1}:A${r1+2}`);sh.heights[r1]=22;sh.heights[r1+1]=36;
+    ros.forEach(st=>sh.rows.push([{v:st.name,s:S.name},...blocks.flatMap(b=>b.cols.map(x=>{const v=x.val(st);return {v:v===null||v===undefined?null:round2(v),s:x.avg?S.avg:S.val}}))]));
+    sh.rows.push([{v:'Promedio del grupo',s:S.grpName},...blocks.flatMap(b=>b.cols.map(x=>{const m=meanOf(ros.map(st=>x.val(st)));return {v:m===null?null:round2(m),s:x.avg?S.grpAvg:S.grp}}))]);
+    sh.freeze={x:1,y:r1+2};return sh;
+  });
+}
+function exportConcentrado(){
+  const g=group();if(!g)return warn('Elige un grupo.');if(!scopesForGroup(g).length)return warn('Este grupo todavía no tiene disciplinas.');
+  let files;
+  EXPORT_CEROS=true;
+  try{files=xlsxFiles(buildConcentradoSheets(g),new StyleBook(),'Concentrado '+g.name)}
+  catch(e){return warn('No se pudo generar el Excel del concentrado ('+(e&&e.message||e)+'). No se descargó nada.')}
+  finally{EXPORT_CEROS=false}
+  const name='Concentrado_'+safeName(g.name)+'.xlsx';download(name,zipBlob(files));
+  notify(`Excel del concentrado listo en Descargas: ${name} (con las casillas vacías contadas como 0).`,'success',{ms:8000});
+}
+ICON_EMOJI.concentrado='📊';ICON_FOR_VIEW.concentrado='concentrado';NAV_TOP.concentrado='cuadricula';
+
+/* ---------- 4 · Promedio por rubro solo en el Excel del cuaderno ---------- */
+function rubroCols(g,scope,acts){
+  const sc=scope&&scope.id?scope.id:scope,R=rubrosOf(g,sc);
+  return R.items.filter(it=>acts.some(a=>a.rubro===it.id&&countsInAverage(a))).map(it=>({it,acts:acts.filter(a=>a.rubro===it.id&&countsInAverage(a)),
+    label:`Promedio ${it.name}${R.pct?` (${numfmt(it.w)} %)`:''} /10`}));
+}
+function rubroAvgOf(st,x){const v=meanOf(x.acts.map(a=>gradeOnTen(a,st.id)));return v===null?null:round2(v)}
+/* Al dibujar Actividades, las casillas de «También crearla en» se ajustan al rubro elegido */
+{const _vact=VIEWS.actividades;VIEWS.actividades=function(c,g){_vact(c,g);try{otrosRefresh()}catch(e){}}}
+/* Excel del cuaderno con ceros: la casilla vacía de una actividad que cuenta también se ve como 0 (no solo en los promedios) */
+{const _ev=exportValue;exportValue=function(a,sid){const v=_ev(a,sid);return EXPORT_CEROS&&countsInAverage(a)&&!hasEvaluation(a,sid)&&(v===null||v===undefined||v==='')?0:v}}
 
 // Copyright (c) 2009 Kazuhiko Arase
 // Licensed under the MIT license:
