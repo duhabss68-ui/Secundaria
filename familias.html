@@ -179,6 +179,21 @@
   .obs.destello { animation: destello 1.6s ease-out 1; }
   @keyframes destello { 0% { box-shadow: 0 0 0 6px rgba(26,158,154,.55); } 100% { box-shadow: 0 0 0 0 rgba(26,158,154,0); } }
 
+  /* ---------- PESTAÑAS DE TRIMESTRE ---------- */
+  .trim-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); gap: 8px; margin-top: 12px; }
+  .trim-tab { display: flex; align-items: center; gap: 8px; min-height: 52px; padding: 6px 12px; border-radius: 16px; text-align: left;
+    font: inherit; font-weight: 800; font-size: .92rem; line-height: 1.15; }
+  .trim-tab > span:first-child { font-size: 1.25rem; flex: none; }
+  .trim-tab b { display: block; font-weight: 900; }
+  .trim-tab small { display: block; font-weight: 700; font-size: .74rem; opacity: .9; margin-top: 2px; }
+  .trim-tab.actual { background: var(--petroleo); color: #fff; box-shadow: 0 4px 12px rgba(15,76,92,.25); }
+  .trim-tab.actual small { color: #bdf3ef; }
+  .trim-tab.pasado { cursor: pointer; background: var(--card); color: var(--texto); border: 1.5px solid #c9b6f2; }
+  .trim-tab.pasado small { color: #6d28d9; }
+  .trim-tab.pasado:hover, .trim-tab.pasado:focus-visible { border-color: #6d28d9; background: color-mix(in srgb, #6d28d9 8%, var(--card)); }
+  :root[data-theme="dark"] .trim-tab.pasado small { color: #c4b5fd; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .trim-tab.pasado small { color: #c4b5fd; } }
+
   /* ---------- PROMEDIO DEL TRIMESTRE ---------- */
   .btn-prom {
     position: relative; overflow: hidden; display: flex; align-items: center; gap: 14px; width: 100%; margin-top: 16px;
@@ -461,22 +476,22 @@ function render(d) {
       ${act ? `<p class="act">${esc(act)}</p>` : ''}
     </section>`);
 
-  // 0) Promedio del trimestre: botón llamativo
+  // 0) Pestañas de trimestre: el actual queda seleccionado; los trimestres pasados abren su promedio
   PROMS = Array.isArray(d.promedios) ? d.promedios.filter(p => isFinite(Number(p.promedio))) : [];
   ALUMNO = d.alumno;
   if (PROMS.length) {
     const trims = [...new Set(PROMS.map(p => p.periodo))].sort();
-    const ult = PROMS.filter(p => p.periodo === trims[trims.length - 1])[0];
+    const sig = Math.max(...trims.map(Number)) + 1;
+    const NOMBRE_T = { 1: 'Primer', 2: 'Segundo', 3: 'Tercer' };
+    const actual = NOMBRE_T[sig] ? NOMBRE_T[sig] + ' Trimestre' : 'Actividades recientes';
     A.push(`
-      <button class="btn-prom" type="button" id="abrir-prom" aria-haspopup="dialog">
-        <span class="bp-trofeo" aria-hidden="true">🏆</span>
-        <span class="bp-txt">
-          <span class="bp-eti">¡Ya está disponible!</span>
-          <span class="bp-tit">${trims.length > 1 ? 'Promedios por trimestre' : 'Promedio del ' + esc(ult.titulo)}</span>
-          <span class="bp-sub">Toque aquí para ver el resultado de ${esc(String(d.alumno.nombre).split(' ')[0])}</span>
-        </span>
-        <span class="bp-ir" aria-hidden="true">›</span>
-      </button>`);
+      <nav class="trim-tabs" aria-label="Trimestres">
+        <span class="trim-tab actual" aria-current="page"><span aria-hidden="true">📚</span><span><b>${esc(actual)}</b><small>En curso</small></span></span>
+        ${trims.slice().reverse().map(t => {
+          const tt = PROMS.find(p => p.periodo === t);
+          return `<button class="trim-tab pasado" type="button" data-t="${esc(t)}" aria-haspopup="dialog"><span aria-hidden="true">🏆</span><span><b>${esc(tt.titulo)}</b><small>Ver promedio ›</small></span></button>`;
+        }).join('')}
+      </nav>`);
   }
 
   // 1) Mensaje del maestro: lo primero que se ve
@@ -584,8 +599,7 @@ function render(d) {
       <p class="pie">Si tiene dudas, comuníquese directamente con el maestro.<br>Información confidencial para la familia del alumno.</p>
     </div>`;
 
-  const bp = $('#abrir-prom');
-  if (bp) bp.addEventListener('click', () => abrirPromedio());
+  document.querySelectorAll('.trim-tab.pasado').forEach(b => b.addEventListener('click', () => abrirPromedio(b.dataset.t)));
 
   const ir = $('#ir-obs');
   if (ir) ir.addEventListener('click', () => {
