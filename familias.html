@@ -186,6 +186,14 @@
   .trim-tab > span:first-child { font-size: 1.25rem; flex: none; }
   .trim-tab b { display: block; font-weight: 900; }
   .trim-tab small { display: block; font-weight: 700; font-size: .74rem; opacity: .9; margin-top: 2px; }
+  .trim-tabs { margin: 0 0 12px; }
+  .trim-tab { cursor: pointer; background: var(--card); color: var(--texto); border: 1.5px solid var(--borde); box-shadow: var(--sombra); }
+  .trim-tab small { color: var(--suave); }
+  .trim-tab[aria-selected="true"] { background: var(--petroleo); color: #fff; border-color: var(--petroleo); box-shadow: 0 4px 12px rgba(15,76,92,.25); }
+  .trim-tab[aria-selected="true"] small { color: #bdf3ef; }
+  .trim-uno { margin: 0 0 10px; font-weight: 900; color: var(--suave); }
+  .btn-prom.en-panel { margin: 0 0 12px; padding-top: 12px; padding-bottom: 12px; }
+  .btn-prom.en-panel .bp-trofeo { width: 46px; height: 46px; font-size: 1.6rem; }
   .trim-tab.actual { background: var(--petroleo); color: #fff; box-shadow: 0 4px 12px rgba(15,76,92,.25); }
   .trim-tab.actual small { color: #bdf3ef; }
   .trim-tab.pasado { cursor: pointer; background: var(--card); color: var(--texto); border: 1.5px solid #c9b6f2; }
@@ -421,12 +429,15 @@ function datosDemo(codigo) {
       { fecha: dia(-2), tipo: 'Evento', titulo: 'Festival de noviembre', texto: 'Los mejores podcasts se presentarán en el festival. Están invitados.' },
     ],
     actividades: [
-      { fecha: dia(3), actividad: 'Guion del podcast (final)', tipo: 'Proyecto', estado: 'pendiente', nivel: '' },
-      { fecha: dia(2), actividad: 'Edición: cortar silencios y ruido', tipo: 'Práctica', estado: 'entregado', calificacion: '7 / 10', nivel: 'En proceso', comentario: 'Le costó usar la herramienta de reducción de ruido.' },
-      { fecha: dia(0), actividad: 'Guion del podcast (borrador)', tipo: 'Proyecto', estado: 'entregado', calificacion: '9 / 10', nivel: 'Nivel esperado' },
-      { fecha: dia(-3), actividad: 'Práctica 4: grabar voces en Audacity', tipo: 'Práctica', estado: 'entregado', nivel: 'Nivel esperado' },
-      { fecha: dia(-5), actividad: 'Mapa mental: historia de Xalisco', tipo: 'Clase', estado: 'no_entregado', nivel: '', comentario: 'No lo entregó en clase. Puede traerlo el lunes para revisión.' },
-      { fecha: dia(-7), actividad: 'Investigación: origen del Día de Muertos', tipo: 'Tarea', estado: 'entregado', nivel: 'Nivel esperado' },
+      { fecha: dia(3), actividad: 'Guion del podcast (final)', tipo: 'Proyecto', estado: 'pendiente', nivel: '', periodo: '2', trimestre: 'Segundo Trimestre' },
+      { fecha: dia(2), actividad: 'Edición: cortar silencios y ruido', tipo: 'Práctica', estado: 'entregado', calificacion: '7 / 10', nivel: 'En proceso', comentario: 'Le costó usar la herramienta de reducción de ruido.', periodo: '2', trimestre: 'Segundo Trimestre' },
+      { fecha: dia(0), actividad: 'Guion del podcast (borrador)', tipo: 'Proyecto', estado: 'entregado', calificacion: '9 / 10', nivel: 'Nivel esperado', periodo: '2', trimestre: 'Segundo Trimestre' },
+      { fecha: dia(-3), actividad: 'Práctica 4: grabar voces en Audacity', tipo: 'Práctica', estado: 'entregado', nivel: 'Nivel esperado', periodo: '2', trimestre: 'Segundo Trimestre' },
+      { fecha: dia(-5), actividad: 'Mapa mental: historia de Xalisco', tipo: 'Clase', estado: 'no_entregado', nivel: '', comentario: 'No lo entregó en clase. Puede traerlo el lunes para revisión.', periodo: '2', trimestre: 'Segundo Trimestre' },
+      { fecha: dia(-17), actividad: 'Examen del primer trimestre', tipo: 'Examen', estado: 'entregado', calificacion: '8.4 / 10', nivel: 'Nivel esperado', periodo: '1', trimestre: 'Primer Trimestre' },
+      { fecha: dia(-19), actividad: 'Proyecto: mi primera grabación', tipo: 'Proyecto', estado: 'entregado', calificacion: '8.5 / 10', nivel: 'Nivel esperado', periodo: '1', trimestre: 'Primer Trimestre' },
+      { fecha: dia(-24), actividad: 'Investigación: origen del Día de Muertos', tipo: 'Tarea', estado: 'entregado', calificacion: '9 / 10', nivel: 'Nivel esperado', periodo: '1', trimestre: 'Primer Trimestre' },
+      { fecha: dia(-26), actividad: 'Cuestionario: partes de la computadora', tipo: 'Tarea', estado: 'entregado', calificacion: '9.5 / 10', nivel: 'Nivel esperado', periodo: '1', trimestre: 'Primer Trimestre' },
     ],
   }), 350));
 }
@@ -457,7 +468,6 @@ function render(d) {
   const reciente = claves.length ? semanas.get(claves[0]) : [];
   const cuenta = t => reciente.filter(a => a.e === t).length;
   const tituloResumen = claves.length && claves[0] !== 'sin-fecha' ? etiquetaSemana(aFecha(claves[0])) : 'Actividades';
-  const conObs = acts.filter(a => String(a.comentario || '').trim());
 
   let act = '';
   if (d.actualizado) {
@@ -476,23 +486,34 @@ function render(d) {
       ${act ? `<p class="act">${esc(act)}</p>` : ''}
     </section>`);
 
-  // 0) Pestañas de trimestre: el actual queda seleccionado; los trimestres pasados abren su promedio
+  // 0) Trimestres: actividades agrupadas por trimestre y promedios publicados por el maestro
   PROMS = Array.isArray(d.promedios) ? d.promedios.filter(p => isFinite(Number(p.promedio))) : [];
   ALUMNO = d.alumno;
-  if (PROMS.length) {
-    const trims = [...new Set(PROMS.map(p => p.periodo))].sort();
-    const sig = Math.max(...trims.map(Number)) + 1;
-    const NOMBRE_T = { 1: 'Primer', 2: 'Segundo', 3: 'Tercer' };
-    const actual = NOMBRE_T[sig] ? NOMBRE_T[sig] + ' Trimestre' : 'Actividades recientes';
-    A.push(`
-      <nav class="trim-tabs" aria-label="Trimestres">
-        <span class="trim-tab actual" aria-current="page"><span aria-hidden="true">📚</span><span><b>${esc(actual)}</b><small>En curso</small></span></span>
-        ${trims.slice().reverse().map(t => {
-          const tt = PROMS.find(p => p.periodo === t);
-          return `<button class="trim-tab pasado" type="button" data-t="${esc(t)}" aria-haspopup="dialog"><span aria-hidden="true">🏆</span><span><b>${esc(tt.titulo)}</b><small>Ver promedio ›</small></span></button>`;
-        }).join('')}
-      </nav>`);
-  }
+  const NOMBRE_T = { 1: 'Primer', 2: 'Segundo', 3: 'Tercer' };
+  const nombreTrim = t => {
+    const a = acts.find(x => String(x.periodo) === t && x.trimestre), p = PROMS.find(x => x.periodo === t);
+    return (a && a.trimestre) || (p && p.titulo) || (NOMBRE_T[t] ? NOMBRE_T[t] + ' Trimestre' : 'Actividades');
+  };
+  const trimsActs = [...new Set(acts.map(a => String(a.periodo || '')))];
+  const hayTrims = trimsActs.some(t => t);
+  const TRIMS = hayTrims ? [...new Set([...trimsActs.filter(Boolean), ...PROMS.map(p => p.periodo)])].sort() : [''];
+  const actualT = TRIMS[TRIMS.length - 1];
+  const promsT = [...new Set(PROMS.map(p => p.periodo))].sort();
+  const botonProm = (t, extra) => {
+    const titulo = nombreTrim(t);
+    return `
+      <button class="btn-prom ${extra || ''}" type="button" data-t="${esc(t)}" aria-haspopup="dialog">
+        <span class="bp-trofeo" aria-hidden="true">🏆</span>
+        <span class="bp-txt">
+          <span class="bp-eti">¡Ya está disponible!</span>
+          <span class="bp-tit">Promedio del ${esc(titulo)}</span>
+          <span class="bp-sub">Toque aquí para ver el resultado de ${esc(String(d.alumno.nombre).split(' ')[0])}</span>
+        </span>
+        <span class="bp-ir" aria-hidden="true">›</span>
+      </button>`;
+  };
+  // Anuncio del promedio en la pantalla principal (el trimestre publicado más reciente)
+  if (promsT.length) A.push(botonProm(promsT[promsT.length - 1]));
 
   // 1) Mensaje del maestro: lo primero que se ve
   if (d.nota && d.nota.texto) {
@@ -508,7 +529,8 @@ function render(d) {
       </section>`);
   }
 
-  // 2) Aviso de observaciones en actividades
+  // 2) Aviso de observaciones en actividades (del trimestre actual)
+  const conObs = acts.filter(a => String(a.periodo || '') === actualT && String(a.comentario || '').trim());
   if (conObs.length) {
     const n = conObs.length;
     A.push(`
@@ -551,21 +573,25 @@ function render(d) {
     A.push('<div class="vacio">No hay anuncios por ahora.</div>');
   }
 
-  // 5) Actividades por semana (columna derecha en pantallas grandes)
-  B.push('<h3>📚 Actividades</h3>');
-  if (!claves.length) {
-    B.push('<div class="vacio">Aún no hay actividades publicadas.</div>');
-  } else {
-    claves.forEach((k, i) => {
-      const lista = semanas.get(k).sort((x, y) => (y.f || 0) - (x.f || 0));
-      const ent = lista.filter(a => a.e === 'ok').length;
-      const obsSemana = lista.some(a => String(a.comentario || '').trim());
+  // 5) Actividades por trimestre (pestañas) y, dentro, por semana
+  const semanasDe = lista => {
+    const m = new Map();
+    lista.forEach(a => { const k = a.f ? isoLocal(lunesDe(a.f)) : 'sin-fecha'; if (!m.has(k)) m.set(k, []); m.get(k).push(a); });
+    return m;
+  };
+  const htmlSemanas = lista => {
+    const m = semanasDe(lista), ks = [...m.keys()].sort().reverse();
+    if (!ks.length) return '<div class="vacio">Aún no hay actividades publicadas en este trimestre.</div>';
+    return ks.map((k, i) => {
+      const sem = m.get(k).sort((x, y) => (y.f || 0) - (x.f || 0));
+      const ent = sem.filter(a => a.e === 'ok').length;
+      const obsSemana = sem.some(a => String(a.comentario || '').trim());
       const titulo = k === 'sin-fecha' ? 'Sin fecha' : etiquetaSemana(aFecha(k));
-      B.push(`
+      return `
         <details class="semana" ${i === 0 || obsSemana ? 'open' : ''}>
-          <summary><span class="tit">${esc(titulo)}</span>${obsSemana ? '<span class="tiene-obs" title="Tiene observaciones">💬</span>' : ''}<span class="cuenta">${ent}/${lista.length}<span class="cuenta-txt"> entregadas</span></span></summary>
+          <summary><span class="tit">${esc(titulo)}</span>${obsSemana ? '<span class="tiene-obs" title="Tiene observaciones">💬</span>' : ''}<span class="cuenta">${ent}/${sem.length}<span class="cuenta-txt"> entregadas</span></span></summary>
           <ul class="act-lista">
-            ${lista.map(a => {
+            ${sem.map(a => {
               const [ic, txt] = ESTADO[a.e];
               const nv = nivelDe(a.nivel);
               const obs = String(a.comentario || '').trim();
@@ -588,7 +614,31 @@ function render(d) {
               </li>`;
             }).join('')}
           </ul>
-        </details>`);
+        </details>`;
+    }).join('');
+  };
+
+  B.push('<h3>📚 Actividades</h3>');
+  if (!acts.length && !promsT.length) {
+    B.push('<div class="vacio">Aún no hay actividades publicadas.</div>');
+  } else if (!hayTrims) {
+    B.push(htmlSemanas(acts));
+  } else {
+    if (TRIMS.length > 1) {
+      B.push(`<div class="trim-tabs" role="tablist" aria-label="Trimestres">${TRIMS.slice().reverse().map(t => {
+        const n = acts.filter(a => String(a.periodo) === t).length, conProm = promsT.includes(t);
+        const sub = t === actualT && !conProm ? 'En curso' : n + (n === 1 ? ' actividad' : ' actividades');
+        return `<button class="trim-tab" role="tab" type="button" id="tab-t${esc(t)}" aria-controls="panel-t${esc(t)}" aria-selected="${t === actualT}" data-t="${esc(t)}">
+          <span aria-hidden="true">${conProm ? '🏆' : '📚'}</span><span><b>${esc(nombreTrim(t))}</b><small>${sub}</small></span></button>`;
+      }).join('')}</div>`);
+    }
+    TRIMS.forEach(t => {
+      const lista = acts.filter(a => String(a.periodo) === t);
+      B.push(`<section class="trim-panel" role="tabpanel" id="panel-t${esc(t)}" aria-labelledby="tab-t${esc(t)}" ${t === actualT ? '' : 'hidden'}>
+        ${TRIMS.length === 1 ? `<p class="trim-uno">📚 ${esc(nombreTrim(t))}</p>` : ''}
+        ${promsT.includes(t) ? botonProm(t, 'en-panel') : ''}
+        ${htmlSemanas(lista)}
+      </section>`);
     });
   }
 
@@ -599,11 +649,13 @@ function render(d) {
       <p class="pie">Si tiene dudas, comuníquese directamente con el maestro.<br>Información confidencial para la familia del alumno.</p>
     </div>`;
 
-  document.querySelectorAll('.trim-tab.pasado').forEach(b => b.addEventListener('click', () => abrirPromedio(b.dataset.t)));
+  document.querySelectorAll('.btn-prom').forEach(b => b.addEventListener('click', () => abrirPromedio(b.dataset.t)));
+  document.querySelectorAll('.trim-tab').forEach(b => b.addEventListener('click', () => mostrarTrim(b.dataset.t)));
 
   const ir = $('#ir-obs');
   if (ir) ir.addEventListener('click', () => {
-    const o = document.querySelector('.obs');
+    mostrarTrim(actualT);
+    const o = document.querySelector('.trim-panel:not([hidden]) .obs') || document.querySelector('.obs');
     if (!o) return;
     const det = o.closest('details'); if (det) det.open = true;
     o.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
@@ -613,6 +665,11 @@ function render(d) {
   $('#acceso').hidden = true;
   $('#panel').hidden = false;
   window.scrollTo(0, 0);
+}
+
+function mostrarTrim(t) {
+  document.querySelectorAll('.trim-tab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.t === t)));
+  document.querySelectorAll('.trim-panel').forEach(p => { p.hidden = p.id !== 'panel-t' + t; });
 }
 
 /* ================= Promedio del trimestre ================= */

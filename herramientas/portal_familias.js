@@ -1,7 +1,7 @@
 
 /* ===== 99_portal_familias.js — Portal de familias (Más › Portal de familias) =====
    · La app sigue funcionando sin internet. Con conexión, «Publicar ahora» manda a tu Google Sheets
-     un resumen de los grupos elegidos: actividades de las últimas semanas (entregó / pendiente /
+     un resumen de los grupos elegidos: TODAS las actividades del ciclo con su trimestre (entregó / pendiente /
      no entregó, calificación y nivel de logro; la calificación se puede apagar), anuncios, notas y,
      si lo eliges, el PROMEDIO de los trimestres ya cerrados (el mismo que calcula el Concentrado).
    · Cada padre entra a familias.html con el código de su hijo (tarjeta con QR) y ve SOLO lo de su hijo.
@@ -69,17 +69,18 @@ function pfEstado(a,sid,conNivel,conCalif){
 }
 function pfGruposElegidos(c){return activeGroups().filter(g=>c.grupos.includes(g.id))}
 function pfPaquete(){
-  const c=pfCfg(),gs=pfGruposElegidos(c),hoy=todayISO(),desde=pfShift(hoy,-7*c.semanas),hasta=pfShift(hoy,7);
+  const c=pfCfg(),gs=pfGruposElegidos(c),hoy=todayISO(),hasta=pfShift(hoy,7);
   const alumnos=[],actividades=[],notas=[],promedios=[];
   for(const g of gs){
     const ros=roster(g);
-    const acts=liveActivities().filter(a=>a.groupId===g.id&&a.scopeId&&a.mode!=='text'&&a.date>=desde&&a.date<=hasta);
+    /* Todas las actividades del ciclo (cada una con su trimestre); las programadas a más de una semana aún no se publican */
+    const acts=liveActivities().filter(a=>a.groupId===g.id&&a.scopeId&&a.mode!=='text'&&(!a.date||a.date<=hasta));
     for(const st of ros){
       alumnos.push({id:st.id,grupo:g.name,nombre:st.name});
       const n=c.notas[st.id];if(n&&n.t&&n.t.trim())notas.push({alumno_id:st.id,nota:n.t.trim(),fecha:n.f||hoy});
       for(const a of acts){
         const e=pfEstado(a,st.id,c.nivel,c.calif);
-        actividades.push({alumno_id:st.id,fecha:a.date,actividad:a.name,tipo:scopeName(g,a.scopeId)||a.type||'',estado:e.estado,calificacion:e.calificacion,nivel:e.nivel,comentario:e.comentario});
+        actividades.push({alumno_id:st.id,fecha:a.date,actividad:a.name,tipo:scopeName(g,a.scopeId)||a.type||'',estado:e.estado,calificacion:e.calificacion,nivel:e.nivel,comentario:e.comentario,periodo:String(a.period||'1'),trimestre:periodName(g,String(a.period||'1'))});
       }
       promedios.push(...pfPromediosDe(g,st,c.trims));
     }
@@ -216,7 +217,7 @@ VIEWS.familias=function(c){
   const cf=pfCfg(),gs=activeGroups(),elegidos=pfGruposElegidos(cf),listo=pfListo(cf),hoy=todayISO();
   if(!pfNotaGrupo||!gs.some(g=>g.id===pfNotaGrupo))pfNotaGrupo=(elegidos[0]||gs[0]||{}).id||'';
   const p=listo&&elegidos.length?pfPaquete():null;
-  const resumen=p?`Se enviarán <b>${p.alumnos.length}</b> alumnos, <b>${p.actividades.length}</b> registros de actividades de las últimas ${cf.semanas} semanas, <b>${p.anuncios.length}</b> anuncios y <b>${p.notas.length}</b> notas.`:'';
+  const resumen=p?`Se enviarán <b>${p.alumnos.length}</b> alumnos, <b>${p.actividades.length}</b> registros de actividades (todo el ciclo, por trimestre), <b>${p.anuncios.length}</b> anuncios y <b>${p.notas.length}</b> notas.`:'';
   const vigentes=cf.anuncios.filter(a=>!a.hasta||a.hasta>=hoy),vencidos=cf.anuncios.length-vigentes.length;
   const nombreG=id=>id==='TODOS'?'Todos mis grupos':(gs.find(g=>g.id===id)||{}).name||'(grupo archivado)';
   const gN=gs.find(g=>g.id===pfNotaGrupo);
@@ -228,7 +229,7 @@ VIEWS.familias=function(c){
     <p class="helper">Grupos que se publican:</p>
     <div class="pf-chips">${gs.map(g=>`<label class="pf-chip ${cf.grupos.includes(g.id)?'on':''}"><input type="checkbox" ${cf.grupos.includes(g.id)?'checked':''} onchange="pfToggleGrupo('${esc(g.id)}',this.checked)"> ${esc(g.name)}</label>`).join('')||'<span class="helper">Aún no tienes grupos.</span>'}</div>
     <div class="pf-trims">
-      <p class="helper"><b>🏆 Promedio del trimestre</b> · márcalo solo cuando el trimestre ya esté cerrado:</p>
+      <p class="helper"><b>🏆 Promedio del trimestre</b> · las actividades de todos los trimestres se publican siempre; el promedio solo si lo marcas (cuando el trimestre ya esté cerrado):</p>
       <div class="pf-chips">${['1','2','3'].map(n=>{const on=cf.trims.includes(n),nom=periodName(elegidos[0]||gs[0]||{},n);return `<label class="pf-chip ${on?'on':''}"><input type="checkbox" ${on?'checked':''} onchange="pfToggleTrim('${n}',this.checked)"> ${esc(nom)}</label>`}).join('')}</div>
     </div>
     ${resumen?`<p class="helper">${resumen}${p&&p.promedios.length?` Además, <b>${p.promedios.length}</b> promedios de ${esc(cf.trims.map(n=>periodName(elegidos[0],n)).join(', '))}.`:''}</p>`:''}
@@ -270,7 +271,6 @@ VIEWS.familias=function(c){
     <label>Dirección de la página de familias<input class="field" id="pf_portal" value="${esc(cf.portal)}" placeholder="${esc(pfPortal({portal:''}))}" inputmode="url" spellcheck="false" onchange="pfLeerConexion()"></label>
     <p class="helper">Si la dejas vacía se usa <b>${esc(pfPortal({portal:''}))}</b>.</p>
     <div class="pf-grid">
-      <label>Semanas que se muestran<select class="field" onchange="pfSet('semanas',Number(this.value));render()">${[2,4,6,8].map(n=>`<option value="${n}" ${cf.semanas===n?'selected':''}>Últimas ${n}</option>`).join('')}</select></label>
       <label class="check-inline pf-chk"><input type="checkbox" ${cf.calif?'checked':''} onchange="pfSet('calif',this.checked);render()"> Mostrar la calificación de cada actividad (ej. 8.5 / 10)</label>
       <label class="check-inline pf-chk"><input type="checkbox" ${cf.nivel?'checked':''} onchange="pfSet('nivel',this.checked);render()"> Mostrar nivel de logro (Requiere apoyo / En proceso / Nivel esperado)</label>
     </div>
