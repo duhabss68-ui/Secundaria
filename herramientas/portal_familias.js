@@ -2,7 +2,8 @@
 /* ===== 99_portal_familias.js — Portal de familias (Más › Portal de familias) =====
    · La app sigue funcionando sin internet. Con conexión, «Publicar ahora» manda a tu Google Sheets
      un resumen de los grupos elegidos: actividades de las últimas semanas (entregó / pendiente /
-     no entregó, calificación y nivel de logro; la calificación se puede apagar), anuncios y notas.
+     no entregó, calificación y nivel de logro; la calificación se puede apagar), anuncios, notas y,
+     si lo eliges, el PROMEDIO de los trimestres ya cerrados (el mismo que calcula el Concentrado).
    · Cada padre entra a familias.html con el código de su hijo (tarjeta con QR) y ve SOLO lo de su hijo.
    · La configuración (dirección del script, clave, anuncios, notas y códigos) se guarda aparte,
      NO va en las copias de seguridad: así una copia enviada por WhatsApp nunca lleva tu clave.
@@ -15,6 +16,7 @@ function pfCfg(){
   let c={};try{c=JSON.parse(localStorage.getItem(PF_KEY)||'{}')||{}}catch(e){}
   return {url:c.url||'',clave:c.clave||'',portal:c.portal||'',grupos:Array.isArray(c.grupos)?c.grupos:[],semanas:[2,4,6,8].includes(c.semanas)?c.semanas:4,
     nivel:c.nivel!==false,calif:c.calif!==false,anuncios:Array.isArray(c.anuncios)?c.anuncios:[],notas:c.notas&&typeof c.notas==='object'?c.notas:{},
+    trims:Array.isArray(c.trims)?c.trims.filter(t=>['1','2','3'].includes(String(t))).map(String):[],
     codigos:c.codigos&&typeof c.codigos==='object'?c.codigos:{},ultima:c.ultima||'',probado:c.probado||''};
 }
 function pfSave(c){try{localStorage.setItem(PF_KEY,JSON.stringify(c));return true}catch(e){warn('No se pudo guardar la configuración del portal en este navegador.');return false}}
@@ -26,6 +28,22 @@ function pfPortal(c){
 function pfListo(c){return /^https:\/\/script\.google(usercontent)?\.com\/.+/.test(c.url)&&c.clave.length>=8}
 function pfShift(iso,dias){const [y,m,d]=iso.split('-').map(Number);const x=new Date(y,m-1,d+dias);return x.toLocaleDateString('en-CA')}
 function pfNid(){return 'an'+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+
+/* ---------- Promedio del trimestre (mismo cálculo que el Concentrado: rubros y porcentajes del trimestre) ---------- */
+function pfPromediosDe(g,st,trims){
+  const out=[];
+  for(const p of trims){
+    for(const sc of scopesForGroup(g)){
+      const v=concPeriodAvg(g,sc.id,p,st);if(v===null||v===undefined||!isFinite(v))continue;
+      const R=rubrosOf(g,sc.id,p);
+      const rubros=R.items.map(it=>{const x=concRubroAvg(g,sc.id,p,st,it.id);return x===null||x===undefined?null:{n:it.name,w:R.pct?Number(it.w)||0:null,v:round2(x)}}).filter(Boolean);
+      out.push({alumno_id:st.id,periodo:p,titulo:periodName(g,p),disciplina:scopeName(g,sc.id)||sc.name||'',promedio:round2(v),
+        rubros:JSON.stringify(rubros),verde:colorVerde(),amarillo:colorAmarillo()});
+    }
+  }
+  return out;
+}
+function pfToggleTrim(p,on){const c=pfCfg();c.trims=c.trims.filter(x=>x!==p);if(on)c.trims.push(p);c.trims.sort();pfSave(c);render()}
 
 /* ---------- Qué se publica ---------- */
 /* Calificación como la ve el docente: «8.5 / 10». Solo número y rúbrica (en icono y nivel ya se ve el estado o el nivel). */
@@ -52,7 +70,7 @@ function pfEstado(a,sid,conNivel,conCalif){
 function pfGruposElegidos(c){return activeGroups().filter(g=>c.grupos.includes(g.id))}
 function pfPaquete(){
   const c=pfCfg(),gs=pfGruposElegidos(c),hoy=todayISO(),desde=pfShift(hoy,-7*c.semanas),hasta=pfShift(hoy,7);
-  const alumnos=[],actividades=[],notas=[];
+  const alumnos=[],actividades=[],notas=[],promedios=[];
   for(const g of gs){
     const ros=roster(g);
     const acts=liveActivities().filter(a=>a.groupId===g.id&&a.scopeId&&a.mode!=='text'&&a.date>=desde&&a.date<=hasta);
@@ -63,12 +81,13 @@ function pfPaquete(){
         const e=pfEstado(a,st.id,c.nivel,c.calif);
         actividades.push({alumno_id:st.id,fecha:a.date,actividad:a.name,tipo:scopeName(g,a.scopeId)||a.type||'',estado:e.estado,calificacion:e.calificacion,nivel:e.nivel,comentario:e.comentario});
       }
+      promedios.push(...pfPromediosDe(g,st,c.trims));
     }
   }
   const nombreDe=id=>{const g=gs.find(x=>x.id===id);return g?g.name:''};
   const anuncios=c.anuncios.filter(an=>an.grupo==='TODOS'||nombreDe(an.grupo)).map(an=>({
     grupo:an.grupo==='TODOS'?'TODOS':nombreDe(an.grupo),fecha:an.fecha||hoy,tipo:an.tipo||'Aviso',titulo:an.titulo||'',texto:an.texto||'',vigente_hasta:an.hasta||''}));
-  return {accion:'publicar',clave:c.clave,grupos:gs.map(g=>g.name),alumnos,actividades,anuncios,notas,reemplazarTodos:true};
+  return {accion:'publicar',clave:c.clave,grupos:gs.map(g=>g.name),alumnos,actividades,anuncios,notas,promedios,reemplazarTodos:true};
 }
 
 /* ---------- Conexión con Google Sheets ---------- */
@@ -208,7 +227,11 @@ VIEWS.familias=function(c){
     ${listo?'':`<div class="hint warn">Primero configura la conexión con tu hoja de Google (abajo).</div>`}
     <p class="helper">Grupos que se publican:</p>
     <div class="pf-chips">${gs.map(g=>`<label class="pf-chip ${cf.grupos.includes(g.id)?'on':''}"><input type="checkbox" ${cf.grupos.includes(g.id)?'checked':''} onchange="pfToggleGrupo('${esc(g.id)}',this.checked)"> ${esc(g.name)}</label>`).join('')||'<span class="helper">Aún no tienes grupos.</span>'}</div>
-    ${resumen?`<p class="helper">${resumen}</p>`:''}
+    <div class="pf-trims">
+      <p class="helper"><b>🏆 Promedio del trimestre</b> · márcalo solo cuando el trimestre ya esté cerrado:</p>
+      <div class="pf-chips">${['1','2','3'].map(n=>{const on=cf.trims.includes(n),nom=periodName(elegidos[0]||gs[0]||{},n);return `<label class="pf-chip ${on?'on':''}"><input type="checkbox" ${on?'checked':''} onchange="pfToggleTrim('${n}',this.checked)"> ${esc(nom)}</label>`}).join('')}</div>
+    </div>
+    ${resumen?`<p class="helper">${resumen}${p&&p.promedios.length?` Además, <b>${p.promedios.length}</b> promedios de ${esc(cf.trims.map(n=>periodName(elegidos[0],n)).join(', '))}.`:''}</p>`:''}
     <div class="actions"><button class="primary big" ${pfBusy||!listo||!elegidos.length?'disabled':''} onclick="pfPublicar()">${pfBusy?'Publicando…':'📤 Publicar ahora'}</button></div>
     <p class="helper">${cf.ultima?'Última publicación: <b>'+esc(pfHace(cf.ultima))+'</b>.':'Todavía no has publicado.'} Los padres ven lo de la última publicación, no los cambios en vivo. ${cf.calif?'Se envían las calificaciones de cada actividad.':'No se envían calificaciones numéricas.'}</p>
   </section>
@@ -262,6 +285,7 @@ if(typeof NAV_TOP==='object')NAV_TOP.familias='more';
 .pf-chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:6px 14px;border-radius:999px;border:1.5px solid var(--line,#ccd);cursor:pointer;font-weight:700}
 .pf-chip.on{border-color:var(--primary,#0f4c5c);background:color-mix(in srgb,var(--primary,#0f4c5c) 12%,transparent)}
 .pf-chip input{width:20px;height:20px}
+.pf-trims{margin:4px 0 8px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--accent,#f2a541) 10%,transparent)}
 .pf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;align-items:end}
 .pf-anuncios{display:grid;gap:10px;margin-top:10px}
 .pf-an{border:1px solid var(--line,#dde);border-left:5px solid var(--accent,#1a9e9a);border-radius:12px;padding:10px 14px}
