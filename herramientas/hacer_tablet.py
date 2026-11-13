@@ -13,7 +13,7 @@ import sys
 ORIGEN, DESTINO = sys.argv[1], sys.argv[2]
 # Versión de la edición para tablet: súbela en cada entrega. Con ella se genera también sw.js,
 # así la tablet sabe que hay versión nueva.
-TABLET_VERSION = '1.19'
+TABLET_VERSION = '1.20'
 html = open(ORIGEN, encoding='utf-8').read()
 
 
@@ -858,9 +858,9 @@ RT_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'rubros
 SC_JS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'sin_clases.js'), encoding='utf-8').read()
 # Logo de SEPEN Nayarit para el formato oficial: el PNG va tal cual, en base64, dentro de la app (sin internet)
 import base64 as _b64, struct as _struct
-_LOGO = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'recursos', 'logo_sepen_nayarit_alta.png'), 'rb').read()
+_LOGO = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'recursos', 'logo_sepen_nayarit_siie.png'), 'rb').read()
 if _LOGO[:8] != b'\x89PNG\r\n\x1a\n':
-    sys.exit('ERROR: recursos/logo_sepen_nayarit_alta.png no es PNG')
+    sys.exit('ERROR: recursos/logo_sepen_nayarit_siie.png no es PNG')
 _LW, _LH = _struct.unpack('>II', _LOGO[16:24])
 LOGO_JS = (f"\n/* Logo SEPEN Nayarit ({_LW}×{_LH} px, {len(_LOGO)} bytes, sin cambios) */\n"
            f"var FO_LOGO_SEPEN_W={_LW},FO_LOGO_SEPEN_H={_LH},FO_LOGO_SEPEN_B64='{_b64.b64encode(_LOGO).decode()}';\n")
