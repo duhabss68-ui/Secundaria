@@ -185,6 +185,24 @@
   .nivel { border-radius: 999px; padding: 1px 9px; font-weight: 800; font-size: .75rem; border: 1.5px solid currentColor; }
   .nivel.apoyo { color: var(--no); } .nivel.proceso { color: var(--pend); } .nivel.esperado { color: var(--ok); } .nivel.otro { color: var(--suave); }
 
+  /* Tarjetas por disciplina (modo escuela: varias materias) */
+  details.materia { background: var(--card); border: 1px solid var(--borde); border-left: 6px solid var(--turquesa); border-radius: 16px; margin-bottom: 12px; box-shadow: var(--sombra); overflow: hidden; }
+  details.materia > summary { list-style: none; cursor: pointer; padding: 12px 14px; min-height: 64px; display: flex; align-items: center; gap: 12px; -webkit-tap-highlight-color: transparent; }
+  details.materia > summary::-webkit-details-marker { display: none; }
+  details.materia > summary::after { content: "›"; flex: none; font-size: 1.7rem; line-height: 1; color: var(--suave); transition: transform .2s; }
+  details.materia[open] > summary::after { transform: rotate(90deg); }
+  details.materia[open] > summary { border-bottom: 1px solid var(--borde); }
+  .m-ico { flex: none; width: 44px; height: 44px; border-radius: 12px; background: var(--bg); display: grid; place-items: center; font-size: 1.4rem; }
+  .m-txt { flex: 1; min-width: 0; }
+  .m-txt b { display: block; font-size: 1.05rem; font-weight: 900; line-height: 1.2; overflow-wrap: anywhere; }
+  .m-txt small { display: block; color: var(--suave); font-weight: 700; font-size: .8rem; margin-top: 1px; overflow-wrap: anywhere; }
+  .m-cifras { display: flex; flex-wrap: wrap; gap: 4px 6px; margin-top: 6px; }
+  .m-cifras span { border-radius: 999px; padding: 1px 9px; font-weight: 800; font-size: .76rem; white-space: nowrap; }
+  .m-cifras .ok { background: var(--ok-bg); color: var(--ok); } .m-cifras .pend { background: var(--pend-bg); color: var(--pend); } .m-cifras .no { background: var(--no-bg); color: var(--no); }
+  .m-obs { flex: none; font-size: 1rem; }
+  .m-cuerpo { padding: 10px 10px 2px; background: var(--bg); }
+  .m-cuerpo details.semana { box-shadow: none; }
+
   /* OBSERVACIÓN del maestro dentro de cada actividad */
   .obs { margin-top: 10px; background: var(--obs-bg); border-left: 5px solid var(--obs-borde); border-radius: 0 12px 12px 0; padding: 10px 12px; scroll-margin-top: 80px; }
   .obs-eti { display: flex; align-items: center; gap: 6px; font-weight: 900; font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; color: var(--obs-eti); }
@@ -318,7 +336,7 @@
   }
   @media print {
     .barra, .salir, .aviso-obs, .demo { display: none !important; }
-    details.semana:not([open]) .act-lista { display: block; }
+    details.semana:not([open]) .act-lista, details.materia:not([open]) .m-cuerpo { display: block; }
     body { background: #fff; }
   }
 </style>
@@ -514,6 +532,14 @@ function mostrarAcceso(msg) {
 }
 
 let MAESTRO = '';
+function iconoMateria(m) {
+  const t = sinAcentos(m);
+  return /matem/.test(t) ? '📐' : /ingles|english|extranjera/.test(t) ? '🗣️' : /espanol|lengua|lectura|literatura|redacc/.test(t) ? '📖'
+    : /quimic/.test(t) ? '⚗️' : /fisica/.test(t) && !/educacion/.test(t) ? '🧲' : /ciencia|biolog/.test(t) ? '🔬'
+    : /tecnolog|informat|computac|program|robot/.test(t) ? '💻' : /historia/.test(t) ? '🏛️' : /geograf/.test(t) ? '🌎'
+    : /educacion fisica|deporte/.test(t) ? '⚽' : /arte|music|danza|teatro/.test(t) ? '🎨' : /civica|etica/.test(t) ? '⚖️'
+    : /tutor|socioemoc|orientac/.test(t) ? '🤝' : '📘';
+}
 const ICONO_ANUNCIO = { tarea: '📝', material: '🎒', evento: '🎉', reunion: '👥', aviso: '📢' };
 const esReciente = (f, dias) => f && (Date.now() - f.getTime()) / 864e5 <= dias;
 
@@ -603,10 +629,11 @@ function render(d) {
   const conObs = acts.filter(a => String(a.periodo || '') === actualT && String(a.comentario || '').trim());
   if (conObs.length) {
     const n = conObs.length;
+    const varios = new Set(conObs.map(a => a.maestro || a.materia || '')).size > 1;
     A.push(`
       <button class="aviso-obs" type="button" id="ir-obs">
         <span class="n" aria-hidden="true">${n}</span>
-        <span>El maestro dejó <b>${n === 1 ? 'una observación' : n + ' observaciones'}</b> en ${n === 1 ? 'una actividad' : 'las actividades'}.</span>
+        <span>${varios ? 'Los maestros dejaron' : 'El maestro dejó'} <b>${n === 1 ? 'una observación' : n + ' observaciones'}</b> en ${n === 1 ? 'una actividad' : 'las actividades'}.</span>
         <span class="ir">Ver ↓</span>
       </button>`);
   }
@@ -666,7 +693,7 @@ function render(d) {
     lista.forEach(a => { const k = a.f ? isoLocal(lunesDe(a.f)) : 'sin-fecha'; if (!m.has(k)) m.set(k, []); m.get(k).push(a); });
     return m;
   };
-  const htmlSemanas = lista => {
+  const htmlSemanas = (lista, enMateria) => {
     const m = semanasDe(lista), ks = [...m.keys()].sort().reverse();
     if (!ks.length) return '<div class="vacio">Aún no hay actividades publicadas en este periodo.</div>';
     return ks.map((k, i) => {
@@ -693,7 +720,7 @@ function render(d) {
                   <div class="act-sub">
                     <span class="estado-txt ${a.e}">${txt}</span>
                     ${a.f ? `<span>${esc(fDia.format(a.f))}</span>` : ''}
-                    ${a.tipo ? `<span>${esc(a.tipo)}</span>` : ''}
+                    ${a.tipo && !enMateria ? `<span>${esc(a.tipo)}</span>` : ''}
                     ${nv ? `<span class="nivel ${nv[0]}">${esc(nv[1])}</span>` : ''}
                   </div>
                   ${obs ? `<div class="obs" id="obs-${a.i}"><span class="obs-eti">💬 Observación del maestro</span><p>${esc(obs)}</p></div>` : ''}
@@ -705,11 +732,37 @@ function render(d) {
     }).join('');
   };
 
+  // 5b) Varias disciplinas: una tarjeta plegable por materia (cerradas al entrar)
+  const MATERIAS = [...new Set(acts.map(a => String(a.materia || '').trim()))];
+  const porMateria = MATERIAS.length > 1 && MATERIAS.every(Boolean);
+  const htmlLista = lista => {
+    if (!porMateria) return htmlSemanas(lista);
+    if (!lista.length) return htmlSemanas(lista);
+    const grupos = new Map();
+    lista.forEach(a => { const m = String(a.materia).trim(); if (!grupos.has(m)) grupos.set(m, []); grupos.get(m).push(a); });
+    return [...grupos.keys()].sort((x, y) => x.localeCompare(y, 'es')).map(m => {
+      const l = grupos.get(m), c = t => l.filter(a => a.e === t).length;
+      const quien = [...new Set(l.map(a => a.maestro).filter(Boolean))].join(' · ');
+      const obs = l.some(a => String(a.comentario || '').trim());
+      const cif = [['ok', c('ok'), c('ok') === 1 ? 'entregada' : 'entregadas'], ['pend', c('pend'), c('pend') === 1 ? 'pendiente' : 'pendientes'], ['no', c('no'), 'sin entregar']]
+        .filter((x, i) => i === 0 || x[1]).map(([k, n, t]) => `<span class="${k}">${ESTADO[k][0]} ${n} ${t}</span>`).join('');
+      return `
+        <details class="materia">
+          <summary>
+            <span class="m-ico" aria-hidden="true">${iconoMateria(m)}</span>
+            <span class="m-txt"><b>${esc(m)}</b>${quien ? `<small>${esc(quien)}</small>` : ''}<span class="m-cifras">${cif}</span></span>
+            ${obs ? '<span class="m-obs" title="Tiene observaciones">💬</span>' : ''}
+          </summary>
+          <div class="m-cuerpo">${htmlSemanas(l, true)}</div>
+        </details>`;
+    }).join('');
+  };
+
   B.push('<h3>📚 Actividades</h3>');
   if (!acts.length && !promsT.length) {
     B.push('<div class="vacio">Aún no hay actividades publicadas.</div>');
   } else if (!hayTrims) {
-    B.push(htmlSemanas(acts));
+    B.push(htmlLista(acts));
   } else {
     if (TRIMS.length > 1) {
       B.push(`<div class="trim-tabs" role="tablist" aria-label="Periodos">${TRIMS.slice().reverse().map(t => {
@@ -724,7 +777,7 @@ function render(d) {
       B.push(`<section class="trim-panel" role="tabpanel" id="panel-t${esc(t)}" aria-labelledby="tab-t${esc(t)}" ${t === actualT ? '' : 'hidden'}>
         ${TRIMS.length === 1 ? `<p class="trim-uno">📚 ${esc(nombreTrim(t))}</p>` : ''}
         ${promsT.includes(t) ? botonProm(t, 'en-panel') : ''}
-        ${htmlSemanas(lista)}
+        ${htmlLista(lista)}
       </section>`);
     });
   }
@@ -744,7 +797,7 @@ function render(d) {
     mostrarTrim(actualT);
     const o = document.querySelector('.trim-panel:not([hidden]) .obs') || document.querySelector('.obs');
     if (!o) return;
-    const det = o.closest('details'); if (det) det.open = true;
+    let det = o.closest('details'); while (det) { det.open = true; det = det.parentElement && det.parentElement.closest('details'); }
     o.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
     o.classList.remove('destello'); void o.offsetWidth; o.classList.add('destello');
   });
