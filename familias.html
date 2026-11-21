@@ -41,6 +41,19 @@
     --sombra: none;
   }
 
+  /* Colores por nivel (los toma de la respuesta del portal; Secundaria es el tema base) */
+  :root[data-nivel="Primaria"] { --petroleo: #b8432c; --petroleo-2: #92331f; --turquesa: #128a83; --ambar: #ffc93c; --lavanda: #8b7fd6; }
+  :root[data-nivel="Telesecundaria"] { --petroleo: #1f2f5c; --petroleo-2: #152245; --turquesa: #d4661f; --ambar: #f59e0b; }
+  :root[data-nivel="Bachillerato"] { --petroleo: #2b2f3a; --petroleo-2: #1d2029; --turquesa: #4f46e5; --ambar: #f26b5b; }
+  @media (prefers-color-scheme: light) {
+    :root[data-nivel="Primaria"]:not([data-theme="dark"]) { --bg: #fff6ef; }
+    :root[data-nivel="Telesecundaria"]:not([data-theme="dark"]) { --bg: #f3f5fa; }
+    :root[data-nivel="Bachillerato"]:not([data-theme="dark"]) { --bg: #f4f4f8; }
+  }
+  :root[data-theme="light"][data-nivel="Primaria"] { --bg: #fff6ef; }
+  :root[data-theme="light"][data-nivel="Telesecundaria"] { --bg: #f3f5fa; }
+  :root[data-theme="light"][data-nivel="Bachillerato"] { --bg: #f4f4f8; }
+
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   html, body { margin: 0; }
@@ -278,6 +291,18 @@
   }
 
   .demo { background: var(--ambar); color: #3a2600; text-align: center; font-weight: 800; font-size: .8rem; padding: 6px 12px; }
+  /* Asistencia (Bachillerato) */
+  .asis { background: var(--card); border: 1px solid var(--borde); border-radius: var(--radio); padding: 14px 16px; box-shadow: var(--sombra); margin-bottom: 18px; }
+  .asis h3 { margin: 0 0 8px; }
+  .asis-lista { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+  .asis-item { border-radius: 12px; padding: 10px 12px; background: var(--ok-bg); color: var(--ok); }
+  .asis-item b { display: block; font-size: 1.4rem; line-height: 1.1; }
+  .asis-item small { display: block; color: var(--texto); opacity: .8; }
+  .asis-item.cerca { background: var(--pend-bg); color: var(--pend); }
+  .asis-item.baja { background: var(--no-bg); color: var(--no); }
+  .asis-nota { margin: 8px 0 0; font-size: .85rem; color: var(--suave); }
+  .pr-extra { margin-top: 8px; padding: 8px 10px; border-radius: 10px; background: var(--pend-bg); color: var(--pend); font-size: .9rem; }
+  .de-escuela { font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: var(--suave); }
   .pie { color: var(--suave); font-size: .78rem; text-align: center; margin-top: 30px; grid-column: 1 / -1; }
 
   /* Pantallas muy angostas (≤ 340 px): números del resumen más compactos */
@@ -310,12 +335,12 @@
     </div>
     <div>
       <h1>Mi Bitácora · Familias</h1>
-      <small>Prof. Nicolás Contreras Medina</small>
+      <small id="acceso-quien"></small>
     </div>
   </div>
 
   <form id="form-acceso" class="tarjeta" autocomplete="off">
-    <label for="codigo">Código de su hijo o hija</label>
+    <label for="codigo">Código del alumno</label>
     <p class="ayuda">Está en la tarjeta que le entregó el maestro. También puede escanear el código QR.</p>
     <input id="codigo" inputmode="text" maxlength="9" placeholder="XXXX-XXXX" spellcheck="false" autocapitalize="characters" aria-describedby="error">
     <label class="check"><input type="checkbox" id="recordar" checked> Recordar en este celular</label>
@@ -341,14 +366,32 @@
 
 <script>
 /* =====================================================================
-   1) Pega aquí la URL de tu Apps Script (la que termina en /exec).
-      Mientras esté vacía, la página funciona en MODO DE PRUEBA.
+   Configuración
+   · SUPABASE_URL y SUPABASE_KEY: el portal de Mi Bitácora. La llave es PÚBLICA:
+     solo permite llamar a consulta_familia, que devuelve lo de UN alumno.
+   · GOOGLE_URL: solo durante el periodo de prueba del piloto. Si un código
+     todavía no está en el portal, se busca en la hoja de Google.
+     Déjala vacía ('') para apagarla.
+   · Sin ninguna dirección, o con ?demo en la liga, la página entra en MODO DE PRUEBA.
    ===================================================================== */
-const API_URL = 'https://script.google.com/macros/s/AKfycbz_G4QxXSxUk5te4CnjoqtNezfYgtZwApxCLxXF1c5HRh_wA1VCxiJDPebohdj5ymHuSQ/exec';
+const SUPABASE_URL = 'https://unncjwhwyrodmkofljos.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_IFsjsa_Ekmuw39duFIb6tg_YaSZXhJp';
+const GOOGLE_URL = 'https://script.google.com/macros/s/AKfycbz_G4QxXSxUk5te4CnjoqtNezfYgtZwApxCLxXF1c5HRh_wA1VCxiJDPebohdj5ymHuSQ/exec';   // periodo de prueba: códigos que aún no estén en el portal
+const QUIEN_POR_OMISION = 'Prof. Nicolás Contreras Medina';
 
 const LLAVE = 'mb_familias_codigo';
 const params = new URLSearchParams(location.search);
-const DEMO = !API_URL || params.has('demo');
+const DEMO = (!SUPABASE_URL && !GOOGLE_URL) || params.has('demo');
+const LLAVE_NIVEL = 'mb_familias_nivel', LLAVE_QUIEN = 'mb_familias_quien';
+const NIVELES = ['Primaria', 'Secundaria', 'Telesecundaria', 'Bachillerato'];
+function ponerNivel(n) {
+  if (!NIVELES.includes(n)) return;
+  document.documentElement.dataset.nivel = n;
+  const m = document.querySelector('meta[name="theme-color"]');
+  if (m) m.content = getComputedStyle(document.documentElement).getPropertyValue('--petroleo').trim() || '#0f4c5c';
+}
+function leerLocal(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }
+function guardarLocal(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 const $ = s => document.querySelector(s);
 
 /* ---------- Utilidades ---------- */
@@ -404,9 +447,26 @@ function olvidar() { try { localStorage.removeItem(LLAVE); } catch (e) {} }
 /* ---------- Datos ---------- */
 async function consultar(codigo) {
   if (DEMO) return datosDemo(codigo);
-  const r = await fetch(API_URL + '?codigo=' + encodeURIComponent(codigo), { method: 'GET', cache: 'no-store' });
-  if (!r.ok) throw new Error('red');
-  return r.json();
+  let d = null, err = null;
+  if (SUPABASE_URL) {
+    try {
+      const r = await fetch(SUPABASE_URL + '/rest/v1/rpc/consulta_familia', {
+        method: 'POST', cache: 'no-store',
+        headers: { 'Content-Type': 'application/json', apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY },
+        body: JSON.stringify({ p_codigo: codigo }) });
+      if (r.ok) d = await r.json(); else err = new Error('red');
+    } catch (e) { err = e; }
+  }
+  // Periodo de prueba: el código todavía no está en el portal → se busca en la hoja de Google del piloto
+  if (GOOGLE_URL && (!d || (!d.ok && !d.pausa))) {
+    try {
+      // Ojo: Apps Script reserva el parámetro «c»; por eso se usa «codigo»
+      const r = await fetch(GOOGLE_URL + '?codigo=' + encodeURIComponent(codigo), { method: 'GET', cache: 'no-store' });
+      if (r.ok) { const g = await r.json(); if (g && g.ok) return g; if (!d) d = g; }
+    } catch (e) { if (!d) err = e; }
+  }
+  if (d) return d;
+  throw err || new Error('red');
 }
 
 function datosDemo(codigo) {
@@ -415,6 +475,9 @@ function datosDemo(codigo) {
   return new Promise(res => setTimeout(() => res({
     ok: true,
     alumno: { nombre: 'Ana P.', grupo: '2A' },
+    nivel: NIVELES.includes(params.get('nivel')) ? params.get('nivel') : 'Secundaria',
+    escuela: { nombre: 'Escuela de prueba', modo: 'individual' },
+    asistencias: params.get('nivel') === 'Bachillerato' ? [{ periodo: '1', titulo: 'Primer Parcial', porcentaje: 92, minimo: 80 }, { periodo: '2', titulo: 'Segundo Parcial', porcentaje: 78, minimo: 80 }] : [],
     actualizado: isoLocal(new Date()) + 'T18:30',
     promedios: [
       { periodo: '1', titulo: 'Primer Trimestre', disciplina: 'Tecnología', promedio: 8.7, verde: 8, amarillo: 6,
@@ -450,11 +513,15 @@ function mostrarAcceso(msg) {
   e.hidden = !msg; e.textContent = msg || '';
 }
 
-const MAESTRO = 'Prof. Nicolás Contreras Medina';
+let MAESTRO = '';
 const ICONO_ANUNCIO = { tarea: '📝', material: '🎒', evento: '🎉', reunion: '👥', aviso: '📢' };
 const esReciente = (f, dias) => f && (Date.now() - f.getTime()) / 864e5 <= dias;
 
 function render(d) {
+  ponerNivel(d.nivel);
+  if (d.nivel) guardarLocal(LLAVE_NIVEL, d.nivel);
+  MAESTRO = d.escuela && d.escuela.modo !== 'escuela' ? (d.escuela.nombre || '') : '';
+  guardarLocal(LLAVE_QUIEN, d.escuela ? (d.escuela.nombre || '') : '');
   const acts = (d.actividades || []).map((a, i) => ({ ...a, i, f: aFecha(a.fecha), e: estadoDe(a.estado) }));
 
   // Agrupa por semana (de lunes a domingo)
@@ -490,14 +557,16 @@ function render(d) {
   PROMS = Array.isArray(d.promedios) ? d.promedios.filter(p => isFinite(Number(p.promedio))) : [];
   ALUMNO = d.alumno;
   const NOMBRE_T = { 1: 'Primer', 2: 'Segundo', 3: 'Tercer' };
+  const PERIODO = d.nivel === 'Bachillerato' ? 'Parcial' : 'Trimestre';
   const nombreTrim = t => {
     const a = acts.find(x => String(x.periodo) === t && x.trimestre), p = PROMS.find(x => x.periodo === t);
-    return (a && a.trimestre) || (p && p.titulo) || (NOMBRE_T[t] ? NOMBRE_T[t] + ' Trimestre' : 'Actividades');
+    return (a && a.trimestre) || (p && p.titulo) || (NOMBRE_T[t] ? NOMBRE_T[t] + ' ' + PERIODO : t === 'S' ? 'Semestral' : 'Actividades');
   };
   const trimsActs = [...new Set(acts.map(a => String(a.periodo || '')))];
   const hayTrims = trimsActs.some(t => t);
   const TRIMS = hayTrims ? [...new Set([...trimsActs.filter(Boolean), ...PROMS.map(p => p.periodo)])].sort() : [''];
-  const actualT = TRIMS[TRIMS.length - 1];
+  const conActs = TRIMS.filter(t => trimsActs.includes(t));
+  const actualT = (conActs.length ? conActs : TRIMS)[(conActs.length ? conActs : TRIMS).length - 1];
   const promsT = [...new Set(PROMS.map(p => p.periodo))].sort();
   const botonProm = (t, extra) => {
     const titulo = nombreTrim(t);
@@ -506,7 +575,7 @@ function render(d) {
         <span class="bp-trofeo" aria-hidden="true">🏆</span>
         <span class="bp-txt">
           <span class="bp-eti">¡Ya está disponible!</span>
-          <span class="bp-tit">Promedio del ${esc(titulo)}</span>
+          <span class="bp-tit">${t === 'S' ? 'Promedio semestral' : 'Promedio del ' + esc(titulo)}</span>
           <span class="bp-sub">Toque aquí para ver el resultado de ${esc(String(d.alumno.nombre).split(' ')[0])}</span>
         </span>
         <span class="bp-ir" aria-hidden="true">›</span>
@@ -515,19 +584,20 @@ function render(d) {
   // Anuncio del promedio en la pantalla principal (el trimestre publicado más reciente)
   if (promsT.length) A.push(botonProm(promsT[promsT.length - 1]));
 
-  // 1) Mensaje del maestro: lo primero que se ve
-  if (d.nota && d.nota.texto) {
-    const f = aFecha(d.nota.fecha);
+  // 1) Mensajes del maestro (uno por maestro en modo escuela): lo primero que se ve
+  const notas = Array.isArray(d.notas) && d.notas.length ? d.notas : (d.nota && d.nota.texto ? [d.nota] : []);
+  notas.filter(n => n && n.texto).forEach(n => {
+    const f = aFecha(n.fecha), quien = n.maestro || MAESTRO;
     A.push(`
       <section class="mensaje" role="note" aria-label="Mensaje del maestro">
         <div class="msj-cab">
           <span class="msj-ico" aria-hidden="true">✉️</span>
-          <div class="msj-quien"><span class="msj-eti">Mensaje del maestro</span><small>${esc(MAESTRO)}</small>${f ? `<small>${esc(fDia.format(f))}</small>` : ''}</div>
+          <div class="msj-quien"><span class="msj-eti">Mensaje del maestro</span>${quien ? `<small>${esc(quien)}</small>` : ''}${f ? `<small>${esc(fDia.format(f))}</small>` : ''}</div>
         </div>
         ${esReciente(f, 7) ? '<span class="nuevo">Nuevo</span>' : ''}
-        <p class="msj-txt">${esc(d.nota.texto)}</p>
+        <p class="msj-txt">${esc(n.texto)}</p>
       </section>`);
-  }
+  });
 
   // 2) Aviso de observaciones en actividades (del trimestre actual)
   const conObs = acts.filter(a => String(a.periodo || '') === actualT && String(a.comentario || '').trim());
@@ -552,6 +622,22 @@ function render(d) {
       </section>`);
   }
 
+  // 3b) Asistencia (Bachillerato): por parcial, con aviso si baja del mínimo
+  const asis = Array.isArray(d.asistencias) ? d.asistencias.filter(x => isFinite(Number(x.porcentaje))) : [];
+  if (asis.length) {
+    const min = Number(asis[0].minimo) || 80;
+    A.push(`
+      <section class="asis" aria-label="Asistencia">
+        <h3>📅 Asistencia</h3>
+        <div class="asis-lista">${asis.map(x => {
+          const v = Number(x.porcentaje), m = Number(x.minimo) || min;
+          const cls = v < m ? 'baja' : v < m + 5 ? 'cerca' : '';
+          return `<div class="asis-item ${cls}"><b>${esc(String(v))} %</b><small>${esc(x.titulo || x.periodo)}</small>${v < m ? '<small>⚠ Debajo del mínimo</small>' : v < m + 5 ? '<small>Cerca del mínimo</small>' : ''}</div>`;
+        }).join('')}</div>
+        <p class="asis-nota">Asistencia mínima requerida: ${esc(String(min))} %.</p>
+      </section>`);
+  }
+
   // 4) Anuncios
   A.push('<h3>📢 Anuncios</h3>');
   if ((d.anuncios || []).length) {
@@ -563,6 +649,7 @@ function render(d) {
         <article class="anuncio ${clave}">
           <span class="an-ico" aria-hidden="true">${ICONO_ANUNCIO[clave]}</span>
           <div class="an-cuerpo">
+            ${a.de === 'escuela' ? '<div class="de-escuela">🏫 Aviso de la escuela</div>' : ''}
             <div class="meta"><span class="chip">${esc(a.tipo || 'Aviso')}${esReciente(f, 3) ? '<span class="nuevo">Nuevo</span>' : ''}</span><span>${f ? esc(fDia.format(f)) : ''}</span></div>
             <h4>${esc(a.titulo)}</h4>
             ${a.texto ? `<p>${esc(a.texto)}</p>` : ''}
@@ -581,7 +668,7 @@ function render(d) {
   };
   const htmlSemanas = lista => {
     const m = semanasDe(lista), ks = [...m.keys()].sort().reverse();
-    if (!ks.length) return '<div class="vacio">Aún no hay actividades publicadas en este trimestre.</div>';
+    if (!ks.length) return '<div class="vacio">Aún no hay actividades publicadas en este periodo.</div>';
     return ks.map((k, i) => {
       const sem = m.get(k).sort((x, y) => (y.f || 0) - (x.f || 0));
       const ent = sem.filter(a => a.e === 'ok').length;
@@ -625,7 +712,7 @@ function render(d) {
     B.push(htmlSemanas(acts));
   } else {
     if (TRIMS.length > 1) {
-      B.push(`<div class="trim-tabs" role="tablist" aria-label="Trimestres">${TRIMS.slice().reverse().map(t => {
+      B.push(`<div class="trim-tabs" role="tablist" aria-label="Periodos">${TRIMS.slice().reverse().map(t => {
         const n = acts.filter(a => String(a.periodo) === t).length, conProm = promsT.includes(t);
         const sub = t === actualT && !conProm ? 'En curso' : n + (n === 1 ? ' actividad' : ' actividades');
         return `<button class="trim-tab" role="tab" type="button" id="tab-t${esc(t)}" aria-controls="panel-t${esc(t)}" aria-selected="${t === actualT}" data-t="${esc(t)}">
@@ -744,9 +831,10 @@ function abrirPromedio(trim) {
                 <div class="pr-barra"><i data-w="${Math.max(0, Math.min(100, Number(r.v) * 10))}"></i></div>
               </div>`;
             }).join('')}
+            ${p.extraordinario !== null && p.extraordinario !== undefined && p.extraordinario !== '' ? `<div class="pr-extra">Examen extraordinario: <b>${fmt1(Number(p.extraordinario))}</b> · es la calificación final; el semestral se conserva.</div>` : ''}
           </section>`;
         }).join('')}
-        <p class="pr-nota">Promedio calculado por el maestro con los rubros del trimestre.<br>Si tiene dudas, comuníquese directamente con él.</p>
+        <p class="pr-nota">Promedio calculado por el maestro con los rubros del periodo.<br>Si tiene dudas, comuníquese directamente con él.</p>
       </div>
     </div>`;
 
@@ -818,6 +906,8 @@ $('#btn-salir').addEventListener('click', () => { olvidar(); $('#codigo').value 
 
 /* ---------- Inicio ---------- */
 if (DEMO) $('#aviso-demo').hidden = false;
+ponerNivel(DEMO && params.get('nivel') ? params.get('nivel') : leerLocal(LLAVE_NIVEL));
+{ const q = leerLocal(LLAVE_QUIEN) || QUIEN_POR_OMISION, el = $('#acceso-quien'); if (el) { el.textContent = q; el.hidden = !q; } }
 (function inicio() {
   // El QR trae ?c=CODIGO; se quita de la barra para que no quede en el historial
   const delQR = params.get('c');
